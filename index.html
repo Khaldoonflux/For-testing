@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>جائزة أوكة</title>
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :root {
+    --bg:      #0d1117;
+    --surface: #161b22;
+    --panel:   #1c2330;
+    --border:  #2a3441;
+    --accent:  #f0a500;
+    --blue:    #388bfd;
+    --text:    #e6edf3;
+    --text-dim: #8b949e;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Almarai', sans-serif;
+    overflow: hidden;
+    height: 100dvh;
+    width: 100vw;
+  }
+
+  /* HEADER */
+  #topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 100;
+  }
+
+  /* LEFT side of header - Counter */
+  .counter {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent);
+    background: rgba(240, 165, 0, 0.12);
+    padding: 6px 14px;
+    border-radius: 24px;
+    direction: ltr;
+  }
+
+  /* CENTER of header - Edit Button */
+  #edit-mode-btn {
+    background: var(--accent);
+    color: #0d1117;
+    border: none;
+    border-radius: 40px;
+    padding: 10px 28px;
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  #edit-mode-btn:active { opacity: 0.8; }
+
+  /* RIGHT side of header - Title */
+  .header-title {
+    text-align: center;
+  }
+  .title-ar {
+    font-size: 20px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent) 0%, #fff 60%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .title-en {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dim);
+    direction: ltr;
+    margin-top: 2px;
+  }
+
+  /* STAGE */
+  #stage {
+    position: fixed;
+    top: 70px;
+    bottom: 56px;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+  }
+
+  /* CARD */
+  .card {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px 16px 40px;
+    transition: transform 0.35s cubic-bezier(.4,0,.2,1), opacity 0.35s ease;
+    will-change: transform, opacity;
+  }
+  .card.active        { transform: translateX(0); opacity: 1; }
+  .card.from-right    { transform: translateX(-100%); opacity: 0; }
+  .card.from-left     { transform: translateX(100%); opacity: 0; }
+  .card.exit-left     { transform: translateX(-100%); opacity: 0; }
+  .card.exit-right    { transform: translateX(100%); opacity: 0; }
+
+  /* NAMES SECTION - contains photo, names, AND form number */
+  .profile-block {
+    text-align: center;
+    margin-bottom: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 28px 20px 24px;
+    position: relative;
+  }
+
+  /* Form number - inside Names section, upper LEFT corner, BIG, no label */
+  .form-number {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--accent);
+    direction: ltr;
+  }
+
+  .profile-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent);
+    background: var(--panel);
+    display: block;
+    margin: 0 auto 16px;
+  }
+  .profile-no-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--panel);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    font-size: 16px;
+    margin: 0 auto 16px;
+  }
+  .profile-name-ar {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .profile-name-en {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--accent);
+    direction: ltr;
+    margin-top: 8px;
+  }
+
+  /* SECTION PANEL */
+  .section {
+    margin-bottom: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .section-head {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent);
+    padding: 16px 20px;
+    background: rgba(240, 165, 0, 0.06);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+
+  /* FIELD */
+  .field {
+    padding: 18px 16px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .field:last-child { border-bottom: none; }
+
+  .field-label {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .field-value {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.7;
+    word-break: break-word;
+    white-space: pre-wrap;
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: var(--panel);
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+  }
+  .field-value.ltr { direction: ltr; }
+  .field-value.rtl { direction: rtl; }
+
+  .field-input {
+    display: none;
+    width: 100%;
+    font-family: 'Almarai', sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text);
+    background: var(--panel);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    outline: none;
+    resize: none;
+    text-align: center;
+  }
+  .field-input.ltr { direction: ltr; }
+  .field-input.rtl { direction: rtl; }
+  .field-input:focus { border-color: var(--accent); }
+
+  .field-img {
+    width: 100%;
+    border-radius: 14px;
+    display: block;
+    background: var(--panel);
+    min-height: 80px;
+    object-fit: contain;
+    border: 1px solid var(--border);
+  }
+  .field-img-broken {
+    display: none;
+    width: 100%;
+    padding: 24px;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 16px;
+    background: var(--panel);
+    border-radius: 14px;
+    border: 1px dashed var(--border);
+  }
+
+  .field-link {
+    font-size: 18px;
+    color: var(--blue);
+    word-break: break-all;
+    direction: ltr;
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    padding: 12px;
+    background: rgba(56, 139, 253, 0.1);
+    border-radius: 12px;
+  }
+
+  /* ACTION BAR */
+  #action-bar {
+    display: none;
+    position: fixed;
+    bottom: 56px;
+    left: 0;
+    right: 0;
+    padding: 12px 16px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    gap: 12px;
+    z-index: 90;
+  }
+  #action-bar.on { display: flex; }
+
+  #btn-save {
+    flex: 1;
+    background: var(--accent);
+    color: #0d1117;
+    font-weight: 800;
+    font-size: 20px;
+    border: none;
+    border-radius: 40px;
+    padding: 16px;
+    font-family: 'Almarai', sans-serif;
+    cursor: pointer;
+  }
+  #btn-cancel {
+    flex: 1;
+    background: transparent;
+    color: var(--text);
+    font-size: 20px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 16px;
+    font-family: 'Almarai', sans-serif;
+    cursor: pointer;
+  }
+
+  /* NOTES BAR */
+  #notes-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-radius: 20px 20px 0 0;
+    transition: height 0.32s cubic-bezier(.4,0,.2,1);
+    overflow: hidden;
+    z-index: 150;
+  }
+  #notes-bar.open { height: 55vh; }
+
+  #notes-handle {
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+  }
+  .notes-pill {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+  }
+  #notes-handle span {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-top: 6px;
+  }
+  #notes-body {
+    padding: 12px 16px 20px;
+    height: calc(55vh - 56px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  #notes-hint {
+    font-size: 14px;
+    color: var(--text-dim);
+    text-align: center;
+  }
+  #notes-ta {
+    flex: 1;
+    font-family: 'Almarai', sans-serif;
+    font-size: 20px;
+    color: var(--text);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    resize: none;
+    outline: none;
+    direction: rtl;
+    line-height: 1.6;
+  }
+  #notes-ta:focus { border-color: var(--accent); }
+
+  /* DIALOG */
+  #dialog {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(4px);
+    z-index: 400;
+    align-items: center;
+    justify-content: center;
+  }
+  #dialog.on { display: flex; }
+  #dialog-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 32px 24px 24px;
+    width: 88%;
+    max-width: 360px;
+    text-align: center;
+  }
+  #dialog-box p {
+    font-size: 20px;
+    color: var(--text);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+  .dialog-btns { display: flex; gap: 12px; }
+  #d-save {
+    flex: 1;
+    background: var(--accent);
+    color: #0d1117;
+    font-weight: 800;
+    font-size: 18px;
+    border: none;
+    border-radius: 40px;
+    padding: 14px;
+    cursor: pointer;
+  }
+  #d-discard {
+    flex: 1;
+    background: transparent;
+    color: var(--text);
+    font-size: 18px;
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 14px;
+    cursor: pointer;
+  }
+
+  /* SAVING */
+  #saving {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(4px);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 18px;
+    color: var(--accent);
+    font-size: 20px;
+    font-weight: 700;
+  }
+  #saving.on { display: flex; }
+  .spin {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: sp 0.75s linear infinite;
+  }
+  @keyframes sp { to { transform: rotate(360deg); } }
+
+  /* LOADER */
+  #loader {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 18px;
+    z-index: 600;
+    color: var(--accent);
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .card::-webkit-scrollbar { width: 4px; }
+  .card::-webkit-scrollbar-track { background: var(--panel); }
+  .card::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+  #edit-badge { display: none; }
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="spin"></div>
+  <span>جاري تحميل البيانات...</span>
+</div>
+
+<!-- HEADER: Counter (LEFT) | Edit Button (CENTER) | Title (RIGHT) -->
+<div id="topbar">
+  <div class="counter" id="counter">0 / 0</div>
+  <button id="edit-mode-btn">تعديل</button>
+  <div class="header-title">
+    <div class="title-ar">جائزة أوكة</div>
+    <div class="title-en">Ouka Award</div>
+  </div>
+</div>
+
+<div id="stage"></div>
+
+<div id="action-bar">
+  <button id="btn-save">حفظ</button>
+  <button id="btn-cancel">إلغاء</button>
+</div>
+
+<div id="notes-bar">
+  <div id="notes-handle">
+    <div class="notes-pill"></div>
+    <span>ملاحظات</span>
+  </div>
+  <div id="notes-body">
+    <span id="notes-hint">استخدم ميكروفون لوحة المفاتيح للإملاء الصوتي</span>
+    <textarea id="notes-ta" placeholder="اكتب ملاحظاتك هنا..."></textarea>
+  </div>
+</div>
+
+<div id="dialog">
+  <div id="dialog-box">
+    <p>لديك تغييرات غير محفوظة<br>هل تريد الحفظ قبل المغادرة؟</p>
+    <div class="dialog-btns">
+      <button id="d-save">حفظ</button>
+      <button id="d-discard">تجاهل</button>
+    </div>
+  </div>
+</div>
+
+<div id="saving">
+  <div class="spin"></div>
+  <span>جاري الحفظ...</span>
+</div>
+
+<script>
+// CONFIG
+const SHEET_ID  = '1CWEdw0-GBgGWYRo3Z3qFXAqMUP2OhnW6sSALp-sQk8Q';
+const API_KEY   = 'AIzaSyDcsPqWxJXccOvjNVpDf3q6nNLkp_505AQ';
+const RAW_CSV   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS-1h457oCpt8ofnWczaqkqDfZ54VvZUEn5gYsNsrO4uK0JZSNTZDPkSgdzisauZA_1caiZE2ekdGna/pub?gid=901285275&single=true&output=csv';
+const CSV_URL   = 'https://corsproxy.io/?url=' + encodeURIComponent(RAW_CSV);
+
+const EXCL = new Set([1,13,14,15,30,37,49,56,57]);
+
+// STATE
+let h1=[], h2=[], rows=[], notesCol=-1;
+let cur=0, editMode=false, snap={}, pendingDir=null;
+
+// HELPERS
+const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const isAr  = v => /[\u0600-\u06FF]/.test(v);
+const isNum = v => /^[\d\+\-\s\(\)\.]+$/.test((v||'').trim()) && (v||'').trim().length>0;
+const isDrive = v => v&&v.includes('drive.google.com');
+const isImg = v => v&&(/\.(jpg|jpeg|png|gif|webp)(\?|$)/i.test(v)||isDrive(v));
+const isURL = v => v&&(v.startsWith('http://')||v.startsWith('https://'));
+
+function fieldDir(v){
+  if(!v)return'rtl';
+  if(isNum(v))return'ltr';
+  return isAr(v)?'rtl':'ltr';
+}
+
+function driveURL(u){
+  const m=u.match(/[?&]id=([^&]+)/)||u.match(/\/d\/([^\/]+)/);
+  return m?`https://drive.google.com/uc?export=view&id=${m[1]}`:u;
+}
+
+// CSV PARSER
+function parseCSV(t){
+  const R=[];let row=[],cell='',q=false;
+  for(let i=0;i<t.length;i++){
+    const c=t[i];
+    if(q){if(c==='"'&&t[i+1]==='"'){cell+='"';i++;}else if(c==='"')q=false;else cell+=c;}
+    else{if(c==='"')q=true;else if(c===','){row.push(cell);cell='';}else if(c==='\n'){row.push(cell);R.push(row);row=[];cell='';}else if(c!=='\r')cell+=c;}
+  }
+  if(row.length){row.push(cell);R.push(row);}
+  return R;
+}
+
+// LOAD
+async function load(){
+  try{
+    const res=await fetch(CSV_URL);
+    const txt=await res.text();
+    const all=parseCSV(txt);
+    if(all.length<3)throw new Error('بيانات غير كافية');
+    h1=all[0]; h2=all[1]; rows=all.slice(2);
+
+    notesCol=h2.findIndex(h=>h.trim()==='ملاحظات');
+    if(notesCol===-1)notesCol=h1.findIndex(h=>h.trim()==='ملاحظات');
+    if(notesCol===-1)notesCol=h1.length;
+
+    document.getElementById('loader').style.display='none';
+    go(0,null);
+  }catch(e){
+    document.getElementById('loader').innerHTML=`<p style="color:#e44;padding:24px;text-align:center">خطأ: ${e.message}</p>`;
+  }
+}
+
+// UPDATE COUNTER AND FORM NUMBER
+function updateCounterAndForm(){
+  document.getElementById('counter').textContent = `${cur+1} / ${rows.length}`;
+}
+
+// RENDER
+function go(idx, dir){
+  cur=idx; 
+  editMode=false;
+  document.getElementById('edit-mode-btn').textContent = 'تعديل';
+  document.getElementById('action-bar').classList.remove('on');
+  updateCounterAndForm();
+  document.getElementById('notes-ta').value=(rows[idx]||[])[notesCol]||'';
+
+  const stage=document.getElementById('stage');
+  const old=stage.querySelector('.card.active');
+  const card=makeCard(idx);
+
+  if(!old||dir===null){
+    card.classList.add('active');
+    stage.innerHTML='';
+    stage.appendChild(card);
+    return;
+  }
+
+  card.classList.add(dir==='next'?'from-left':'from-right');
+  stage.appendChild(card);
+
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    old.classList.remove('active');
+    old.classList.add(dir==='next'?'exit-left':'exit-right');
+    card.classList.remove('from-left','from-right');
+    card.classList.add('active');
+    old.addEventListener('transitionend',()=>old.remove(),{once:true});
+  }));
+}
+
+function makeCard(idx){
+  const row=rows[idx]||[];
+  const card=document.createElement('div');
+  card.className='card';
+  card.dataset.idx=idx;
+
+  const photoVal=(row[7]||'').trim();
+  const nameAr=(row[3]||'').trim();
+  const nameEn=(row[4]||'').trim();
+  const formNum = (row[0]||'---').trim();
+
+  let photoEl='';
+  if(photoVal&&isImg(photoVal)){
+    const src=driveURL(photoVal);
+    photoEl=`<img class="profile-photo" src="${src}" alt=""
+      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="profile-no-photo">لا صورة</div>`;
+  } else {
+    photoEl=`<div class="profile-no-photo">لا صورة</div>`;
+  }
+
+  let html=`<div class="profile-block">
+    <div class="form-number">${formNum}</div>
+    ${photoEl}
+    <div class="profile-name-ar">${esc(nameAr)}</div>
+    <div class="profile-name-en">${esc(nameEn)}</div>
+  </div>`;
+
+  const skip=new Set([0,3,4,7]);
+  const personal=[], part1=[], part2=[], other=[];
+
+  for(let i=0;i<h1.length;i++){
+    if(EXCL.has(i))continue;
+    if(i===notesCol)continue;
+    if(skip.has(i))continue;
+    const val=(row[i]||'').trim();
+    if(!val)continue;
+    const lbl=(h2[i]||h1[i]||'').trim();
+    if(lbl.includes('ش2')||lbl.includes('الثانية')||lbl.includes('ثانية'))part2.push({i,lbl,val});
+    else if(lbl.includes('ش1')||lbl.includes('الأولى')||lbl.includes('أول'))part1.push({i,lbl,val});
+    else if(i<=20)personal.push({i,lbl,val});
+    else other.push({i,lbl,val});
+  }
+
+  html+=sect('البيانات الشخصية',personal,row);
+  html+=sect('المشاركة الأولى',part1,row);
+  html+=sect('المشاركة الثانية',part2,row);
+  if(other.length)html+=sect('أخرى',other,row);
+
+  card.innerHTML=html;
+  return card;
+}
+
+function sect(title, cols, row){
+  if(!cols.length)return'';
+  let h=`<div class="section"><div class="section-head">${title}</div>`;
+  for(const {i,lbl,val} of cols){
+    const img=isImg(val);
+    const lnk=!img&&isURL(val);
+    const d=fieldDir(val);
+    const long=val.length>60||val.includes('\n');
+
+    h+=`<div class="field" data-col="${i}">
+      <span class="field-label">${esc(lbl)}</span>`;
+
+    if(img){
+      const src=driveURL(val);
+      h+=`<img class="field-img" src="${src}" alt="${esc(lbl)}"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <div class="field-img-broken">الصورة غير متاحة</div>
+        <input class="field-input ltr" data-col="${i}" type="text" value="${esc(val)}" style="display:none">`;
+    } else if(lnk){
+      h+=`<a class="field-link" href="${esc(val)}" target="_blank">${esc(val)}</a>
+          <input class="field-input ltr" data-col="${i}" type="text" value="${esc(val)}" style="display:none">`;
+    } else if(long){
+      h+=`<span class="field-value ${d}" data-col="${i}">${esc(val)}</span>
+          <textarea class="field-input ${d}" data-col="${i}" rows="3" style="display:none">${esc(val)}</textarea>`;
+    } else {
+      h+=`<span class="field-value ${d}" data-col="${i}">${esc(val)}</span>
+          <input class="field-input ${d}" data-col="${i}" type="text" value="${esc(val)}" style="display:none">`;
+    }
+    h+=`</div>`;
+  }
+  return h+'</div>';
+}
+
+// EDIT MODE
+function enterEdit(){
+  if(editMode) return;
+  editMode=true;
+  document.getElementById('edit-mode-btn').textContent = 'إلغاء التعديل';
+  document.getElementById('action-bar').classList.add('on');
+
+  snap={};
+  const row=rows[cur]||[];
+  for(let i=0;i<h1.length;i++) snap[i]=row[i]||'';
+
+  const card=document.querySelector('.card.active');
+  if(!card)return;
+  card.querySelectorAll('.field-value').forEach(e=>e.style.display='none');
+  card.querySelectorAll('.field-link').forEach(e=>e.style.display='none');
+  card.querySelectorAll('.field-input').forEach(e=>e.style.display='block');
+  card.querySelectorAll('.field-img').forEach(e=>e.style.opacity='0.4');
+}
+
+function exitEdit(discard){
+  editMode=false;
+  document.getElementById('edit-mode-btn').textContent = 'تعديل';
+  document.getElementById('action-bar').classList.remove('on');
+
+  const card=document.querySelector('.card.active');
+  if(!card)return;
+
+  if(discard){
+    card.querySelectorAll('.field-input').forEach(e=>{
+      const ci=parseInt(e.dataset.col);
+      e.value=snap[ci]!==undefined?snap[ci]:e.value;
+    });
+  }
+
+  card.querySelectorAll('.field-value').forEach(e=>e.style.display='');
+  card.querySelectorAll('.field-link').forEach(e=>e.style.display='');
+  card.querySelectorAll('.field-input').forEach(e=>e.style.display='none');
+  card.querySelectorAll('.field-img').forEach(e=>e.style.opacity='1');
+}
+
+function hasChanges(){
+  if(!editMode)return false;
+  const card=document.querySelector('.card.active');
+  if(!card)return false;
+  let changed=false;
+  card.querySelectorAll('.field-input').forEach(e=>{
+    if((e.value||'')!==(snap[parseInt(e.dataset.col)]||''))changed=true;
+  });
+  return changed;
+}
+
+function applyEdits(){
+  const card=document.querySelector('.card.active');
+  if(!card)return;
+  card.querySelectorAll('.field-input').forEach(e=>{
+    const ci=parseInt(e.dataset.col);
+    while(rows[cur].length<=ci)rows[cur].push('');
+    rows[cur][ci]=e.value;
+    const dv=card.querySelector(`.field-value[data-col="${ci}"]`);
+    if(dv)dv.textContent=e.value;
+    const lk=card.querySelector(`.field-link[data-col="${ci}"]`);
+    if(lk){lk.textContent=e.value;lk.href=e.value;}
+  });
+}
+
+// SAVE
+async function saveSheet(){
+  const notesVal=document.getElementById('notes-ta').value;
+  if(!rows[cur])rows[cur]=[];
+  while(rows[cur].length<=notesCol)rows[cur].push('');
+  rows[cur][notesCol]=notesVal;
+  applyEdits();
+
+  const rowNum=cur+3;
+  const url=`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/A${rowNum}?valueInputOption=RAW&key=${API_KEY}`;
+  document.getElementById('saving').classList.add('on');
+  try{
+    const res=await fetch(url,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({values:[rows[cur]]})
+    });
+    const data=await res.json();
+    if(data.error)throw new Error(data.error.message);
+    exitEdit(false);
+  }catch(e){
+    alert('خطأ في الحفظ: '+e.message);
+    exitEdit(false);
+  }finally{
+    document.getElementById('saving').classList.remove('on');
+  }
+}
+
+// NAVIGATION
+function tryNav(dir){
+  const t=cur+(dir==='next'?1:-1);
+  if(t<0||t>=rows.length)return;
+  if(hasChanges()){pendingDir=dir;document.getElementById('dialog').classList.add('on');return;}
+  doNav(dir);
+}
+
+function doNav(dir){
+  const t=cur+(dir==='next'?1:-1);
+  exitEdit(true);
+  go(t,dir);
+}
+
+// SWIPE
+let sx=0,sy=0,st=0;
+const stageEl=document.getElementById('stage');
+stageEl.addEventListener('touchstart', e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;st=Date.now();},{passive:true});
+stageEl.addEventListener('touchend', e=>{
+  if(editMode)return;
+  const dx=e.changedTouches[0].clientX-sx;
+  const dy=e.changedTouches[0].clientY-sy;
+  const dt=Date.now()-st;
+  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>50&&dt<450){
+    tryNav(dx>0?'prev':'next');
+  }
+},{passive:true});
+
+// BUTTONS
+document.getElementById('edit-mode-btn').addEventListener('click', () => {
+  if(editMode){
+    if(hasChanges()){
+      if(confirm('لديك تغييرات غير محفوظة. هل تريد الخروج؟')){
+        exitEdit(true);
+      }
+    } else {
+      exitEdit(true);
+    }
+  } else {
+    enterEdit();
+  }
+});
+document.getElementById('btn-save').addEventListener('click',saveSheet);
+document.getElementById('btn-cancel').addEventListener('click',()=>exitEdit(true));
+document.getElementById('d-save').addEventListener('click',async()=>{
+  document.getElementById('dialog').classList.remove('on');
+  await saveSheet();
+  if(pendingDir){doNav(pendingDir);pendingDir=null;}
+});
+document.getElementById('d-discard').addEventListener('click',()=>{
+  document.getElementById('dialog').classList.remove('on');
+  if(pendingDir){doNav(pendingDir);pendingDir=null;}
+});
+
+// NOTES
+const nb=document.getElementById('notes-bar');
+document.getElementById('notes-handle').addEventListener('click',()=>nb.classList.toggle('open'));
+let nhy=0;
+document.getElementById('notes-handle').addEventListener('touchstart',e=>{nhy=e.touches[0].clientY;},{passive:true});
+document.getElementById('notes-handle').addEventListener('touchend',e=>{
+  const dy=nhy-e.changedTouches[0].clientY;
+  if(dy>25)nb.classList.add('open');
+  else if(dy<-25)nb.classList.remove('open');
+});
+document.getElementById('notes-ta').addEventListener('blur',()=>{
+  if(!rows[cur])return;
+  while(rows[cur].length<=notesCol)rows[cur].push('');
+  rows[cur][notesCol]=document.getElementById('notes-ta').value;
+});
+
+// KEYBOARD
+document.addEventListener('keydown',e=>{
+  if(editMode)return;
+  if(e.key==='ArrowRight')tryNav('prev');
+  if(e.key==='ArrowLeft')tryNav('next');
+});
+
+// START
+load();
+</script>
+</body>
+</html>
