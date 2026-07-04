@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Entry Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+    <style>
+        .form-container { max-width: 500px; margin: 50px auto; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); background-color: #fff; border-radius: 8px; }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="form-container">
+            <h4 class="text-center mb-4">Submission Form</h4>
+            <form id="submit-to-google-sheet">
+                <div class="form-group"><input class="form-control" type="text" name="No." placeholder="No." required></div>
+                <div class="form-group"><input class="form-control" type="text" name="Name" placeholder="Name" required></div>
+                <div class="form-group">
+                    <select class="form-control" name="Country" required>
+                        <option value="" disabled selected>Select Country</option>
+                        <option value="الجزائر">الجزائر</option>
+                        <option value="البحرين">البحرين</option>
+                        <option value="جزر القمر">جزر القمر</option>
+                        <option value="جيبوتي">جيبوتي</option>
+                        <option value="مصر">مصر</option>
+                        <option value="العراق">العراق</option>
+                        <option value="الأردن">الأردن</option>
+                        <option value="الكويت">الكويت</option>
+                        <option value="لبنان">لبنان</option>
+                        <option value="ليبيا">ليبيا</option>
+                        <option value="موريتانيا">موريتانيا</option>
+                        <option value="المغرب">المغرب</option>
+                        <option value="عمان">عمان</option>
+                        <option value="فلسطين">فلسطين</option>
+                        <option value="قطر">قطر</option>
+                        <option value="السعودية">السعودية</option>
+                        <option value="الصومال">الصومال</option>
+                        <option value="السودان">السودان</option>
+                        <option value="سوريا">سوريا</option>
+                        <option value="تونس">تونس</option>
+                        <option value="الإمارات">الإمارات</option>
+                        <option value="اليمن">اليمن</option>
+                    </select>
+                </div>
+                <div class="form-group"><input class="form-control" type="text" name="Mobile No." placeholder="Mobile No." required></div>
+                <div class="form-group"><input class="form-control" type="email" name="Email" placeholder="Email" required></div>
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbxbpzJBrpTnWsZCqK71IDv_6LB_wv4cBhrTpCe3gwReoNLOZnQw_tyP89Al1vl976V3/exec";
+        const form = document.getElementById("submit-to-google-sheet");
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            fetch(scriptURL, { method: "POST", body: new FormData(form) })
+            .then(response => {
+                form.reset();
+                swal("Done", "Submitted Successfully.", "success");
+            })
+            .catch(error => {
+                swal("Error", "Something went wrong, please try again!", "error");
+            });
+        });
+    </script>
+</body>
+</html>
