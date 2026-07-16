@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الفصل الأول — المتسعات | فيزياء السادس العلمي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080b14;
+  --bg-grad: radial-gradient(1200px 800px at 85% -10%, #131c3a 0%, transparent 60%),
+             radial-gradient(1000px 700px at -10% 110%, #12142c 0%, transparent 55%),
+             #080b14;
+  --surface: rgba(255,255,255,0.035);
+  --surface-strong: rgba(255,255,255,0.065);
+  --border: rgba(255,255,255,0.09);
+  --border-soft: rgba(255,255,255,0.05);
+  --text:#eef1f8;
+  --text-dim:#93a0c2;
+  --text-faint:#5d6889;
+  --accent:#7c8cff;
+  --accent-soft: rgba(124,140,255,0.15);
+  --plus:#ffcf5c;
+  --plus-soft: rgba(255,207,92,0.15);
+  --minus:#5cc8ff;
+  --minus-soft: rgba(92,200,255,0.15);
+  --danger:#ff6b7a;
+  --good:#3ddba0;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Almarai', sans-serif;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background: var(--bg-grad);
+  color:var(--text);
+  font-family:var(--sans);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 42px 42px;
+  pointer-events:none;
+  z-index:0;
+  mask-image: radial-gradient(1200px 800px at 50% 0%, black, transparent 80%);
+}
+
+/* ---------- Layout shell ---------- */
+.app{
+  display:grid;
+  grid-template-columns: 300px 1fr;
+  min-height:100vh;
+  position:relative;
+  z-index:1;
+}
+@media (max-width: 980px){
+  .app{ grid-template-columns: 1fr; }
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar{
+  border-left:1px solid var(--border-soft);
+  background: linear-gradient(180deg, rgba(19,26,48,0.55), rgba(10,13,24,0.35));
+  backdrop-filter: blur(14px);
+  padding:22px 16px 30px;
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+  display:flex; flex-direction:column; gap:18px;
+}
+@media (max-width: 980px){
+  .sidebar{ position:relative; height:auto; border-left:none; border-bottom:1px solid var(--border-soft); }
+}
+.brand{
+  display:flex; align-items:center; gap:10px; padding:6px 8px 14px;
+  border-bottom:1px solid var(--border-soft);
+}
+.brand-mark{
+  width:38px; height:38px; border-radius:10px;
+  background: linear-gradient(135deg, var(--plus), var(--minus));
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); font-weight:700; color:#0a0e1a; font-size:13px;
+  flex-shrink:0;
+}
+.brand h1{ font-size:14.5px; font-weight:800; line-height:1.4; }
+.brand span{ display:block; font-size:11px; color:var(--text-dim); font-weight:400; margin-top:2px;}
+
+.progress-wrap{ padding:0 8px; }
+.progress-label{ display:flex; justify-content:space-between; font-size:11px; color:var(--text-dim); margin-bottom:6px; font-family:var(--mono); }
+.progress-track{ height:6px; border-radius:99px; background:rgba(255,255,255,0.06); overflow:hidden; }
+.progress-fill{ height:100%; border-radius:99px; background:linear-gradient(90deg, var(--minus), var(--accent), var(--plus)); width:4%; transition:width .5s ease; }
+
+nav.toc{ display:flex; flex-direction:column; gap:3px; padding:0 4px; }
+.toc-group-label{ font-size:10.5px; color:var(--text-faint); font-family:var(--mono); letter-spacing:.5px; margin:10px 8px 4px; text-transform:uppercase; }
+.toc-btn{
+  display:flex; align-items:center; gap:10px;
+  padding:9px 10px; border-radius:10px;
+  background:transparent; border:1px solid transparent;
+  color:var(--text-dim); cursor:pointer; text-align:right; font-family:var(--sans);
+  font-size:13.5px; transition:.18s ease; position:relative;
+}
+.toc-btn:hover{ background:var(--surface); color:var(--text); }
+.toc-btn.active{ background:var(--surface-strong); border-color:var(--border); color:var(--text); }
+.toc-btn.active .toc-num{ background:var(--accent); color:#0a0e1a; }
+.toc-btn .toc-num{
+  font-family:var(--mono); font-size:10.5px; font-weight:700;
+  width:30px; height:20px; border-radius:6px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,0.07); color:var(--text-faint);
+}
+.toc-btn.done::after{
+  content:"✓"; position:absolute; left:10px; font-size:11px; color:var(--good);
+}
+
+/* ---------- Main ---------- */
+main{ padding:34px clamp(16px, 5vw, 64px) 90px; max-width:980px; width:100%; margin:0 auto; }
+.section{ display:none; animation: fadeUp .5s ease; }
+.section.active{ display:block; }
+@keyframes fadeUp{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
+
+.eyebrow{
+  font-family:var(--mono); font-size:12px; color:var(--accent);
+  display:flex; align-items:center; gap:8px; margin-bottom:10px; letter-spacing:.5px;
+}
+.eyebrow .dot{ width:6px; height:6px; border-radius:99px; background:var(--accent); box-shadow:0 0 10px var(--accent);}
+h2.title{ font-size:clamp(24px,3.4vw,34px); font-weight:800; margin-bottom:6px; line-height:1.3; }
+h2.title .en{ font-family:var(--mono); font-weight:400; color:var(--text-faint); font-size:0.5em; margin-inline-start:10px; }
+p.lead{ color:var(--text-dim); font-size:15.5px; line-height:2; max-width:70ch; margin-bottom:26px;}
+
+.card{
+  background:var(--surface); border:1px solid var(--border-soft);
+  border-radius:16px; padding:22px 24px; margin-bottom:20px;
+  backdrop-filter: blur(10px);
+}
+.card h3{ font-size:16px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px;}
+.card p{ color:var(--text-dim); font-size:14.5px; line-height:2; }
+.card p + p{ margin-top:10px; }
+
+.formula{
+  font-family:var(--mono); background:rgba(124,140,255,0.08);
+  border:1px solid rgba(124,140,255,0.25); color:#c9d0ff;
+  border-radius:10px; padding:14px 18px; margin:14px 0; font-size:16px;
+  display:inline-block; direction:ltr; text-align:center;
+}
+.formula-row{ display:flex; flex-wrap:wrap; gap:12px; margin:14px 0; }
+
+.grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+@media(max-width:760px){ .grid-2, .grid-3{ grid-template-columns:1fr; } }
+
+.pill{
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:var(--mono); font-size:11px; padding:4px 10px;
+  border-radius:99px; border:1px solid var(--border); color:var(--text-dim);
+}
+
+/* nav buttons at bottom of section */
+.section-nav{
+  display:flex; justify-content:space-between; align-items:center;
+  margin-top:34px; padding-top:20px; border-top:1px solid var(--border-soft);
+  gap:12px;
+}
+.nav-btn{
+  font-family:var(--sans); font-size:14px; font-weight:700;
+  background:var(--surface-strong); color:var(--text);
+  border:1px solid var(--border); border-radius:12px;
+  padding:12px 20px; cursor:pointer; transition:.2s ease;
+  display:flex; align-items:center; gap:8px;
+}
+.nav-btn:hover{ background:var(--accent-soft); border-color:var(--accent); }
+.nav-btn:disabled{ opacity:.3; cursor:not-allowed; }
+
+/* ---------- gauge / voltmeter signature element ---------- */
+.gauge-wrap{ display:flex; flex-direction:column; align-items:center; gap:6px; }
+.gauge-readout{ font-family:var(--mono); font-size:13px; color:var(--text-dim); text-align:center; }
+.gauge-readout b{ color:var(--accent); font-size:15px; }
+
+/* ---------- capacitor visual ---------- */
+.cap-visual{ display:flex; justify-content:center; padding:20px 0; }
+
+/* sliders */
+.slider-row{ margin:16px 0; }
+.slider-row label{ display:flex; justify-content:space-between; font-size:13px; color:var(--text-dim); margin-bottom:8px; font-family:var(--mono);}
+.slider-row label b{ color:var(--text); }
+input[type=range]{
+  width:100%; -webkit-appearance:none; height:6px; border-radius:99px;
+  background:rgba(255,255,255,0.08); outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; width:18px; height:18px; border-radius:50%;
+  background:var(--accent); cursor:pointer; border:3px solid #0a0e1a; box-shadow:0 0 0 1px var(--accent);
+}
+
+/* calculator inputs */
+.calc-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin:16px 0; }
+.field label{ display:block; font-size:12px; color:var(--text-dim); margin-bottom:6px; font-family:var(--mono); }
+.field input, .field select{
+  width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border);
+  color:var(--text); border-radius:10px; padding:10px 12px; font-family:var(--mono); font-size:14px;
+}
+.field input:focus, .field select:focus{ outline:none; border-color:var(--accent); }
+.btn{
+  background:linear-gradient(135deg, var(--accent), #5a67d8);
+  color:#fff; border:none; border-radius:10px; padding:11px 22px;
+  font-family:var(--sans); font-weight:700; font-size:14px; cursor:pointer;
+  transition:.2s ease; box-shadow:0 6px 20px -8px rgba(124,140,255,0.6);
+}
+.btn:hover{ transform:translateY(-1px); box-shadow:0 10px 24px -8px rgba(124,140,255,0.75); }
+.btn.ghost{ background:transparent; border:1px solid var(--border); box-shadow:none; color:var(--text); }
+.result-box{
+  margin-top:16px; padding:16px 18px; border-radius:12px;
+  background:rgba(61,219,160,0.08); border:1px solid rgba(61,219,160,0.3);
+  font-family:var(--mono); font-size:14.5px; color:var(--good); display:none;
+}
+.result-box.show{ display:block; }
+.result-box .row{ display:flex; justify-content:space-between; padding:4px 0; }
+.result-box .row span:first-child{ color:var(--text-dim); }
+
+/* toggle switch */
+.toggle-group{ display:flex; gap:8px; background:rgba(255,255,255,0.04); padding:4px; border-radius:12px; border:1px solid var(--border-soft); width:fit-content; margin-bottom:16px;}
+.toggle-btn{ padding:8px 18px; border-radius:9px; border:none; background:transparent; color:var(--text-dim); font-family:var(--sans); font-weight:700; font-size:13.5px; cursor:pointer; transition:.2s;}
+.toggle-btn.active{ background:var(--accent); color:#0a0e1a; }
+
+/* type cards */
+.type-card{
+  background:var(--surface); border:1px solid var(--border-soft); border-radius:14px;
+  padding:18px; transition:.25s ease; cursor:default;
+}
+.type-card:hover{ border-color:var(--accent); transform:translateY(-3px); }
+.type-card .tag{ font-family:var(--mono); font-size:10.5px; color:var(--accent); margin-bottom:8px; display:block;}
+.type-card h4{ font-size:15px; margin-bottom:8px; }
+.type-card p{ font-size:13px; color:var(--text-dim); line-height:1.9; }
+
+/* example accordion */
+.example{
+  background:var(--surface); border:1px solid var(--border-soft); border-radius:14px;
+  margin-bottom:14px; overflow:hidden;
+}
+.example-head{
+  padding:16px 20px; display:flex; justify-content:space-between; align-items:center;
+  cursor:pointer; gap:12px;
+}
+.example-head h4{ font-size:14.5px; font-weight:700; }
+.example-head .ex-num{ font-family:var(--mono); font-size:11px; color:var(--accent); }
+.example-body{ max-height:0; overflow:hidden; transition:max-height .4s ease; }
+.example-body-inner{ padding:0 20px 20px; color:var(--text-dim); font-size:14px; line-height:2;}
+.example.open .example-body{ max-height:1400px; }
+.example-toggle-icon{ font-family:var(--mono); color:var(--text-faint); transition:.3s; }
+.example.open .example-toggle-icon{ transform:rotate(45deg); color:var(--accent); }
+.step{ background:rgba(255,255,255,0.03); border-radius:10px; padding:10px 14px; margin:8px 0; font-family:var(--mono); font-size:13.5px; direction:ltr; text-align:left; color:#c9d0ff;}
+
+/* quiz */
+.quiz-q{ background:var(--surface); border:1px solid var(--border-soft); border-radius:14px; padding:20px; margin-bottom:16px;}
+.quiz-q .q-text{ font-size:14.5px; margin-bottom:14px; line-height:1.9; }
+.quiz-options{ display:flex; flex-direction:column; gap:8px; }
+.quiz-opt{
+  display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px;
+  border:1px solid var(--border-soft); cursor:pointer; font-family:var(--mono); font-size:13.5px;
+  transition:.2s;
+}
+.quiz-opt:hover{ background:rgba(255,255,255,0.04); }
+.quiz-opt.correct{ border-color:var(--good); background:rgba(61,219,160,0.1); color:var(--good); }
+.quiz-opt.wrong{ border-color:var(--danger); background:rgba(255,107,122,0.1); color:var(--danger); }
+.quiz-opt input{ accent-color:var(--accent); }
+.quiz-summary{
+  text-align:center; padding:30px; background:var(--surface); border:1px solid var(--border);
+  border-radius:16px; display:none;
+}
+.quiz-summary.show{ display:block; }
+.quiz-summary .score{ font-family:var(--mono); font-size:44px; font-weight:700; color:var(--accent); margin-bottom:6px;}
+
+/* applications */
+.app-card{
+  background:var(--surface); border:1px solid var(--border-soft); border-radius:16px;
+  padding:20px; display:flex; gap:16px; align-items:flex-start; margin-bottom:14px;
+}
+.app-icon{
+  width:46px; height:46px; border-radius:12px; flex-shrink:0;
+  background:linear-gradient(135deg, var(--plus-soft), var(--minus-soft));
+  display:flex; align-items:center; justify-content:center; font-size:20px;
+  border:1px solid var(--border);
+}
+.app-card h4{ font-size:15px; margin-bottom:6px; }
+.app-card p{ font-size:13.5px; color:var(--text-dim); line-height:1.9; }
+
+/* vocab table */
+.vocab-table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+.vocab-table td{ padding:9px 10px; border-bottom:1px solid var(--border-soft); }
+.vocab-table td:first-child{ font-family:var(--mono); color:var(--text-dim); direction:ltr; text-align:left; }
+.vocab-table tr:hover td{ background:rgba(255,255,255,0.02); }
+
+/* hero */
+.hero{ text-align:center; padding:20px 0 40px; }
+.hero .chapter-num{
+  font-family:var(--mono); font-size:13px; color:var(--accent); letter-spacing:2px; margin-bottom:14px;
+}
+.hero h1{ font-size:clamp(32px,6vw,56px); font-weight:800; line-height:1.25; margin-bottom:10px; }
+.hero h1 span{ background:linear-gradient(135deg, var(--plus), var(--minus)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero p{ color:var(--text-dim); font-size:15.5px; max-width:60ch; margin:0 auto 26px; line-height:2; }
+
+.objectives{ display:grid; grid-template-columns:1fr 1fr; gap:10px; text-align:right; }
+@media(max-width:700px){ .objectives{ grid-template-columns:1fr; } }
+.objectives li{ list-style:none; display:flex; gap:10px; align-items:flex-start; font-size:13.5px; color:var(--text-dim); padding:10px 12px; background:var(--surface); border-radius:10px; border:1px solid var(--border-soft);}
+.objectives li::before{ content:"◆"; color:var(--accent); font-size:9px; margin-top:4px;}
+
+/* scrollbar */
+::-webkit-scrollbar{ width:8px; height:8px;}
+::-webkit-scrollbar-track{ background:transparent; }
+::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.12); border-radius:99px; }
+
+.badge-k{ font-family:var(--mono); font-size:11px; padding:2px 8px; border-radius:6px; background:rgba(255,255,255,0.06); color:var(--text-dim);}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">C</div>
+      <h1>الفصل الأول: المتسعات
+        <span>فيزياء السادس العلمي · تفاعلي</span>
+      </h1>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>التقدم في الفصل</span><span id="progressPct">4%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <nav class="toc" id="tocNav">
+      <div class="toc-group-label">البداية</div>
+      <button class="toc-btn active" data-section="intro"><span class="toc-num">0</span> مقدمة الفصل</button>
+
+      <div class="toc-group-label">الدروس</div>
+      <button class="toc-btn" data-section="s1"><span class="toc-num">1-1</span> المتسعة</button>
+      <button class="toc-btn" data-section="s2"><span class="toc-num">2-1</span> متسعة الصفيحتين</button>
+      <button class="toc-btn" data-section="s3"><span class="toc-num">3-1</span> السعة</button>
+      <button class="toc-btn" data-section="s4"><span class="toc-num">4-1</span> العازل الكهربائي</button>
+      <button class="toc-btn" data-section="s5"><span class="toc-num">5-1</span> العوامل المؤثرة</button>
+      <button class="toc-btn" data-section="s6"><span class="toc-num">6-1</span> الربط توازي وتوالي</button>
+      <button class="toc-btn" data-section="s7"><span class="toc-num">7-1</span> الطاقة المختزنة</button>
+      <button class="toc-btn" data-section="s8"><span class="toc-num">8-1</span> أنواع المتسعات</button>
+      <button class="toc-btn" data-section="s9"><span class="toc-num">9-1</span> دائرة RC</button>
+      <button class="toc-btn" data-section="s10"><span class="toc-num">10-1</span> تطبيقات عملية</button>
+
+      <div class="toc-group-label">مراجعة</div>
+      <button class="toc-btn" data-section="examples"><span class="toc-num">★</span> أمثلة محلولة</button>
+      <button class="toc-btn" data-section="quiz"><span class="toc-num">?</span> اختبر نفسك</button>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main id="mainContent">
+
+    <!-- INTRO -->
+    <section class="section active" id="sec-intro">
+      <div class="hero">
+        <div class="chapter-num">الفصل ١ — CHAPTER 1</div>
+        <h1>المتسعات<br><span>Capacitors</span></h1>
+        <p>أجهزة صغيرة تختزن الشحنات الكهربائية والطاقة... من فلاش الكاميرا إلى جهاز الصدمة القلبية. في هذا الفصل التفاعلي ستبني فهمك خطوة بخطوة، وتجرّب الحاسبات والرسوم المتحركة بنفسك بدل حفظ القوانين فقط.</p>
+      </div>
+
+      <div class="cap-visual">
+        <svg id="heroCapSvg" width="360" height="220" viewBox="0 0 360 220"></svg>
+      </div>
+
+      <div class="card">
+        <h3>🎯 الأهداف السلوكية</h3>
+        <ul class="objectives">
+          <li>يعرف مفهوم المتسعة وأنواعها</li>
+          <li>يوضح العازل الكهربائي وأنواعه</li>
+          <li>يقارن بين ربط التوالي والتوازي</li>
+          <li>يحسب السعة والشحنة وفرق الجهد</li>
+          <li>يفسر كيفية شحن وتفريغ المتسعة</li>
+          <li>يذكر تطبيقات عملية للمتسعة</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>📖 المصطلحات العلمية</h3>
+        <table class="vocab-table">
+          <tr><td>Capacitor</td><td>المتسعة</td></tr>
+          <tr><td>Capacitance</td><td>السعة</td></tr>
+          <tr><td>Dielectric</td><td>العازل الكهربائي</td></tr>
+          <tr><td>Electric field</td><td>المجال الكهربائي</td></tr>
+          <tr><td>Capacitors in series</td><td>ربط المتسعات على التوالي</td></tr>
+          <tr><td>Capacitors in parallel</td><td>ربط المتسعات على التوازي</td></tr>
+          <tr><td>Dielectric constant (k)</td><td>ثابت العزل الكهربائي</td></tr>
+          <tr><td>Charging / Discharging</td><td>شحن / تفريغ المتسعة</td></tr>
+        </table>
+      </div>
+
+      <div class="section-nav">
+        <button class="nav-btn" id="btnPrev" disabled>→ السابق</button>
+        <button class="nav-btn" id="btnNext">ابدأ الدرس الأول ←</button>
+      </div>
+    </section>
+
+    <!-- 1-1 -->
+    <section class="section" id="sec-s1">
+      <div class="eyebrow"><span class="dot"></span>1-1 CAPACITOR</div>
+      <h2 class="title">المتسعة <span class="en">Capacitor</span></h2>
+      <p class="lead">قبل أن نتعرف على المتسعة، لنبدأ بسؤال: كيف نخزن الشحنات الكهربائية أصلاً؟</p>
+
+      <div class="card">
+        <h3>⚡ الموصل الكروي المنفرد</h3>
+        <p>الموصل الكروي المعزول يمكنه تخزين كمية محددة من الشحنات، وفرق الجهد V على بعد r من مركزه يتبع العلاقة:</p>
+        <div class="formula">V = (1 / 4πε₀) × (Q / r) = k · Q / r</div>
+        <p>بازدياد الشحنة Q يزداد فرق الجهد V، وبالتالي يزداد المجال الكهربائي المحيط، حتى يصل إلى حدّ يحصل عنده <b style="color:var(--danger)">التفريغ الكهربائي</b> خلال الهواء المحيط. لذا نادراً ما يُستعمل الموصل المنفرد لتخزين الشحنات.</p>
+      </div>
+
+      <div class="card">
+        <h3>🔋 الحل: نظام من موصلين</h3>
+        <p>لتخزين مقادير كبيرة من الشحنة والطاقة، نستعمل نظاماً من موصلين (بأي شكل كانا) يفصل بينهما عازل (فراغ، هواء، أو مادة عازلة كهربائياً). يُختزن على أحد الموصلين شحنات موجبة وعلى الآخر شحنات سالبة مساوية لها بالمقدار — وهذا الجهاز يسمى <b style="color:var(--accent)">المتسعة</b>.</p>
+        <div class="cap-visual"><svg id="basicCapSvg" width="320" height="180" viewBox="0 0 320 180"></svg></div>
+        <p style="text-align:center; font-size:13px;">صفيحة موجبة الشحنة (+) ← عازل ← صفيحة سالبة الشحنة (−)</p>
+      </div>
+
+      <div class="card">
+        <h3>🔷 أشكال هندسية مختلفة</h3>
+        <div class="grid-3">
+          <div class="type-card"><span class="tag">PARALLEL PLATES</span><h4>ذات الصفيحتين المتوازيتين</h4><p>الأكثر استعمالاً؛ سندرسها بالتفصيل في هذا الفصل.</p></div>
+          <div class="type-card"><span class="tag">CYLINDRICAL</span><h4>ذات الأسطوانتين المتمركزتين</h4><p>موصلان أسطوانيان يشتركان بالمحور نفسه.</p></div>
+          <div class="type-card"><span class="tag">SPHERICAL</span><h4>ذات الكرتين المتمركزتين</h4><p>موصلان كرويان يشتركان بالمركز نفسه.</p></div>
+        </div>
+      </div>
+
+      <div class="section-nav">
+        <button class="nav-btn prev-btn">→ السابق</button>
+        <button class="nav-btn next-btn">التالي ←</button>
+      </div>
+    </section>
+
+    <!-- 2-1 -->
+    <section class="section" id="sec-s2">
+      <div class="eyebrow"><span class="dot"></span>2-1 THE PARALLEL-PLATE CAPACITOR</div>
+      <h2 class="title">متسعة ذات الصفيحتين المتوازيتين</h2>
+      <p class="lead">صفيحتان موصلتان متوازيتان، متطابقتان في المساحة، تفصل بينهما مادة عازلة كهربائياً بمسافة d صغيرة جداً مقارنة بأبعاد الصفيحة.</p>
+
+      <div class="card">
+        <h3>خطوط المجال الكهربائي</h3>
+        <p>تُشحن إحدى الصفيحتين بشحنة موجبة (Q+) من قطب البطارية الموجب، والأخرى بشحنة سالبة (Q−) مساوية لها بالمقدار. ينشأ بينهما مجال كهربائي منتظم E تقريباً (إهمال تأثير الحواف).</p>
+        <div class="cap-visual"><svg id="fieldCapSvg" width="360" height="220" viewBox="0 0 360 220"></svg></div>
+        <p style="text-align:center; font-size:13px;">💡 حرّك الفأرة فوق الرسم لمشاهدة اتجاه المجال E من الصفيحة الموجبة إلى السالبة</p>
+      </div>
+
+      <div class="card">
+        <h3>الرمز في الدوائر الكهربائية</h3>
+        <div style="display:flex; gap:30px; align-items:center; justify-content:center; padding:10px 0;">
+          <svg width="70" height="40"><line x1="5" y1="20" x2="28" y2="20" stroke="#93a0c2" stroke-width="2"/><line x1="28" y1="4" x2="28" y2="36" stroke="#7c8cff" stroke-width="3"/><line x1="42" y1="4" x2="42" y2="36" stroke="#7c8cff" stroke-width="3"/><line x1="42" y1="20" x2="65" y2="20" stroke="#93a0c2" stroke-width="2"/></svg>
+          <span class="pill">⊣⊢ متسعة ثابتة السعة</span>
+          <span class="pill">⊣⊦ متسعة متغيرة السعة</span>
+        </div>
+      </div>
+
+      <div class="section-nav">
+        <button class="nav-btn prev-btn">→ السابق</button>
+        <button class="nav-btn next-btn">التالي ←</button>
+      </div>
+    </section>
+
+    <!-- 3-1 -->
+    <section class="section" id="sec-s3">
+      <div class="eyebrow"><span class="dot"></span>3-1 CAPACITANCE</div>
+      <h2 class="title">السعة <span class="en">Capacitance</span></h2>
+      <p class="lead">وجد عملياً أن فرق الجهد الكهربائي ΔV بين صفيحتي المتسعة المشحونة يتناسب طردياً مع مقدار الشحنة Q على أي من صفيحتيها.</p>
+
+      <div class="card">
+        <h3>تعريف السعة</h3>
+        <p>نسبة الشحنة Q المختزنة في أي من صفيحتيها إلى مقدار فرق الجهد ΔV بين الصفيحتين هي مقدار ثابت يسمى <b style="color:var(--accent)">سعة المتسعة</b>:</p>
+        <div class="formula">C = Q / ΔV</div>
+        <p>تقاس بوحدة <b>الفاراد (Farad)</b>: 1F = 1 Coulomb/Volt. ولأن الفاراد كبيرة جداً عملياً، نستعمل غالباً:</p>
+        <div class="formula-row">
+          <span class="formula">1 µF = 10⁻⁶ F</span>
+          <span class="formula">1 nF = 10⁻⁹ F</span>
+          <span class="formula">1 pF = 10⁻¹² F</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🧮 جرّب بنفسك: احسب السعة</h3>
+        <p>أدخل مقدار الشحنة المختزنة وفرق الجهد، وشاهد قراءة الفولطميتر ونتيجة السعة لحظياً.</p>
+        <div class="calc-grid">
+          <div class="field"><label>الشحنة Q (µC)</label><input type="number" id="c3_q" value="120" step="any"></div>
+          <div class="field"><label>فرق الجهد ΔV (V)</label><input type="number" id="c3_v" value="12" step="any"></div>
+        </div>
+        <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
+          <button class="btn" onclick="calcC3()">احسب السعة</button>
+          <div class="gauge-wrap"><svg id="c3Gauge" width="140" height="90" viewBox="0 0 140 90"></svg>
+            <div class="gauge-readout">فولطميتر: <b id="c3GaugeVal">0</b> V</div>
+          </div>
+        </div>
+        <div class="result-box" id="c3Result"></div>
+      </div>
+
+      <div class="section-nav">
+        <button class="nav-btn prev-btn">→ السابق</button>
+        <button class="nav-btn next-btn">التالي ←</button>
+      </div>
+    </section>
+
+    <!-- 4-1 -->
+    <section class="section" id="sec-s4">
+      <div class="eyebrow"><span class="dot"></span>4-1 DIELECTRIC</div>
+      <h2 class="title">العازل الكهربائي <span class="en">Dielectric</span></h2>
+      <p class="lead">المواد العازلة كهربائياً (مثل الورق المشمع واللدائن والزجاج) تُستعمل بين صفيحتي المتسعة لتقليل مقدار المجال الكهربائي الموضوع فيه.</p>
+
+      <div class="toggle-group">
+        <button class="toggle-btn active" id="polarBtn" onclick="setDielectric('polar')">عازل قطبي (كالماء)</button>
+        <button class="toggle-btn" id="nonpolarBtn" onclick="setDielectric('nonpolar')">عازل غير قطبي (كالزجاج)</button>
+      </div>
+
+      <div class="card">
+        <h3 id="dielTitle">النوع الأول: العوازل القطبية</h3>
+        <p id="dielDesc">تمتلك جزيئاته عزوماً كهربائية ثنائية القطب دائمية (مثل جزيئة الماء التي تسمى دايبول). في غياب المجال الخارجي تكون اتجاهات هذه الدايبولات عشوائية.</p>
+        <div class="cap-visual"><svg id="dielSvg" width="320" height="180" viewBox="0 0 320 180"></svg></div>
+        <div style="text-align:center;">
+          <button class="btn ghost" onclick="toggleField()">⚡ فعّل / أطفئ المجال الخارجي</button>
+        </div>
+        <p style="margin-top:14px;" id="dielResultText">عند تفعيل المجال، تصطف الدايبولات بموازاة المجال المؤثر، فيتولد مجال داخلي معاكس يُضعف المجال الكلي بين الصفيحتين.</p>
+      </div>
+
+      <div class="card">
+        <h3>أثر العازل على السعة وفرق الجهد</h3>
+        <div class="formula-row">
+          <span class="formula">Eₖ = E / k</span>
+          <span class="formula">ΔVₖ = ΔV / k</span>
+          <span class="formula">Cₖ = k·C</span>
+        </div>
+        <p>حيث k هو <b>ثابت العزل الكهربائي</b> للمادة: نسبة سعة المتسعة بوجود العازل Cₖ إلى سعتها بوجود الفراغ أو الهواء C.</p>
+        <table class="vocab-table">
+          <tr><td>k = 1.0</td><td>الفراغ / الهواء</td></tr>
+          <tr><td>k = 3.7</td><td>الورق</td></tr>
+          <tr><td>k = 5.6</td><td>زجاج بايركس</td></tr>
+          <tr><td>k = 80</td><td>الماء النقي (20°C)</td></tr>
+          <tr><td>k = 3 — 6</td><td>المايكا (أعلى قوة عزل: 150–220 ×10⁶ V/m)</td></tr>
+        </table>
+      </div>
+
+      <div class="section-nav">
+        <button class="nav-btn prev-btn">→ السابق</button>
+        <button class="nav-btn next-btn">التالي ←</button>
+      </div>
+    </section>
+
+    <!-- 5-1 -->
+    <section class="section" id="sec-s5">
+      <div class="eyebrow"><span class="dot"></span>5-1 FACTORS AFFECTING C</div>
+      <h2 class="title">العوامل المؤثرة في سعة المتسعة</h2>
+      <p class="lead">ثلاثة عوامل تتحكم بمقدار سعة متسعة الصفيحتين المتوازيتين:</p>
+
+      <div class="formula" style="display:block; text-align:center; font-size:20px;">C = ε₀ · A / d &nbsp;&nbsp;(وبوجود عازل: Cₖ = k·ε₀·A / d)</div>
+
+      <div class="card">
+        <h3>🎛️ المختبر التفاعلي: غيّر العوامل وشاهد أثرها</h3>
+        <p>حرّك المزلاجين لتغيير المساحة المتقابلة A والبعد بين الصفيحتين d، وراقب تغيّر السعة والمجال بين الصفيحتين لحظياً.</p>
+
+        <div class="slider-row">
+          <label>المساحة السطحية المتقابلة A <b id="areaVal">100</b> cm²</label>
+          <input type="range" id="areaSlider" min="20" max="200" value="100" oninput="updateFactors()">
+        </div>
+        <div class="slider-row">
+          <label>البعد بين الصفيحتين d <b id="distVal">5.0</b> mm</label>
+          <input type="range" id="distSlider" min="10" max="100" value="50" oninput="updateFactors()">
+        </div>
+        <div class="slider-row">
+          <label>ثابت العزل k <b id="kVal">1.0</b> (هواء)</label>
+          <input type="range" id="kSlider" min="10" max="80" value="10" oninput="updateFactors()">
+        </div>
+
+        <div class="cap-visual"><svg id="factorSvg" width="340" height="200" viewBox="0 0 340 200"></svg></div>
+
+        <div class="result-box show" id="factorResult" style="text-align:center;">
+          <div style="font-size:26px; font-family:var(--mono); color:var(--accent);" id="factorC">C = 0.00 pF</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card"><h3>∝ A</h3><p>تزداد السعة طردياً مع المساحة السطحية المتقابلة للصفيحتين.</p></div>
+        <div class="card"><h3>∝ 1/d</h3><p>تزداد السعة بنقصان البعد بين الصفيحتين، والعكس صحيح.</p></div>
+      </div>
+
+      <div class="section-nav">
+        <button class="nav-btn prev-btn">→ السابق</button>
+        <button class="nav-btn next-btn">التالي ←</button>
+      </div>
+    </section>
+
+    <!-- 6-1 -->
+    <section class="section" id="sec-s6">
+      <div class="eyebrow"><span class="dot"></span>6-1 SERIES / PARALLEL</div>
+      <h2 class="title">ربط المتسعات (توازي، توالي)</h2>
+      <p class="lead">لماذا نربط المتسعات مع بعضها؟ التوازي يزيد السعة المكافئة (بزيادة المساحة الفعّالة)، بينما التوالي يقلّلها لكنه يسمح بتحمّل فرق جهد أكبر على المجموعة.</p>
+
+      <div class="toggle-group">
+        <button class="toggle-btn active" id="parallelBtn" onclick="setConnMode('parallel')">توازي Parallel</button>
+        <button class="toggle-btn" id="seriesBtn" onclick="setConnMode('series')">توالي Series</button>
+      </div>
+
+      <div class="card">
+        <h3 id="connFormulaTitle">السعة المكافئة — التوازي</h3>
+        <div class="formula" id="connFormula">C_eq = C₁ + C₂ + C₃ + ... + Cₙ</div>
+        <p id="connNote">في التوازي: فرق الجهد على كل متسعة متساوٍ ويساوي فرق جهد المصدر. الشحنة الكلية = مجموع شحنات كل متسعة.</p>
+      </div>
+
+      <div class="card">
+        <h3>🧮 احسب السعة المكافئة لمجموعتك</h3>
+        <p>أدخل حتى 4 قيم سعة (µF) — اترك الحقل فارغاً لتجاهله — وفرق جهد المصدر:</p>
+        <div class="calc-grid">
+          <div class="field"><label>C₁ (µF)</label><input type="number" id="conn_c1" value="4"></div>
+          <div class="field"><label>C₂ (µF)</label><input type="number" id="conn_c2" value="8"></div>
+          <div class="field"><label>C₃ (µF)</label><input type="number" id="conn_c3" value="12"></div>
+          <div class="field"><label>C₄ (µF)</label><input type="number" id="conn_c4" value=""></div>
+        </div>
+        <div class="calc-grid" style="grid-template-columns:1fr;">
+          <div class="field"><label>فرق جهد المصدر ΔV (V)</label><input type="number" id="conn_v" value="12"></div>
+        </div>
+        <button class="btn" onclick="calcConn()">احسب المجموعة</button>
+        <div class="result-box" id="connResult"></div>
+      </div>
+
+      <div class="section-nav">
+        <button class="nav-btn prev-btn">→ السابق</button>
+        <button class="nav-btn next-btn">التالي ←</button>
+      </div>
+    </section>
+
+    <!-- 7-1 -->
+    <section class="section" id="sec-s7">
+      <div class="eyebrow"><span class="dot"></span>7-1 ENERGY DENSITY</div>
+      <h2 class="title">الطاقة المختزنة في المجال الكهربائي للمتسعة</h2>
+      <p class="lead">عند شحن المتسعة، يُنجَز شغل لنقل الشحنات، ويُختزن هذا الشغل بشكل طاقة كامنة كهربائية في المجال بين الصفيحتين.</p>
+
+      <div class="card">
+        <div class="formula-row">
+          <span class="formula">PEₑ = ½ · ΔV · Q</span>
+          <span class="formula">PEₑ = ½ · C · (ΔV)²</span>
+          <span class="formula">PEₑ = ½ · Q² / C</span>
+        </div>
+        <p>تمثّل هذه الطاقة مساحة المثلث تحت منحنى العلاقة البيانية بين الشحنة Q وفرق الجهد ΔV أثناء الشحن.</p>
+      </div>
+
+      <div class="card">
+        <h3>🧮 احسب الطاقة المختزنة والقدرة</h3>
+        <div class="calc-grid">
+          <div class="field"><label>السعة C (µF)</label><input type="number" id="c7_c" value="2"></div>
+          <div class="field"><label>فرق الجهد ΔV (V)</label><input type="number" id="c7_v" value="5000"></div>
+          <div class="field"><label>زمن التفريغ t (µs) — اختياري</label><input type="number" id="c7_t" value="10"></div>
+        </div>
+        <button class="btn" onclick="calcC7()">احسب</button>
+        <div class="result-box" id="c7Result"></div>
+      </div>
+
+      <div class="section-nav">
+        <button class="nav-btn prev-btn">→ السابق</button>
+        <button class="nav-btn next-btn">التالي ←</button>
+      </div>
+    </section>
+
+    <!-- 8-1 -->
+    <section class="section" id="sec-s8">
+      <div class="eyebrow"><span class="dot"></span>8-1 TYPES OF CAPACITORS</div>
+      <h2 class="title">بعض أنواع المتسعات</h2>
+      <p class="lead">تُصنع المتسعات بأشكال وأحجام مختلفة وفقاً لتطبيقاتها، بسعات تتراوح من (1pF) إلى أكثر من (1F).</p>
+
+      <div class="grid-3">
+        <div class="type-card">
+          <span class="tag">WAXED PAPER</span>
+          <h4>متسعة الورق المشمع</h4>
+          <p>تُستعمل في عدد من الأجهزة الكهربائية والألكترونية، تمتاز بصغر حجمها وكبر مساحة صفائحها الملفوفة أسطوانياً.</p>
+        </div>
+        <div class="type-card">
+          <span class="tag">VARIABLE — ROTARY VANE</span>
+          <h4>متغيرة السعة (صفائح دوّارة)</h4>
+          <p>مجموعتان من أنصاف أقراص، إحداهما ثابتة والأخرى دوّارة؛ يتغيّر التداخل بينهما فتتغير المساحة المتقابلة والسعة. تُستعمل في دوائر التنغيم اللاسلكي.</p>
+        </div>
+        <div class="type-card">
+          <span class="tag">ELECTROLYTIC</span>
+          <h4>المتسعة الألكتروليتية</h4>
+          <p>صفيحة ألمنيوم وأخرى عجينة إلكتروليتية، تتحمل فرق جهد عالٍ. توضع علامة قطبية على طرفيها — يجب مراعاة القطبية الصحيحة عند التوصيل.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>جدول مقارنة عملي</h3>
+        <table class="vocab-table">
+          <tr><td>1pF – 10nF</td><td>المايكا — تتحمل 100V–600V</td></tr>
+          <tr><td>10pF – 1µF</td><td>السيراميك — تتحمل 30V–50kV</td></tr>
+          <tr><td>10pF – 2.7µF</td><td>بوليستيرين — تتحمل 100V–600V</td></tr>
+          <tr><td>100nF – 500µF</td><td>تانتالوم — تتحمل 6V–100V</td></tr>
+          <tr><td>100nF – 2F</td><td>الكتروليت (ألمنيوم) — تتحمل 3V–600V</td></tr>
+        </table>
+      </div>
+
+      <div class="section-nav">
+        <button class="nav-btn prev-btn">→ السابق</button>
+        <button class="nav-btn next-btn">التالي ←</button>
+      </div>
+    </section>
+
+    <!-- 9-1 -->
+    <section class="section" id="sec-s9">
+      <div class="eyebrow"><span class="dot"></span>9-1 RC CIRCUIT</div>
+      <h2 class="title">دائرة تيار مستمر تتألف من مقاومة ومتسعة (RC)</h2>
+      <p class="lead">شاهد كيف يتغير تيار الشحن والتفريغ مع الزمن في دائرة RC — اضغط الأزرار لمحاكاة النشاط العملي في الكتاب.</p>
+
+      <div class="card">
+        <h3>محاكاة الشحن والتفريغ</h3>
+        <div style="display:flex; gap:12px; justify-content:center; margin-bottom:14px; flex-wrap:wrap;">
+          <button class="btn" onclick="runRC('charge')">🔌 اشحن المتسعة (المفتاح في الموقع 1)</button>
+          <button class="btn ghost" onclick="runRC('discharge')">🔻 فرّغ المتسعة (المفتاح في الموقع 2)</button>
+        </div>
+        <svg id="rcSvg" width="100%" height="220" viewBox="0 0 500 220" style="max-width:520px; display:block; margin:0 auto;"></svg>
+        <p style="text-align:center; font-family:var(--mono); font-size:13px; color:var(--text-dim);" id="rcStatus">اضغط زراً لبدء المحاكاة</p>
+      </div>
+
+      <div class="card">
+        <p><b style="color:var(--accent)">ملاحظة:</b> يبدأ تيار الشحن أو التفريغ لحظة إغلاق الدائرة بمقدار كبير I = ΔV/R، ثم يتناقص بسرعة إلى الصفر عند اكتمال العملية. تبقى صفيحتا المتسعة مشحونتين ما لم يتم وصلهما ببعض بسلك موصل.</p>
+      </div>
+
+      <div class="section-nav">
+        <button class="nav-btn prev-btn">→ السابق</button>
+        <button class="nav-btn next-btn">التالي ←</button>
+      </div>
+    </section>
+
+    <!-- 10-1 -->
+    <section class="section" id="sec-s10">
+      <div class="eyebrow"><span class="dot"></span>10-1 PRACTICAL APPLICATIONS</div>
+      <h2 class="title">بعض التطبيقات العملية للمتسعة</h2>
+      <p class="lead">تبرز فائدة المتسعة في قدرتها على تخزين مقادير كبيرة من الطاقة الكهربائية، وإمكانية تفريغها بسرعة كبيرة وبكميات هائلة عند الحاجة.</p>
+
+      <div class="app-card">
+        <div class="app-icon">📸</div>
+        <div><h4>الفلاش الوامض في آلة التصوير</h4><p>المتسعة الموضوعة في منظومة المصباح الوامض تُشحن بواسطة البطارية، فتجهز المصباح بطاقة تكفي لتوهجه بصورة مفاجئة بضوء ساطع أثناء تفريغ شحنتها.</p></div>
+      </div>
+      <div class="app-card">
+        <div class="app-icon">🎙️</div>
+        <div><h4>اللاقطة الصوتية (Microphone)</h4><p>إحدى صفيحتيها صلبة ثابتة والأخرى مرنة حرة الحركة. تهتز الصفيحة المرنة بتردد الموجات الصوتية فيتغير البعد بينهما، وبالتالي تتغير السعة، فتتحول الذبذبات الميكانيكية إلى ذبذبات كهربائية.</p></div>
+      </div>
+      <div class="app-card">
+        <div class="app-icon">❤️</div>
+        <div><h4>جهاز تنظيم عمل القلب (Defibrillator)</h4><p>عند اضطراب عمل عضلات القلب، يستعمل الطبيب صدمة كهربائية قوية لتحفيز القلب وإعادة انتظامه؛ تُفرّغ المتسعة المشحونة طاقتها (بين 10J – 360J) في جسم المريض لمدة قصيرة جداً.</p></div>
+      </div>
+      <div class="app-card">
+        <div class="app-icon">⌨️</div>
+        <div><h4>لوحة مفاتيح الحاسوب</h4><p>تحت كل مفتاح متسعة صغيرة؛ عند الضغط يقل البعد بين صفيحتيها فتزداد سعتها، وتتعرف الدائرة الإلكترونية على المفتاح المضغوط من خلال هذا التغير.</p></div>
+      </div>
+      <div class="app-card">
+        <div class="app-icon">📱</div>
+        <div><h4>شاشات اللمس (iPhone وغيرها)</h4><p>عند ملامسة الإصبع للشاشة، تتغير سعة المتسعة في الجزء الملموس، فيكتشف النظام موقع اللمس بدقة.</p></div>
+      </div>
+
+      <div class="section-nav">
+        <button class="nav-btn prev-btn">→ السابق</button>
+        <button class="nav-btn next-btn">إلى الأمثلة المحلولة ←</button>
+      </div>
+    </section>
+
+    <!-- EXAMPLES -->
+    <section class="section" id="sec-examples">
+      <div class="eyebrow"><span class="dot"></span>SOLVED EXAMPLES</div>
+      <h2 class="title">أمثلة محلولة من الفصل</h2>
+      <p class="lead">اقرأ المعطيات وحاول الحل بنفسك أولاً، ثم اضغط لعرض الحل خطوة بخطوة.</p>
+
+      <div id="examplesList"></div>
+
+      <div class="section-nav">
+        <button class="nav-btn prev-btn">→ السابق</button>
+        <button class="nav-btn next-btn">إلى الاختبار ←</button>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section class="section" id="sec-quiz">
+      <div class="eyebrow"><span class="dot"></span>SELF TEST</div>
+      <h2 class="title">اختبر نفسك</h2>
+      <p class="lead">اختر العبارة الصحيحة لكل سؤال، ثم اطّلع على النتيجة الإجمالية في النهاية.</p>
+
+      <div id="quizList"></div>
+      <button class="btn" style="margin-top:10px;" onclick="submitQuiz()">إنهاء الاختبار وعرض النتيجة</button>
+
+      <div class="quiz-summary" id="quizSummary">
+        <div class="score" id="quizScore">0 / 6</div>
+        <p id="quizMsg" style="color:var(--text-dim);">أحسنت! راجع الأخطاء أعلاه إن وجدت.</p>
+      </div>
+
+      <div class="section-nav">
+        <button class="nav-btn prev-btn">→ السابق</button>
+        <button class="nav-btn" onclick="goToSection('intro')">↺ العودة إلى البداية</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+/* ============ SECTION ORDER & NAVIGATION ============ */
+const SECTION_ORDER = ['intro','s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','examples','quiz'];
+const SECTION_TITLES = {
+  intro:'ابدأ الدرس الأول ←', s1:'التالي ←', s2:'التالي ←', s3:'التالي ←', s4:'التالي ←',
+  s5:'التالي ←', s6:'التالي ←', s7:'التالي ←', s8:'التالي ←', s9:'التالي ←',
+  s10:'إلى الأمثلة المحلولة ←', examples:'إلى الاختبار ←', quiz:''
+};
+let visited = new Set(['intro']);
+
+function goToSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('.toc-btn').forEach(b=>b.classList.remove('active'));
+  const btn = document.querySelector(`.toc-btn[data-section="${id}"]`);
+  if(btn) btn.classList.add('active');
+  visited.add(id);
+  updateProgress();
+  window.scrollTo({top:0, behavior:'smooth'});
+  updateNavButtons(id);
+}
+
+function updateProgress(){
+  const pct = Math.round((visited.size / SECTION_ORDER.length) * 100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressPct').textContent = pct+'%';
+  document.querySelectorAll('.toc-btn').forEach(b=>{
+    const id = b.getAttribute('data-section');
+    if(visited.has(id)) b.classList.add('done'); else b.classList.remove('done');
+  });
+}
+
+function updateNavButtons(id){
+  const idx = SECTION_ORDER.indexOf(id);
+  document.querySelectorAll('.prev-btn').forEach(b=> b.disabled = idx<=0);
+  document.querySelectorAll('.next-btn').forEach(b=>{
+    b.disabled = idx>=SECTION_ORDER.length-1;
+  });
+  const introPrev = document.getElementById('btnPrev');
+  const introNext = document.getElementById('btnNext');
+  if(introPrev) introPrev.disabled = idx<=0;
+}
+
+document.addEventListener('click', (e)=>{
+  if(e.target.classList.contains('next-btn') || e.target.id==='btnNext'){
+    const current = SECTION_ORDER.find(id=>{
+      const el = document.getElementById('sec-'+id);
+      return el && el.classList.contains('active');
+    });
+    const idx = SECTION_ORDER.indexOf(current);
+    if(idx < SECTION_ORDER.length-1) goToSection(SECTION_ORDER[idx+1]);
+  }
+  if(e.target.classList.contains('prev-btn') || e.target.id==='btnPrev'){
+    const current = SECTION_ORDER.find(id=>{
+      const el = document.getElementById('sec-'+id);
+      return el && el.classList.contains('active');
+    });
+    const idx = SECTION_ORDER.indexOf(current);
+    if(idx > 0) goToSection(SECTION_ORDER[idx-1]);
+  }
+});
+
+document.querySelectorAll('.toc-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=> goToSection(btn.getAttribute('data-section')));
+});
+
+/* ============ SVG HELPERS ============ */
+const SVGNS = "http://www.w3.org/2000/svg";
+function svgEl(tag, attrs){
+  const el = document.createElementNS(SVGNS, tag);
+  for(const k in attrs) el.setAttribute(k, attrs[k]);
+  return el;
+}
+
+/* ---- Hero animated capacitor (charging loop) ---- */
+function drawHeroCap(){
+  const svg = document.getElementById('heroCapSvg');
+  svg.innerHTML='';
+  const cx=180, plateW=14, plateH=140, gap=90, topY=40;
+  // wires
+  svg.appendChild(svgEl('line',{x1:20,y1:110,x2:cx-gap/2,y2:110,stroke:'#3a4266','stroke-width':2}));
+  svg.appendChild(svgEl('line',{x1:cx+gap/2,y1:110,x2:340,y2:110,stroke:'#3a4266','stroke-width':2}));
+  // plates
+  const plusPlate = svgEl('rect',{x:cx-gap/2-plateW/2,y:topY,width:plateW,height:plateH,rx:4,fill:'url(#gradPlus)'});
+  const minusPlate = svgEl('rect',{x:cx+gap/2-plateW/2,y:topY,width:plateW,height:plateH,rx:4,fill:'url(#gradMinus)'});
+  const defs = svgEl('defs',{});
+  const g1 = svgEl('linearGradient',{id:'gradPlus',x1:'0',y1:'0',x2:'0',y2:'1'});
+  g1.appendChild(svgEl('stop',{offset:'0%','stop-color':'#ffcf5c'}));
+  g1.appendChild(svgEl('stop',{offset:'100%','stop-color':'#e0a83a'}));
+  const g2 = svgEl('linearGradient',{id:'gradMinus',x1:'0',y1:'0',x2:'0',y2:'1'});
+  g2.appendChild(svgEl('stop',{offset:'0%','stop-color':'#5cc8ff'}));
+  g2.appendChild(svgEl('stop',{offset:'100%','stop-color':'#3a9fd6'}));
+  defs.appendChild(g1); defs.appendChild(g2);
+  svg.appendChild(defs);
+  svg.appendChild(plusPlate); svg.appendChild(minusPlate);
+  // field lines + charge symbols
+  const fieldGroup = svgEl('g',{opacity:'0.85'});
+  for(let i=0;i<6;i++){
+    const y = topY+14+i*22;
+    fieldGroup.appendChild(svgEl('line',{x1:cx-gap/2+plateW/2+4,y1:y,x2:cx+gap/2-plateW/2-4,y2:y,stroke:'#7c8cff','stroke-width':1.4,'marker-end':'url(#arrow)'}));
+    const plus = svgEl('text',{x:cx-gap/2-plateW/2-16,y:y+4,'font-family':'JetBrains Mono','font-size':11,fill:'#ffcf5c','text-anchor':'middle'}); plus.textContent='+';
+    const minus = svgEl('text',{x:cx+gap/2+plateW/2+16,y:y+4,'font-family':'JetBrains Mono','font-size':11,fill:'#5cc8ff','text-anchor':'middle'}); minus.textContent='−';
+    fieldGroup.appendChild(plus); fieldGroup.appendChild(minus);
+  }
+  const marker = svgEl('marker',{id:'arrow',markerWidth:8,markerHeight:8,refX:6,refY:3,orient:'auto'});
+  marker.appendChild(svgEl('path',{d:'M0,0 L6,3 L0,6 Z',fill:'#7c8cff'}));
+  defs.appendChild(marker);
+  svg.appendChild(fieldGroup);
+  // battery symbol
+  svg.appendChild(svgEl('line',{x1:150,y1:170,x2:150,y2:190,stroke:'#3a4266','stroke-width':2}));
+  svg.appendChild(svgEl('line',{x1:210,y1:170,x2:210,y2:190,stroke:'#3a4266','stroke-width':2}));
+  svg.appendChild(svgEl('line',{x1:20,y1:110,x2:20,y2:190,stroke:'#3a4266','stroke-width':2}));
+  svg.appendChild(svgEl('line',{x1:340,y1:110,x2:340,y2:190,stroke:'#3a4266','stroke-width':2}));
+  svg.appendChild(svgEl('line',{x1:20,y1:190,x2:150,y2:190,stroke:'#3a4266','stroke-width':2}));
+  svg.appendChild(svgEl('line',{x1:210,y1:190,x2:340,y2:190,stroke:'#3a4266','stroke-width':2}));
+  svg.appendChild(svgEl('line',{x1:165,y1:170,x2:165,y2:190,stroke:'#eef1f8','stroke-width':4}));
+  svg.appendChild(svgEl('line',{x1:195,y1:165,x2:195,y2:195,stroke:'#eef1f8','stroke-width':2}));
+  const label = svgEl('text',{x:180,y:210,'font-family':'JetBrains Mono','font-size':10,fill:'#5d6889','text-anchor':'middle'}); label.textContent='بطارية';
+  svg.appendChild(label);
+}
+
+/* ---- basic capacitor (section 1-1) ---- */
+function drawBasicCap(){
+  const svg = document.getElementById('basicCapSvg');
+  if(!svg) return; svg.innerHTML='';
+  const y=30,h=120;
+  svg.appendChild(svgEl('rect',{x:60,y:y,width:16,height:h,rx:3,fill:'#ffcf5c'}));
+  svg.appendChild(svgEl('rect',{x:110,y:y,width:100,height:h,fill:'rgba(255,255,255,0.03)',stroke:'rgba(255,255,255,0.15)','stroke-dasharray':'4 3'}));
+  svg.appendChild(svgEl('rect',{x:244,y:y,width:16,height:h,rx:3,fill:'#5cc8ff'}));
+  const t1=svgEl('text',{x:68,y:y-10,'font-family':'JetBrains Mono','font-size':13,fill:'#ffcf5c','text-anchor':'middle'}); t1.textContent='+Q';
+  const t2=svgEl('text',{x:252,y:y-10,'font-family':'JetBrains Mono','font-size':13,fill:'#5cc8ff','text-anchor':'middle'}); t2.textContent='−Q';
+  const t3=svgEl('text',{x:160,y:y+h+22,'font-family':'Almarai','font-size':12,fill:'#93a0c2','text-anchor':'middle'}); t3.textContent='عازل (هواء / فراغ / مادة عازلة)';
+  svg.appendChild(t1); svg.appendChild(t2); svg.appendChild(t3);
+}
+
+/* ---- Field capacitor (2-1) w/ hover ---- */
+function drawFieldCap(){
+  const svg = document.getElementById('fieldCapSvg');
+  if(!svg) return; svg.innerHTML='';
+  const y=30,h=150,x1=110,x2=250;
+  svg.appendChild(svgEl('rect',{x:x1,y:y,width:14,height:h,rx:3,fill:'#ffcf5c'}));
+  svg.appendChild(svgEl('rect',{x:x2,y:y,width:14,height:h,rx:3,fill:'#5cc8ff'}));
+  const g = svgEl('g',{id:'fieldLines',opacity:'0.5', style:'transition:opacity .3s'});
+  for(let i=0;i<7;i++){
+    const yy = y+14+i*20;
+    g.appendChild(svgEl('line',{x1:x1+18,y1:yy,x2:x2-4,y2:yy,stroke:'#7c8cff','stroke-width':1.6,'marker-end':'url(#arrow2)'}));
+  }
+  const defs=svgEl('defs',{});
+  const marker = svgEl('marker',{id:'arrow2',markerWidth:8,markerHeight:8,refX:6,refY:3,orient:'auto'});
+  marker.appendChild(svgEl('path',{d:'M0,0 L6,3 L0,6 Z',fill:'#7c8cff'}));
+  defs.appendChild(marker); svg.appendChild(defs);
+  svg.appendChild(g);
+  const eLabel = svgEl('text',{x:(x1+x2)/2+7,y:y-12,'font-family':'JetBrains Mono','font-size':13,fill:'#7c8cff','text-anchor':'middle'}); eLabel.textContent='E';
+  svg.appendChild(eLabel);
+  svg.addEventListener('mousemove', ()=>{ g.style.opacity='1'; });
+  svg.addEventListener('mouseleave', ()=>{ g.style.opacity='0.5'; });
+}
+
+/* ---- gauge (voltmeter needle) ---- */
+function drawGauge(svgId, value, maxValue, label){
+  const svg = document.getElementById(svgId);
+  if(!svg) return;
+  svg.innerHTML='';
+  const cx=70, cy=75, r=55;
+  svg.appendChild(svgEl('path',{d:`M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx+r} ${cy}`, fill:'none', stroke:'rgba(255,255,255,0.12)', 'stroke-width':6}));
+  const frac = Math.max(0, Math.min(1, value/maxValue));
+  const angle = Math.PI - frac*Math.PI;
+  const nx = cx + (r-8)*Math.cos(angle);
+  const ny = cy - (r-8)*Math.sin(angle);
+  svg.appendChild(svgEl('line',{x1:cx,y1:cy,x2:nx,y2:ny,stroke:'#7c8cff','stroke-width':2.5,'stroke-linecap':'round'}));
+  svg.appendChild(svgEl('circle',{cx:cx,cy:cy,r:4,fill:'#7c8cff'}));
+}
+
+/* ---- Dielectric visual (4-1) ---- */
+let dielType='polar', fieldOn=false;
+function setDielectric(type){
+  dielType=type;
+  document.getElementById('polarBtn').classList.toggle('active', type==='polar');
+  document.getElementById('nonpolarBtn').classList.toggle('active', type==='nonpolar');
+  document.getElementById('dielTitle').textContent = type==='polar' ? 'النوع الأول: العوازل القطبية' : 'النوع الثاني: العوازل غير القطبية';
+  document.getElementById('dielDesc').textContent = type==='polar'
+    ? 'تمتلك جزيئاته عزوماً كهربائية ثنائية القطب دائمية (مثل جزيئة الماء التي تسمى دايبول). في غياب المجال الخارجي تكون اتجاهات هذه الدايبولات عشوائية.'
+    : 'التباعد بين مركزي شحنتيه الموجبة والسالبة غير ثابت (مثل الزجاج والبولي أثيلين)، إذ يكتسب الجزيء عزماً ثنائي القطب مؤقتاً فقط بوجود المجال الخارجي، بطريقة الحث الكهربائي.';
+  drawDielectric();
+}
+function toggleField(){ fieldOn=!fieldOn; drawDielectric(); }
+function drawDielectric(){
+  const svg = document.getElementById('dielSvg');
+  if(!svg) return; svg.innerHTML='';
+  const y=20,h=140,x1=40,x2=270;
+  svg.appendChild(svgEl('rect',{x:x1,y:y,width:12,height:h,fill: fieldOn?'#ffcf5c':'#5d6889'}));
+  svg.appendChild(svgEl('rect',{x:x2,y:y,width:12,height:h,fill: fieldOn?'#5cc8ff':'#5d6889'}));
+  const rows=4, cols=6;
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const px = x1+30+c*36;
+      const py = y+20+r*32;
+      const dipole = svgEl('g',{});
+      let rot;
+      if(fieldOn){ rot = 0; } else { rot = (Math.sin(r*7+c*13)*40); }
+      dipole.setAttribute('transform', `translate(${px},${py}) rotate(${rot})`);
+      dipole.appendChild(svgEl('line',{x1:-9,y1:0,x2:9,y2:0,stroke:'#93a0c2','stroke-width':1.4}));
+      dipole.appendChild(svgEl('circle',{cx:-9,cy:0,r:4,fill: dielType==='polar' ? '#5cc8ff':'#5d6889', opacity: dielType==='polar'?1:(fieldOn?1:0.4)}));
+      dipole.appendChild(svgEl('circle',{cx:9,cy:0,r:4,fill: dielType==='polar' ? '#ffcf5c':'#5d6889', opacity: dielType==='polar'?1:(fieldOn?1:0.4)}));
+      svg.appendChild(dipole);
+    }
+  }
+  const stateLabel = svgEl('text',{x:155,y:y+h+18,'font-family':'JetBrains Mono','font-size':11,fill: fieldOn? '#3ddba0':'#5d6889','text-anchor':'middle'});
+  stateLabel.textContent = fieldOn ? 'المجال مفعّل — الدايبولات مصطفة' : 'بلا مجال خارجي — اتجاهات عشوائية';
+  svg.appendChild(stateLabel);
+}
+
+/* ---- factors lab (5-1) ---- */
+function updateFactors(){
+  const areaCm2 = +document.getElementById('areaSlider').value;
+  const dMm = +document.getElementById('distSlider').value/10;
+  const kVal = +document.getElementById('kSlider').value/10;
+  document.getElementById('areaVal').textContent = areaCm2;
+  document.getElementById('distVal').textContent = dMm.toFixed(1);
+  document.getElementById('kVal').textContent = kVal.toFixed(1) + (kVal<=1.05?' (هواء)':'');
+
+  const eps0 = 8.85e-12;
+  const A = areaCm2*1e-4; // m^2
+  const d = dMm*1e-3; // m
+  const C = kVal*eps0*A/d; // Farad
+  const Cpf = C*1e12;
+  document.getElementById('factorC').textContent = `C = ${Cpf.toFixed(2)} pF`;
+
+  drawFactorSvg(areaCm2, dMm);
+}
+function drawFactorSvg(areaCm2, dMm){
+  const svg = document.getElementById('factorSvg');
+  if(!svg) return; svg.innerHTML='';
+  const plateH = 30 + (areaCm2/200)*110;
+  const gap = 20 + (dMm/10)*90;
+  const cx=170;
+  const y = 100-plateH/2;
+  svg.appendChild(svgEl('rect',{x:cx-gap/2-10,y:y,width:10,height:plateH,fill:'#ffcf5c',rx:2}));
+  svg.appendChild(svgEl('rect',{x:cx+gap/2,y:y,width:10,height:plateH,fill:'#5cc8ff',rx:2}));
+  const lines = Math.max(3, Math.round(plateH/22));
+  for(let i=0;i<lines;i++){
+    const yy = y+10+ i*((plateH-20)/(lines-1||1));
+    svg.appendChild(svgEl('line',{x1:cx-gap/2,y1:yy,x2:cx+gap/2,y2:yy,stroke:'#7c8cff','stroke-width':1.3,opacity:0.7}));
+  }
+  const dLabel = svgEl('text',{x:cx,y:190,'font-family':'JetBrains Mono','font-size':11,fill:'#93a0c2','text-anchor':'middle'}); dLabel.textContent='d';
+  svg.appendChild(dLabel);
+}
+
+/* ---- calculators ---- */
+function calcC3(){
+  const q = +document.getElementById('c3_q').value; // µC
+  const v = +document.getElementById('c3_v').value; // V
+  if(!v){ return; }
+  const c = q/v; // µF
+  const box = document.getElementById('c3Result');
+  box.classList.add('show');
+  box.innerHTML = `
+    <div class="row"><span>السعة C = Q / ΔV</span><span>${c.toFixed(3)} µF</span></div>
+    <div class="row"><span>بوحدة الفاراد</span><span>${(c*1e-6).toExponential(3)} F</span></div>
+  `;
+  document.getElementById('c3GaugeVal').textContent = v;
+  drawGauge('c3Gauge', v, Math.max(v*1.2, 20));
+}
+
+let connMode='parallel';
+function setConnMode(mode){
+  connMode=mode;
+  document.getElementById('parallelBtn').classList.toggle('active', mode==='parallel');
+  document.getElementById('seriesBtn').classList.toggle('active', mode==='series');
+  document.getElementById('connFormulaTitle').textContent = mode==='parallel' ? 'السعة المكافئة — التوازي' : 'السعة المكافئة — التوالي';
+  document.getElementById('connFormula').textContent = mode==='parallel' ? 'C_eq = C₁ + C₂ + C₃ + ... + Cₙ' : '1/C_eq = 1/C₁ + 1/C₂ + 1/C₃ + ... + 1/Cₙ';
+  document.getElementById('connNote').textContent = mode==='parallel'
+    ? 'في التوازي: فرق الجهد على كل متسعة متساوٍ ويساوي فرق جهد المصدر. الشحنة الكلية = مجموع شحنات كل متسعة.'
+    : 'في التوالي: الشحنة على كل متسعة متساوية وتساوي الشحنة الكلية. فرق الجهد الكلي = مجموع فروق الجهد على كل متسعة.';
+}
+function calcConn(){
+  const ids=['conn_c1','conn_c2','conn_c3','conn_c4'];
+  const values = ids.map(id=>{
+    const v = document.getElementById(id).value;
+    return v==='' ? null : +v;
+  }).filter(v=>v!==null && !isNaN(v) && v>0);
+  const V = +document.getElementById('conn_v').value;
+  const box = document.getElementById('connResult');
+  if(values.length===0){ box.classList.remove('show'); return; }
+
+  let Ceq;
+  if(connMode==='parallel'){
+    Ceq = values.reduce((a,b)=>a+b,0);
+  } else {
+    Ceq = 1/values.reduce((a,b)=>a+1/b,0);
+  }
+  const Qtotal = Ceq*V;
+  box.classList.add('show');
+  let rows = `<div class="row"><span>عدد المتسعات</span><span>${values.length}</span></div>
+    <div class="row"><span>السعة المكافئة C_eq</span><span>${Ceq.toFixed(3)} µF</span></div>
+    <div class="row"><span>الشحنة الكلية Q</span><span>${Qtotal.toFixed(2)} µC</span></div>`;
+
+  if(connMode==='parallel'){
+    values.forEach((c,i)=>{
+      rows += `<div class="row"><span>Q${i+1} = C${i+1}×ΔV</span><span>${(c*V).toFixed(2)} µC</span></div>`;
+    });
+  } else {
+    values.forEach((c,i)=>{
+      rows += `<div class="row"><span>ΔV${i+1} = Q/C${i+1}</span><span>${(Qtotal/c).toFixed(2)} V</span></div>`;
+    });
+  }
+  box.innerHTML = rows;
+}
+
+function calcC7(){
+  const C = +document.getElementById('c7_c').value; // µF
+  const V = +document.getElementById('c7_v').value; // V
+  const t = +document.getElementById('c7_t').value; // µs
+  const Cf = C*1e-6;
+  const PE = 0.5*Cf*V*V; // Joules
+  const box = document.getElementById('c7Result');
+  box.classList.add('show');
+  let rows = `<div class="row"><span>الطاقة PEₑ = ½C(ΔV)²</span><span>${PE.toFixed(4)} J</span></div>`;
+  if(t>0){
+    const P = PE/(t*1e-6);
+    rows += `<div class="row"><span>القدرة P = PEₑ / t</span><span>${P.toExponential(3)} Watt</span></div>`;
+  }
+  box.innerHTML = rows;
+}
+
+/* ---- RC circuit animation (9-1) ---- */
+let rcAnimId=null;
+function drawRCBase(){
+  const svg = document.getElementById('rcSvg');
+  if(!svg) return; svg.innerHTML='';
+  // capacitor plates
+  svg.appendChild(svgEl('rect',{id:'rcPlateP',x:230,y:60,width:12,height:60,fill:'#ffcf5c'}));
+  svg.appendChild(svgEl('rect',{id:'rcPlateN',x:258,y:60,width:12,height:60,fill:'#5cc8ff'}));
+  svg.appendChild(svgEl('text',{x:236,y:135,'font-family':'JetBrains Mono','font-size':10,fill:'#93a0c2','text-anchor':'middle'})).textContent='';
+  // wires
+  svg.appendChild(svgEl('path',{d:'M100,90 L230,90', stroke:'#3a4266','stroke-width':2, fill:'none'}));
+  svg.appendChild(svgEl('path',{d:'M270,90 L400,90', stroke:'#3a4266','stroke-width':2, fill:'none'}));
+  // resistor
+  svg.appendChild(svgEl('rect',{x:330,y:80,width:50,height:20,fill:'none',stroke:'#93a0c2','stroke-width':2}));
+  svg.appendChild(svgEl('text',{x:355,y:65,'font-family':'JetBrains Mono','font-size':11,fill:'#93a0c2','text-anchor':'middle'})).textContent='R';
+  // battery
+  svg.appendChild(svgEl('line',{x1:100,y1:90,x2:100,y2:160,stroke:'#3a4266','stroke-width':2}));
+  svg.appendChild(svgEl('line',{x1:400,y1:90,x2:400,y2:160,stroke:'#3a4266','stroke-width':2}));
+  svg.appendChild(svgEl('line',{x1:100,y1:160,x2:400,y2:160,stroke:'#3a4266','stroke-width':2}));
+  svg.appendChild(svgEl('line',{x1:130,y1:150,x2:130,y2:170,stroke:'#eef1f8','stroke-width':4}));
+  svg.appendChild(svgEl('line',{x1:150,y1:145,x2:150,y2:175,stroke:'#eef1f8','stroke-width':2}));
+  svg.appendChild(svgEl('text',{x:140,y:190,'font-family':'JetBrains Mono','font-size':10,fill:'#5d6889','text-anchor':'middle'})).textContent='بطارية';
+  // meter needle graph area
+  const chartG = svgEl('g',{id:'rcChart'});
+  svg.appendChild(chartG);
+  svg.appendChild(svgEl('line',{x1:60,y1:210,x2:460,y2:210,stroke:'rgba(255,255,255,0.1)','stroke-width':1}));
+  svg.appendChild(svgEl('text',{x:60,y:40,'font-family':'JetBrains Mono','font-size':11,fill:'#7c8cff'})).textContent='تيار الشحن/التفريغ مقابل الزمن:';
+  return chartG;
+}
+function runRC(mode){
+  if(rcAnimId) cancelAnimationFrame(rcAnimId);
+  const chartG = drawRCBase();
+  const statusEl = document.getElementById('rcStatus');
+  statusEl.textContent = mode==='charge' ? 'جارٍ الشحن... لاحظ التيار يبدأ كبيراً ثم يهبط إلى الصفر' : 'جارٍ التفريغ... لاحظ التيار يبدأ كبيراً ثم يهبط إلى الصفر';
+  const path = svgEl('path',{fill:'none',stroke:'#3ddba0','stroke-width':2});
+  chartG.appendChild(path);
+  const dot = svgEl('circle',{r:4, fill:'#3ddba0'});
+  chartG.appendChild(dot);
+  let pts=[];
+  const start = performance.now();
+  const duration = 2200;
+  function frame(now){
+    const t = Math.min(1, (now-start)/duration);
+    const I = Math.exp(-5*t); // normalized current decay
+    const x = 60 + t*400;
+    const y = 210 - I*160;
+    pts.push(`${x},${y}`);
+    path.setAttribute('d', 'M'+pts.join(' L'));
+    dot.setAttribute('cx', x); dot.setAttribute('cy', y);
+    // plate charge visual opacity
+    const plateP = document.getElementById('rcPlateP');
+    const plateN = document.getElementById('rcPlateN');
+    if(plateP && plateN){
+      const chargeLevel = mode==='charge' ? t : (1-t);
+      plateP.setAttribute('opacity', 0.25+0.75*chargeLevel);
+      plateN.setAttribute('opacity', 0.25+0.75*chargeLevel);
+    }
+    if(t<1){ rcAnimId = requestAnimationFrame(frame); }
+    else{
+      statusEl.textContent = mode==='charge' ? '✅ اكتمل الشحن — فرق الجهد بين الصفيحتين ساوى فرق جهد البطارية' : '✅ اكتمل التفريغ — تعادلت شحنتا الصفيحتين';
+    }
+  }
+  rcAnimId = requestAnimationFrame(frame);
+}
+
+/* ============ EXAMPLES ============ */
+const EXAMPLES = [
+  {
+    num:1,
+    title:'متسعة 10pF شُحنت بفرق جهد 12V، ثم أُدخل عازل ثابته k=6',
+    steps:[
+      'المطلوب: 1) الشحنة المختزنة  2) السعة بوجود العازل  3) فرق الجهد بعد إدخال العازل',
+      'Q = C × ΔV = 10×10⁻¹² × 12 = 120×10⁻¹² coulomb',
+      'C_k = k×C = 6 × 10×10⁻¹² = 60×10⁻¹² F',
+      'بما أن المتسعة فُصلت عن البطارية، تبقى الشحنة ثابتة: Q_k = Q = 120×10⁻¹² C',
+      'ΔV_k = Q / C_k = 120×10⁻¹² / 60×10⁻¹² = 2 V   (أو: ΔV_k = ΔV/k = 12/6 = 2V)'
+    ]
+  },
+  {
+    num:2,
+    title:'متسعة صفيحتين متوازيتين، مربع ضلعه 10cm، البعد بينهما 0.5cm',
+    steps:[
+      'المطلوب: 1) السعة  2) الشحنة عند فرق جهد 10V',
+      'A = (0.1)² = 1×10⁻² m²   ,   d = 0.5cm = 5×10⁻³ m',
+      'C = ε₀A/d = 8.85×10⁻¹² × (1×10⁻² / 5×10⁻³) = 17.7×10⁻¹² F = 17.7 pF',
+      'Q = C×ΔV = 17.7×10⁻¹² × 10 = 177×10⁻¹² coulomb'
+    ]
+  },
+  {
+    num:3,
+    title:'أربع متسعات (4، 8، 12، 6 µF) مربوطة على التوازي مع بطارية 12V',
+    steps:[
+      'المطلوب: 1) السعة المكافئة  2) شحنة كل متسعة  3) الشحنة الكلية',
+      'C_eq = C₁+C₂+C₃+C₄ = 4+8+12+6 = 30 µF',
+      'في التوازي: ΔV على كل متسعة = 12V',
+      'Q₁=4×12=48µC ,  Q₂=8×12=96µC ,  Q₃=12×12=144µC ,  Q₄=6×12=72µC',
+      'Q_total = C_eq×ΔV = 30×12 = 360 µC  (=مجموع الشحنات جبرياً)'
+    ]
+  },
+  {
+    num:4,
+    title:'ثلاث متسعات (6، 9، 18 µF) مربوطة على التوالي، شُحنت المجموعة بشحنة كلية 300µC',
+    steps:[
+      'المطلوب: 1) السعة المكافئة  2) شحنة كل متسعة  3) فرق الجهد الكلي  4) فرق جهد كل متسعة',
+      '1/C_eq = 1/6 + 1/9 + 1/18 = 6/18 = 1/3  ⇒  C_eq = 3 µF',
+      'في التوالي: الشحنة على كل متسعة = الشحنة الكلية = 300 µC',
+      'ΔV_total = Q/C_eq = 300/3 = 100 V',
+      'ΔV₁=300/6=50V , ΔV₂=300/9≈33.3V , ΔV₃=300/18≈16.7V'
+    ]
+  },
+  {
+    num:6,
+    title:'متسعة سعتها 2µF شُحنت بفرق جهد 5000V',
+    steps:[
+      'المطلوب: 1) الطاقة المختزنة  2) القدرة عند تفريغها بزمن 10µs',
+      'PEₑ = ½C(ΔV)² = ½ × 2×10⁻⁶ × (5000)² = 25 J',
+      'P = PEₑ/t = 25 / (10×10⁻⁶) = 2.5×10⁶ Watt',
+      '💡 هذه الطاقة تكافئ سقوط جسم كتلته 1kg من ارتفاع 2.5m تقريباً (PE=mgh)'
+    ]
+  }
+];
+
+function buildExamples(){
+  const container = document.getElementById('examplesList');
+  container.innerHTML = EXAMPLES.map((ex,i)=>`
+    <div class="example" id="ex-${i}">
+      <div class="example-head" onclick="toggleExample(${i})">
+        <div><span class="ex-num">مثال ${ex.num}</span><h4>${ex.title}</h4></div>
+        <span class="example-toggle-icon">+</span>
+      </div>
+      <div class="example-body"><div class="example-body-inner">
+        ${ex.steps.map(s=>`<div class="step">${s}</div>`).join('')}
+      </div></div>
+    </div>
+  `).join('');
+}
+function toggleExample(i){
+  document.getElementById('ex-'+i).classList.toggle('open');
+}
+
+/* ============ QUIZ ============ */
+const QUIZ = [
+  { q:'متسعة صفيحتين متوازيتين، مشحونة ومفصولة عن البطارية، أُدخلت مادة عازلة ثابت عزلها k=2 ملأت الحيز بينهما. مقدار المجال الكهربائي Eₖ يساوي:',
+    opts:['E/2','E','2E','E/4'], correct:0 },
+  { q:'وحدة الفاراد لقياس سعة المتسعة لا تكافئ إحدى الوحدات الآتية:',
+    opts:['Coulomb²/J','Coulomb/V','Coulomb×V²','J/V²'], correct:2 },
+  { q:'متسعة سعتها C، قُرّبت صفيحتاها حتى صار البعد بينهما (1/3) ما كان عليه. سعتها الجديدة تساوي:',
+    opts:['(1/3)C','(1/9)C','3C','9C'], correct:2 },
+  { q:'متسعة سعتها 20µF تختزن طاقة مقدارها 2.5J في مجالها الكهربائي. فرق الجهد المستمر اللازم يساوي:',
+    opts:['150V','500V','350V','250kV'], correct:1 },
+  { q:'متسعة صفيحتين متوازيتين سعتها 50µF (الهواء عازل)، عند إدخال مادة عازلة ازدادت سعتها بمقدار 60µF. ثابت عزل تلك المادة يساوي:',
+    opts:['2.2','1.1','0.55','0.45'], correct:0 },
+  { q:'تحتاج متسعة سعتها 10µF ولديك متسعات متماثلة سعة كل منها 15µF. أفضل طريقة للحصول عليها:',
+    opts:['4 متسعات على التوالي','6 متسعات على التوازي','3 متسعات: اثنتان توالي ثم توازي مع الثالثة','3 متسعات: اثنتان توازي ثم توالي مع الثالثة'], correct:3 },
+];
+
+function buildQuiz(){
+  const container = document.getElementById('quizList');
+  container.innerHTML = QUIZ.map((item,i)=>`
+    <div class="quiz-q" id="quiz-${i}">
+      <div class="q-text"><b>${i+1}.</b> ${item.q}</div>
+      <div class="quiz-options">
+        ${item.opts.map((opt,j)=>`
+          <label class="quiz-opt" id="qopt-${i}-${j}">
+            <input type="radio" name="q${i}" value="${j}"> ${opt}
+          </label>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function submitQuiz(){
+  let score=0;
+  QUIZ.forEach((item,i)=>{
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    const selVal = selected ? +selected.value : -1;
+    for(let j=0;j<item.opts.length;j++){
+      const el = document.getElementById(`qopt-${i}-${j}`);
+      el.classList.remove('correct','wrong');
+      if(j===item.correct) el.classList.add('correct');
+      else if(j===selVal) el.classList.add('wrong');
+    }
+    if(selVal===item.correct) score++;
+  });
+  const summary = document.getElementById('quizSummary');
+  summary.classList.add('show');
+  document.getElementById('quizScore').textContent = `${score} / ${QUIZ.length}`;
+  const msg = document.getElementById('quizMsg');
+  if(score===QUIZ.length) msg.textContent='ممتاز! إجابات كاملة وصحيحة 🎉';
+  else if(score>=QUIZ.length/2) msg.textContent='جيد! راجع الأسئلة المظللة باللون الأحمر.';
+  else msg.textContent='راجع الدروس المرتبطة بالأسئلة الخاطئة ثم أعد المحاولة.';
+  summary.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+/* ============ INIT ============ */
+window.addEventListener('DOMContentLoaded', ()=>{
+  drawHeroCap();
+  drawBasicCap();
+  drawFieldCap();
+  drawDielectric();
+  updateFactors();
+  drawRCBase();
+  buildExamples();
+  buildQuiz();
+  updateNavButtons('intro');
+  updateProgress();
+});
+
+</script>
+</body>
+</html>
