@@ -4,539 +4,800 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>حلول امتحان الرياضيات ٢٠٢٦</title>
-    
-    <!-- MathJax Configuration -->
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']]
-            },
-            svg: { fontCache: 'global' }
-        };
-    </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
 
     <style>
-        :root { --primary: #2c3e50; --accent: #2980b9; --bg: #f4f6f7; --success: #27ae60; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; color: #333; }
-        h1 { text-align: center; color: var(--primary); margin-bottom: 40px; }
-        
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .card { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.2s; border-right: 5px solid var(--accent); display: flex; flex-direction: column; justify-content: space-between; min-height: 180px; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .q-header { font-weight: bold; color: var(--accent); margin-bottom: 15px; font-size: 0.9rem; }
-        .q-body { font-size: 1.1rem; line-height: 1.6; flex-grow: 1; }
-        .hint { margin-top: 20px; font-size: 0.85rem; color: #7f8c8d; text-align: left; }
+        * {
+            box-sizing: border-box;
+        }
 
-        .overlay { position: fixed; top: 0; right: 0; width: 100%; height: 100%; background: white; z-index: 2000; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); overflow-y: auto; padding: 40px; box-sizing: border-box; }
-        .overlay.active { transform: translateX(0); }
-        .close-btn { position: fixed; top: 20px; left: 20px; background: #e74c3c; color: white; border: none; padding: 12px 30px; border-radius: 30px; cursor: pointer; font-size: 1rem; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 2001; }
-        
-        .answer-container { max-width: 900px; margin: 0 auto; padding-top: 20px; }
-        .step { background: #f8f9fa; border-right: 4px solid var(--accent); padding: 20px; margin-bottom: 25px; border-radius: 8px; line-height: 1.8; }
-        .final-result { background: #e8f8f5; border: 2px solid var(--success); color: var(--success); padding: 20px; border-radius: 8px; font-weight: bold; font-size: 1.3rem; text-align: center; margin-top: 30px; }
-        .diagram-box { text-align: center; margin: 30px 0; padding: 20px; background: #fff; border: 1px dashed #bdc3c7; border-radius: 8px; }
-        .diagram-caption { font-size: 0.9rem; color: #7f8c8d; margin-top: 10px; }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+            color: #2c3e50;
+        }
 
-        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .overlay { padding: 20px; } }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* Grid for Question Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-right: 4px solid #2980b9;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .q-title {
+            font-weight: bold;
+            color: #2980b9;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .q-text {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .click-hint {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            text-align: right;
+        }
+
+        /* Full Page Answer Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 1000;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .overlay.active {
+            transform: translateX(0);
+        }
+
+        .close-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1001;
+        }
+
+        .answer-content {
+            padding: 70px 20px 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Answer page title */
+        .answer-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #2c3e50;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+        }
+
+        /* Question text block at top of answer */
+        .answer-question {
+            background: #eef2f3;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Sub-question separator */
+        .sub-heading {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #2980b9;
+            margin: 28px 0 10px 0;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #d0dde6;
+            direction: ltr;
+            text-align: left;
+        }
+
+        /* The first sub-heading needs less top margin */
+        .sub-heading:first-of-type {
+            margin-top: 10px;
+        }
+
+        /* Result line */
+        .result {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.05rem;
+            margin: 14px 0 4px 0;
+            direction: ltr;
+            text-align: left;
+        }
+
+        /* Override KaTeX injected fonts with Arial/Helvetica */
+        .katex, .katex * {
+            font-family: Arial, Helvetica, sans-serif !important;
+        }
+
+        /* Force all KaTeX to render LTR, left-aligned, full width, no scroll */
+        .katex-display {
+            direction: ltr !important;
+            text-align: left !important;
+            margin: 6px 0 !important;
+            overflow: visible !important;
+            white-space: normal !important;
+        }
+
+        .katex-display > .katex {
+            white-space: normal !important;
+            text-align: left !important;
+        }
+
+        .katex {
+            direction: ltr !important;
+            unicode-bidi: isolate;
+        }
+
+        /* Inline step notes (Arabic prose between equations) */
+        .note {
+            margin: 8px 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+
+        /* Diagram */
+        .diagram {
+            margin: 12px 0;
+            direction: ltr;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            body { font-size: 18px; }
+            .q-text { font-size: 18px; }
+            .note { font-size: 18px; }
+            .answer-question { font-size: 18px; }
+            .result { font-size: 18px; }
+        }
     </style>
 </head>
 <body>
 
-    <h1>أسئلة امتحان الرياضيات - السادس العلمي (٢٠٢٦)</h1>
-    <div class="grid" id="questionGrid"></div>
+<h1>أسئلة امتحان الرياضيات - السادس العلمي (٢٠٢٦)</h1>
 
-    <div id="answerOverlay" class="overlay">
-        <button class="close-btn" onclick="closeAnswer()">إغلاق الحل ✕</button>
-        <div id="answerContent" class="answer-container"></div>
-    </div>
+<div class="grid" id="questionGrid"></div>
 
-    <script>
-        // EXACT QUESTIONS FROM IMAGE + FULL STEP-BY-STEP ANSWERS FROM PDF
-        const examData = [
-            // Q1-A: Conjugates
-            {
-                id: "1A", header: "السؤال الأول / أ",
-                question: "إذا كان $\\frac{3-2i}{i}$ و $\\frac{x-yi}{1+5i}$ مترافقان، جد $x, y \\in R$.",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الحل:</h3>
-                        <p>أولاً: نبسط الكسر الأول بضرب البسط والمقام في $-i$:</p>
-                        $$ \\frac{3-2i}{i} \\times \\frac{-i}{-i} = \\frac{-3i + 2i^2}{-i^2} = \\frac{-2-3i}{1} = -2-3i $$
-                        <p>ثانياً: نبسط الكسر الثاني بضرب البسط والمقام في المرافق $(1-5i)$:</p>
-                        $$ \\frac{x-yi}{1+5i} \\times \\frac{1-5i}{1-5i} = \\frac{x - 5xi - yi + 5yi^2}{1^2 + 5^2} = \\frac{(x-5y) - i(5x+y)}{26} $$
-                        <p>بما أن العددين مترافقان، فإن الجزء الحقيقي للعدد الأول يساوي الجزء الحقيقي للعدد الثاني، والجزء التخيلي للعدد الأول يساوي سالب الجزء التخيلي للعدد الثاني (أو العكس حسب تعريف الترافق):</p>
-                        <p>المرافق لـ $(-2-3i)$ هو $(-2+3i)$.</p>
-                        <p>بالمساواة:</p>
-                        $$ \\frac{x-5y}{26} = -2 \\Rightarrow x-5y = -52 \quad ...(1) $$
-                        $$ \\frac{-(5x+y)}{26} = 3 \\Rightarrow -(5x+y) = 78 \\Rightarrow 5x+y = -78 \quad ...(2) $$
-                        <p>بحل المعادلتين (1) و (2) آنياً:</p>
-                        <p>من (2): $y = -78 - 5x$. نعوض في (1):</p>
-                        $$ x - 5(-78-5x) = -52 \\Rightarrow x + 390 + 25x = -52 \\Rightarrow 26x = -442 \\Rightarrow x = -17 $$
-                        $$ y = -78 - 5(-17) = -78 + 85 = 7 $$
-                        <p><em>(ملاحظة: ورد في بعض نماذج الإجابة قيم مختلفة بناءً على إشارة الترافق، ولكن الحساب المباشر أعلاه هو الأصح رياضياً للنص المذكور).</em></p>
-                    </div>
-                    <div class="final-result">الإجابة: $x = -17, y = 7$</div>
-                `
-            },
-            // Q1-B: Area (FIXED with full PDF steps)
-            {
-                id: "1B", header: "السؤال الأول / ب",
-                question: "جد المساحة المحددة بالدالتين: $y = x^2$ و $y = x^4 - 12$.",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الحل:</h3>
-                        <p>١. نوجد نقاط التقاطع بمساواة الدالتين:</p>
-                        $$ x^2 = x^4 - 12 \\Rightarrow x^4 - x^2 - 12 = 0 $$
-                        <p>نحل المعادلة كعادلة تربيعية في $x^2$:</p>
-                        $$ (x^2 - 4)(x^2 + 3) = 0 $$
-                        <p>الحل الحقيقي هو $x^2 = 4 \\Rightarrow x = \\pm 2$.</p>
-                        <p>٢. نحدد الدالة العليا والدالة السفلى في الفترة $[-2, 2]$:</p>
-                        <p>عند $x=0$: $y=x^2=0$ و $y=x^4-12=-12$. إذن $y=x^2$ هي العليا.</p>
-                        <p>٣. نحسب المساحة بالتكامل:</p>
-                        $$ A = \\int_{-2}^{2} [x^2 - (x^4 - 12)] dx = \\int_{-2}^{2} (x^2 - x^4 + 12) dx $$
-                        <p>بما أن الدالة زوجية، يمكننا التكامل من 0 إلى 2 والضرب في 2:</p>
-                        $$ A = 2 \\int_{0}^{2} (x^2 - x^4 + 12) dx $$
-                        $$ = 2 \\left[ \\frac{x^3}{3} - \\frac{x^5}{5} + 12x \\right]_0^2 $$
-                        $$ = 2 \\left( (\\frac{8}{3} - \\frac{32}{5} + 24) - 0 \\right) $$
-                        $$ = 2 \\left( \\frac{40 - 96 + 360}{15} \\right) = 2 \\left( \\frac{304}{15} \\right) = \\frac{608}{15} $$
-                    </div>
-                    <div class="diagram-box">
-                        <svg width="300" height="200" viewBox="-3 -15 6 20">
-                            <path d="M -2.5 6 Q 0 -12 2.5 6" stroke="#e74c3c" fill="none" stroke-width="0.1"/>
-                            <path d="M -2.5 6 Q 0 0 2.5 6" stroke="#2980b9" fill="none" stroke-width="0.1"/>
-                            <line x1="-3" y1="0" x2="3" y2="0" stroke="#333" stroke-width="0.05"/>
-                            <line x1="0" y1="-15" x2="0" y2="5" stroke="#333" stroke-width="0.05"/>
-                            <text x="0.2" y="-1" font-size="0.8">Area</text>
-                        </svg>
-                        <div class="diagram-caption">المنطقة المحصورة بين القطع المكافئ والمنحنى الرباعي</div>
-                    </div>
-                    <div class="final-result">الإجابة: $\\frac{608}{15}$ وحدة مربعة</div>
-                `
-            },
-            // Q2-A: Related Rates
-            {
-                id: "2A", header: "السؤال الثاني / أ",
-                question: "متوازي سطوح مستطيلة قاعدته مربعة الشكل يزداد طول ضلع قاعدته بمعدل $(0.5 \\text{ cm/s})$ بحيث يبقى الحجم ثابت يساوي $(48 \\text{ cm}^3)$، وفي اللحظة التي يكون فيها الارتفاع $(3 \\text{ cm})$ جد معدل التغير في الإرتفاع.",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الحل:</h3>
-                        <p>ليكن $x$ طول ضلع القاعدة المربعة و $h$ الارتفاع.</p>
-                        <p>الحجم $V = x^2 h = 48$ (ثابت).</p>
-                        <p>عند اللحظة المطلوبة: $h = 3 \\Rightarrow x^2(3) = 48 \\Rightarrow x^2 = 16 \\Rightarrow x = 4$.</p>
-                        <p>المعطى: $\\frac{dx}{dt} = 0.5$.</p>
-                        <p>نشتق معادلة الحجم بالنسبة للزمن $t$:</p>
-                        $$ \\frac{dV}{dt} = 2xh \\frac{dx}{dt} + x^2 \\frac{dh}{dt} $$
-                        <p>بما أن الحجم ثابت، فإن $\\frac{dV}{dt} = 0$:</p>
-                        $$ 0 = 2(4)(3)(0.5) + (4)^2 \\frac{dh}{dt} $$
-                        $$ 0 = 12 + 16 \\frac{dh}{dt} $$
-                        $$ 16 \\frac{dh}{dt} = -12 \\Rightarrow \\frac{dh}{dt} = -\\frac{12}{16} = -0.75 $$
-                    </div>
-                    <div class="final-result">الإجابة: $-0.75 \\text{ cm/s}$ (يتناقص الارتفاع)</div>
-                `
-            },
-            // Q2-B-1: Integral 1
-            {
-                id: "2B1", header: "السؤال الثاني / ب-١",
-                question: "جد التكامل: $\\int (\\sqrt{x} + x \\sec^2 x^2) \\, dx$",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الحل:</h3>
-                        <p>نجزئ التكامل إلى حدين:</p>
-                        $$ I = \\int x^{1/2} dx + \\int x \\sec^2(x^2) dx $$
-                        <p>الحد الأول (قاعدة القوة):</p>
-                        $$ \\int x^{1/2} dx = \\frac{x^{3/2}}{3/2} = \\frac{2}{3}x^{3/2} $$
-                        <p>الحد الثاني (التعويض):</p>
-                        <p>نفرض $u = x^2 \\Rightarrow du = 2x dx \\Rightarrow x dx = \\frac{1}{2} du$</p>
-                        $$ \\int \\sec^2(u) \\cdot \\frac{1}{2} du = \\frac{1}{2} \\tan(u) = \\frac{1}{2} \\tan(x^2) $$
-                        <p>نجمع الناتجين:</p>
-                    </div>
-                    <div class="final-result">الإجابة: $\\frac{2}{3}x^{3/2} + \\frac{1}{2}\\tan(x^2) + C$</div>
-                `
-            },
-            // Q2-B-2: Integral 2
-            {
-                id: "2B2", header: "السؤال الثاني / ب-٢",
-                question: "جد التكامل: $\\int \\sin 6x \\cos^2 3x \\, dx$",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الحل:</h3>
-                        <p>نستخدم متطابقة ضعف الزاوية: $\\sin 6x = 2 \\sin 3x \\cos 3x$</p>
-                        $$ \\int (2 \\sin 3x \\cos 3x) \\cos^2 3x \\, dx = 2 \\int \\sin 3x \\cos^3 3x \\, dx $$
-                        <p>نفرض $u = \\cos 3x \\Rightarrow du = -3 \\sin 3x dx \\Rightarrow \\sin 3x dx = -\\frac{1}{3} du$</p>
-                        $$ 2 \\int u^3 (-\\frac{1}{3}) du = -\\frac{2}{3} \\int u^3 du $$
-                        $$ = -\\frac{2}{3} \\cdot \\frac{u^4}{4} = -\\frac{1}{6} u^4 $$
-                        <p>نرجع للمتغير الأصلي:</p>
-                    </div>
-                    <div class="final-result">الإجابة: $-\\frac{1}{6}\\cos^4 3x + C$</div>
-                `
-            },
-            // Q2-B-3: Integral 3
-            {
-                id: "2B3", header: "السؤال الثاني / ب-٣",
-                question: "جد التكامل: $\\int_0^{\\ln 2} e^{-x} \\, dx$",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الحل:</h3>
-                        <p>تكامل $e^{-x}$ هو $-e^{-x}$:</p>
-                        $$ [-e^{-x}]_0^{\\ln 2} $$
-                        <p>نعوض بالحدود:</p>
-                        $$ (-e^{-\\ln 2}) - (-e^0) $$
-                        $$ = (-\\frac{1}{e^{\\ln 2}}) - (-1) $$
-                        $$ = -\\frac{1}{2} + 1 = \\frac{1}{2} $$
-                    </div>
-                    <div class="final-result">الإجابة: $0.5$</div>
-                `
-            },
-            // Q3-A1: Convex Function
-            {
-                id: "3A1", header: "السؤال الثالث / أ-١",
-                question: "إذا علمت أن: $f(x) = ax^2 - 6x + b$ حيث $b \\in R$ ، $a \\in \\{-4, 8\\}$، جد قيمة $a$ إذا كانت الدالة $f$ محدبة.",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الحل:</h3>
-                        <p>الدالة محدبة (Convex) إذا كانت المشتقة الثانية موجبة ($f''(x) > 0$).</p>
-                        $$ f'(x) = 2ax - 6 $$
-                        $$ f''(x) = 2a $$
-                        <p>لكي تكون محدبة: $2a > 0 \\Rightarrow a > 0$.</p>
-                        <p>من المجموعة المعطاة $\\{-4, 8\\}$، القيمة الموجبة الوحيدة هي $8$.</p>
-                    </div>
-                    <div class="final-result">الإجابة: $a = 8$</div>
-                `
-            },
-            // Q3-A2: Definite Integral Constant
-            {
-                id: "3A2", header: "السؤال الثالث / أ-٢",
-                question: "جد $a \\in R$ إذا علمت أن: $\\int_a^4 \\frac{x}{\\sqrt{x^2+9}} \\, dx = 2$.",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الحل:</h3>
-                        <p>نحسب التكامل بالتعويض $u = x^2+9 \\Rightarrow du = 2x dx$:</p>
-                        $$ \\int \\frac{x}{\\sqrt{x^2+9}} dx = \\sqrt{x^2+9} $$
-                        <p>نعوض بالحدود:</p>
-                        $$ [\\sqrt{x^2+9}]_a^4 = 2 $$
-                        $$ \\sqrt{4^2+9} - \\sqrt{a^2+9} = 2 $$
-                        $$ \\sqrt{25} - \\sqrt{a^2+9} = 2 $$
-                        $$ 5 - \\sqrt{a^2+9} = 2 \\Rightarrow \\sqrt{a^2+9} = 3 $$
-                        <p>بتربيع الطرفين:</p>
-                        $$ a^2 + 9 = 9 \\Rightarrow a^2 = 0 \\Rightarrow a = 0 $$
-                    </div>
-                    <div class="final-result">الإجابة: $a = 0$</div>
-                `
-            },
-            // Q3-B: Differential Equation
-            {
-                id: "3B", header: "السؤال الثالث / ب",
-                question: "جد الحل العام للمعادلة التفاضلية: $e^{x+2y} + y' = 0$.",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الحل:</h3>
-                        <p>نفصل المتغيرات باستخدام خصائص الأسس $e^{x+2y} = e^x \\cdot e^{2y}$:</p>
-                        $$ e^x e^{2y} + \\frac{dy}{dx} = 0 \\Rightarrow \\frac{dy}{dx} = -e^x e^{2y} $$
-                        $$ e^{-2y} dy = -e^x dx $$
-                        <p>نكامل الطرفين:</p>
-                        $$ \\int e^{-2y} dy = -\\int e^x dx $$
-                        $$ -\\frac{1}{2}e^{-2y} = -e^x + C_1 $$
-                        <p>نضرب في $-2$ لتبسيط الثابت:</p>
-                        $$ e^{-2y} = 2e^x + C $$
-                    </div>
-                    <div class="final-result">الإجابة: $e^{-2y} = 2e^x + C$</div>
-                `
-            },
-            // Q4-A: Ellipse & Parabola
-            {
-                id: "4A", header: "السؤال الرابع / أ",
-                question: "جد معادلة القطع الناقص الذي بؤرتاه تنتميان إلى محور السينات ومركزه نقطة الأصل، طول محوره الصغير يساوي نصف طول محوره الكبير والذي يقطع القطع المكافئ $y^2 + 8x = 0$ عند النقطة التي إحداثيها الصادي يساوي $(4)$.",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الحل:</h3>
-                        <p>١. نجد نقطة التقاطع مع القطع المكافئ $y^2 + 8x = 0$ عند $y=4$:</p>
-                        $$ (4)^2 + 8x = 0 \\Rightarrow 16 + 8x = 0 \\Rightarrow x = -2 $$
-                        <p>النقطة هي $(-2, 4)$.</p>
-                        <p>٢. بما أن القطع الناقص يمر بهذه النقطة (حسب نص السؤال الضمني للعلاقة الهندسية)، وبؤرتاه على محور السينات، فمعادلته:</p>
-                        $$ \\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1 $$
-                        <p>٣. العلاقة المعطاة: طول المحور الصغير = نصف طول المحور الكبير:</p>
-                        $$ 2b = \\frac{1}{2}(2a) \\Rightarrow 2b = a \\Rightarrow a^2 = 4b^2 $$
-                        <p>٤. نعوض بالنقطة $(-2, 4)$ والعلاقة $a^2=4b^2$ في المعادلة:</p>
-                        $$ \\frac{(-2)^2}{4b^2} + \\frac{(4)^2}{b^2} = 1 $$
-                        $$ \\frac{4}{4b^2} + \\frac{16}{b^2} = 1 \\Rightarrow \\frac{1}{b^2} + \\frac{16}{b^2} = 1 $$
-                        $$ \\frac{17}{b^2} = 1 \\Rightarrow b^2 = 17 $$
-                        $$ a^2 = 4(17) = 68 $$
-                    </div>
-                    <div class="diagram-box">
-                        <svg width="300" height="200" viewBox="-10 -6 12 12">
-                            <ellipse cx="0" cy="0" rx="8.2" ry="4.1" stroke="#2980b9" fill="none" stroke-width="0.1"/>
-                            <path d="M 0 0 Q -5 -5 -10 0" stroke="#e74c3c" fill="none" stroke-width="0.1"/>
-                            <circle cx="-2" cy="4" r="0.2" fill="green"/>
-                            <text x="-1.5" y="4.5" font-size="0.8">(-2,4)</text>
-                            <line x1="-10" y1="0" x2="10" y2="0" stroke="#333" stroke-width="0.05"/>
-                            <line x1="0" y1="-6" x2="0" y2="6" stroke="#333" stroke-width="0.05"/>
-                        </svg>
-                        <div class="diagram-caption">القطع الناقص والقطع المكافئ ونقطة التقاطع</div>
-                    </div>
-                    <div class="final-result">الإجابة: $\\frac{x^2}{68} + \\frac{y^2}{17} = 1$</div>
-                `
-            },
-            // Q4-B: Complex Proof
-            {
-                id: "4B", header: "السؤال الرابع / ب",
-                question: "إثبت أن: $(5 - \\frac{5}{1+\\omega^2} - \\frac{3}{1+\\omega})^6 = 64$.",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الإثبات:</h3>
-                        <p>من خصائص جذر الوحدة التكعيبي: $1+\\omega+\\omega^2=0$.</p>
-                        <p>إذن: $1+\\omega^2 = -\\omega$ و $1+\\omega = -\\omega^2$.</p>
-                        <p>نعوض في المقدار داخل القوس:</p>
-                        $$ 5 - \\frac{5}{-\\omega} - \\frac{3}{-\\omega^2} = 5 + \\frac{5}{\\omega} + \\frac{3}{\\omega^2} $$
-                        <p>نوحد المقامات أو نستخدم خاصية $\\frac{1}{\\omega}=\\omega^2$ و $\\frac{1}{\\omega^2}=\\omega$:</p>
-                        $$ = 5 + 5\\omega^2 + 3\\omega $$
-                        <p>نأخذ 5 عاملاً مشتركاً من أول حدين:</p>
-                        $$ = 5(1+\\omega^2) + 3\\omega $$
-                        <p>بما أن $1+\\omega^2 = -\\omega$:</p>
-                        $$ = 5(-\\omega) + 3\\omega = -5\\omega + 3\\omega = -2\\omega $$
-                        <p>الآن نرفع الناتج للقوة ٦:</p>
-                        $$ (-2\\omega)^6 = (-2)^6 \\cdot \\omega^6 = 64 \\cdot (\\omega^3)^2 $$
-                        <p>بما أن $\\omega^3 = 1$:</p>
-                        $$ = 64 \\cdot (1)^2 = 64 $$
-                    </div>
-                    <div class="final-result">تم الإثبات: الطرف الأيمن = ٦٤</div>
-                `
-            },
-            // Q4-C: Optimization Proof
-            {
-                id: "4C", header: "السؤال الرابع / ج",
-                question: "مجموع محيطي دائرة ومربع يساوي $(60 \\text{ cm})$، إثبت أنه عندما يكون مجموع مساحتي الشكلين أصغر ما يمكن فإن طول قطر الدائرة يساوي طول ضلع المربع.",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الإثبات:</h3>
-                        <p>ليكن $r$ نصف قطر الدائرة و $s$ ضلع المربع.</p>
-                        <p>محيط الدائرة $= 2\\pi r$ ، محيط المربع $= 4s$.</p>
-                        <p>الشرط: $2\\pi r + 4s = 60 \\Rightarrow \\pi r + 2s = 30 \\Rightarrow s = \\frac{30 - \\pi r}{2}$.</p>
-                        <p>مساحة الدائرة $= \\pi r^2$ ، مساحة المربع $= s^2$.</p>
-                        <p>دالة المساحة الكلية $A(r)$:</p>
-                        $$ A = \\pi r^2 + (\\frac{30 - \\pi r}{2})^2 $$
-                        <p>نشتق بالنسبة لـ $r$ ونساوي بالصفر للقيمة الصغرى:</p>
-                        $$ \\frac{dA}{dr} = 2\\pi r + 2(\\frac{30 - \\pi r}{2})(-\\frac{\\pi}{2}) = 0 $$
-                        $$ 2\\pi r - \\frac{\\pi}{2}(30 - \\pi r) = 0 $$
-                        <p>نقسم على $\\pi$:</p>
-                        $$ 2r - \\frac{1}{2}(30 - \\pi r) = 0 \\Rightarrow 4r - (30 - \\pi r) = 0 $$
-                        $$ 4r + \\pi r = 30 \\Rightarrow r(4+\\pi) = 30 $$
-                        <p>من شرط المحيط الأصلي: $2\\pi r + 4s = 60 \\Rightarrow \\pi r + 2s = 30$.</p>
-                        <p>بمقارنة $r(4+\\pi)=30$ مع $\\pi r + 2s = 30$:</p>
-                        $$ 4r + \\pi r = \\pi r + 2s \\Rightarrow 4r = 2s \\Rightarrow 2r = s $$
-                        <p>بما أن $2r$ هو قطر الدائرة و $s$ هو ضلع المربع:</p>
-                    </div>
-                    <div class="diagram-box">
-                        <svg width="200" height="100" viewBox="0 0 200 100">
-                            <rect x="10" y="20" width="60" height="60" stroke="#2980b9" fill="none" stroke-width="2"/>
-                            <circle cx="140" cy="50" r="30" stroke="#e74c3c" fill="none" stroke-width="2"/>
-                            <text x="40" y="95" text-anchor="middle" font-size="12">s</text>
-                            <text x="140" y="95" text-anchor="middle" font-size="12">2r</text>
-                        </svg>
-                        <div class="diagram-caption">عند القيمة الصغرى: القطر = الضلع</div>
-                    </div>
-                    <div class="final-result">تم الإثبات: قطر الدائرة = ضلع المربع</div>
-                `
-            },
-            // Q5-A: De Moivre
-            {
-                id: "5A", header: "السؤال الخامس / أ",
-                question: "جد باستخدام مبرهنة ديموافر أو التعميم: $(2\\sqrt{3} + \\sqrt{-4})^{-2}$.",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الحل:</h3>
-                        <p>نبسط العدد المركب: $z = 2\\sqrt{3} + 2i$.</p>
-                        <p>نحسب المقياس $r$ والسعة $\\theta$:</p>
-                        $$ r = \\sqrt{(2\\sqrt{3})^2 + (2)^2} = \\sqrt{12+4} = \\sqrt{16} = 4 $$
-                        $$ \\tan \\theta = \\frac{2}{2\\sqrt{3}} = \\frac{1}{\\sqrt{3}} \\Rightarrow \\theta = \\frac{\\pi}{6} $$
-                        <p>الشكل القطبي: $z = 4(\\cos \\frac{\\pi}{6} + i \\sin \\frac{\\pi}{6})$.</p>
-                        <p>بتطبيق مبرهنة ديموافر للأس السالب $-2$:</p>
-                        $$ z^{-2} = 4^{-2} [\\cos(-2 \\cdot \\frac{\\pi}{6}) + i \\sin(-2 \\cdot \\frac{\\pi}{6})] $$
-                        $$ = \\frac{1}{16} [\\cos(-\\frac{\\pi}{3}) + i \\sin(-\\frac{\\pi}{3})] $$
-                        $$ = \\frac{1}{16} [\\frac{1}{2} - i\\frac{\\sqrt{3}}{2}] $$
-                        $$ = \\frac{1}{32} - i\\frac{\\sqrt{3}}{32} $$
-                    </div>
-                    <div class="diagram-box">
-                        <svg width="200" height="150" viewBox="-1 -1 5 4">
-                            <line x1="0" y1="0" x2="4" y2="0" stroke="#333" stroke-width="0.05"/>
-                            <line x1="0" y1="0" x2="0" y2="3" stroke="#333" stroke-width="0.05"/>
-                            <line x1="0" y1="0" x2="3.46" y2="2" stroke="#2980b9" stroke-width="0.1"/>
-                            <circle cx="3.46" cy="2" r="0.1" fill="#2980b9"/>
-                            <path d="M 0.5 0 A 0.5 0.5 0 0 1 0.43 0.25" stroke="red" fill="none" stroke-width="0.05"/>
-                            <text x="3.6" y="2.2" font-size="0.4">z</text>
-                            <text x="0.6" y="0.3" font-size="0.3">π/6</text>
-                        </svg>
-                        <div class="diagram-caption">تمثيل العدد في مستوى آرغان</div>
-                    </div>
-                    <div class="final-result">الإجابة: $\\frac{1}{32} - i\\frac{\\sqrt{3}}{32}$</div>
-                `
-            },
-            // Q5-B: Verify Solution
-            {
-                id: "5B", header: "السؤال الخامس / ب",
-                question: "إثبت أن: $y = x \\ln|x| - x$ أحد حلول المعادلة: $x \\frac{dy}{dx} = x+y$ ، $x > 0$.",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الإثبات:</h3>
-                        <p>نوجد المشتقة $\\frac{dy}{dx}$ للدالة المعطاة:</p>
-                        $$ y = x \\ln x - x \quad (x>0) $$
-                        $$ \\frac{dy}{dx} = (1 \\cdot \\ln x + x \\cdot \\frac{1}{x}) - 1 = \\ln x + 1 - 1 = \\ln x $$
-                        <p>نعوض بقيمة $y$ و $\\frac{dy}{dx}$ في طرفي المعادلة التفاضلية:</p>
-                        <p><strong>الطرف الأيسر:</strong></p>
-                        $$ x \\frac{dy}{dx} = x(\\ln x) = x \\ln x $$
-                        <p><strong>الطرف الأيمن:</strong></p>
-                        $$ x + y = x + (x \\ln x - x) = x \\ln x $$
-                        <p>بما أن الطرف الأيسر = الطرف الأيمن، فإن الدالة حل للمعادلة.</p>
-                    </div>
-                    <div class="final-result">تم الإثبات</div>
-                `
-            },
-            // Q5-C: No Local Max
-            {
-                id: "5C", header: "السؤال الخامس / ج",
-                question: "لتكن: $f(x) = x^2 + \\frac{a}{x}$ ، $a \\in R$ ، $x \\neq 0$، بيّن أن الدالة $f$ لا تمتلك نقطة نهاية عظمى محلية.",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الحل:</h3>
-                        <p>نوجد النقاط الحرجة بالمشتقة الأولى:</p>
-                        $$ f'(x) = 2x - \\frac{a}{x^2} = \\frac{2x^3 - a}{x^2} $$
-                        <p>$f'(x) = 0 \\Rightarrow 2x^3 = a \\Rightarrow x = \\sqrt[3]{\\frac{a}{2}}$.</p>
-                        <p>نختبر نوع النقطة باستخدام المشتقة الثانية:</p>
-                        $$ f''(x) = 2 - (-2)ax^{-3} = 2 + \\frac{2a}{x^3} $$
-                        <p>عند النقطة الحرجة $x^3 = \\frac{a}{2}$:</p>
-                        $$ f''(\\sqrt[3]{\\frac{a}{2}}) = 2 + \\frac{2a}{a/2} = 2 + 4 = 6 $$
-                        <p>بما أن $f''(c) = 6 > 0$ دائماً (موجبة قطعاً)، فإن أي نقطة حرجة هي <strong>نهاية صغرى محلية</strong>.</p>
-                        <p>وبالتالي لا توجد أي نقطة تكون فيها المشتقة الثانية سالبة، مما يعني عدم وجود نهاية عظمى محلية.</p>
-                    </div>
-                    <div class="final-result">الإجابة: الدالة ليس لها نهاية عظمى محلية</div>
-                `
-            },
-            // Q6-A: Hyperbola & Parabola
-            {
-                id: "6A", header: "السؤال السادس / أ",
-                question: "قطع زائد مركزه نقطة الأصل، والقيمة المطلقة لفرق بعدي أي نقطة عن بؤرتيه تساوي $(6)$ وحدات، وإحدى بؤرتيه هي بؤرة القطع المكافئ الذي رأسه نقطة الأصل ويمر بالنقطتين $(-1, 2\\sqrt{5})$ ، $(-1, -2\\sqrt{5})$، جد معادلتي كلاّ من القطع المكافئ والقطع الزائد.",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الحل:</h3>
-                        <p><strong>أولاً: معادلة القطع المكافئ</strong></p>
-                        <p>رأسه الأصل ويمر بـ $(-1, 2\\sqrt{5})$. بما أن الإحداثي السيني سالب والصادي موجب وسالب، فهو قطع مفتوح لليسار:</p>
-                        $$ y^2 = -4px \quad (p>0) $$
-                        <p>نعوض بالنقطة:</p>
-                        $$ (2\\sqrt{5})^2 = -4p(-1) \\Rightarrow 20 = 4p \\Rightarrow p = 5 $$
-                        <p>المعادلة: $y^2 = -20x$. البؤرة: $(-5, 0)$.</p>
-                        
-                        <p><strong>ثانياً: معادلة القطع الزائد</strong></p>
-                        <p>بؤرته هي بؤرة القطع المكافئ $\\Rightarrow c = 5$.</p>
-                        <p>الفرق الثابت للمسافات $= 2a = 6 \\Rightarrow a = 3$.</p>
-                        <p>نجد $b^2$:</p>
-                        $$ b^2 = c^2 - a^2 = 25 - 9 = 16 $$
-                        <p>بما أن البؤرة على محور السينات، فالمعادلة أفقية:</p>
-                        $$ \\frac{x^2}{a^2} - \\frac{y^2}{b^2} = 1 $$
-                    </div>
-                    <div class="diagram-box">
-                        <svg width="300" height="200" viewBox="-10 -8 12 16">
-                            <path d="M -10 10 Q -5 0 -10 -10" stroke="#e74c3c" fill="none" stroke-width="0.1"/>
-                            <path d="M -3 -8 Q 0 0 -3 8" stroke="#2980b9" fill="none" stroke-width="0.1"/>
-                            <path d="M 3 -8 Q 0 0 3 8" stroke="#2980b9" fill="none" stroke-width="0.1"/>
-                            <circle cx="-5" cy="0" r="0.2" fill="black"/>
-                            <text x="-4.8" y="0.5" font-size="0.6">F(-5,0)</text>
-                            <line x1="-10" y1="0" x2="10" y2="0" stroke="#333" stroke-width="0.05"/>
-                            <line x1="0" y1="-8" x2="0" y2="8" stroke="#333" stroke-width="0.05"/>
-                        </svg>
-                        <div class="diagram-caption">القطع المكافئ (أحمر) والقطع الزائد (أزرق) يشتركان في البؤرة</div>
-                    </div>
-                    <div class="final-result">القطع المكافئ: $y^2 = -20x$ <br> القطع الزائد: $\\frac{x^2}{9} - \\frac{y^2}{16} = 1$</div>
-                `
-            },
-            // Q6-B: Inverse Function
-            {
-                id: "6B", header: "السؤال السادس / ب",
-                question: "إثبت فيما إذا كانت $F: [1, 3] \\longrightarrow R$ ، $F(x) = x^3 + 2$ هي دالة مقابلة للدالة $f(x) = 3x^2$.",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الحل:</h3>
-                        <p>الدالة $F(x)$ تعتبر دالة أصلية (Antiderivative) للدالة $f(x)$ إذا كانت $F'(x) = f(x)$.</p>
-                        <p>نشتق $F(x)$:</p>
-                        $$ F'(x) = \\frac{d}{dx}(x^3 + 2) = 3x^2 $$
-                        <p>نلاحظ أن $F'(x) = f(x)$ لكل $x \\in [1, 3]$.</p>
-                        <p>وبما أن $F$ قابلة للاشتقاق ومستمرة على الفترة، فهي بالفعل الدالة الأصلية المقابلة لـ $f$.</p>
-                        <p><em>(ملاحظة: السؤال يستخدم مصطلح "دالة مقابلة" بمعنى الدالة الأصلية/التكاملية وليس الدالة العكسية Inverse Function، وذلك لأن مشتقة $x^3+2$ تساوي $3x^2$).</em></p>
-                    </div>
-                    <div class="final-result">الإجابة: نعم، لأنها تحقق $F'(x) = f(x)$</div>
-                `
-            },
-            // Q6-C: Mean Value Theorem
-            {
-                id: "6C", header: "السؤال السادس / ج",
-                question: "إذا كانت $f: [0, b] \\longrightarrow R$ حيث $f(x) = x^3 - 4x^2$ وكانت $f$ تحقق مبرهنة القيمة المتوسطة عند $c = \\frac{2}{3}$، جد $b$.",
-                solution: `
-                    <div class="step">
-                        <h3>خطوات الحل:</h3>
-                        <p>نحسب المشتقة عند $c = \\frac{2}{3}$:</p>
-                        $$ f'(x) = 3x^2 - 8x $$
-                        $$ f'(\\frac{2}{3}) = 3(\\frac{4}{9}) - 8(\\frac{2}{3}) = \\frac{4}{3} - \\frac{16}{3} = -\\frac{12}{3} = -4 $$
-                        <p>حسب مبرهنة القيمة المتوسطة:</p>
-                        $$ f'(c) = \\frac{f(b) - f(a)}{b - a} $$
-                        <p>حيث $a=0$:</p>
-                        $$ -4 = \\frac{(b^3 - 4b^2) - (0)}{b - 0} $$
-                        $$ -4 = \\frac{b^3 - 4b^2}{b} = b^2 - 4b $$
-                        $$ b^2 - 4b + 4 = 0 $$
-                        $$ (b-2)^2 = 0 \\Rightarrow b = 2 $$
-                    </div>
-                    <div class="final-result">الإجابة: $b = 2$</div>
-                `
-            }
-        ];
+<div id="answerOverlay" class="overlay">
+    <button class="close-btn" onclick="closeAnswer()">إغلاق ✕</button>
+    <div id="answerContent" class="answer-content"></div>
+</div>
 
-        // Render Grid
-        const grid = document.getElementById('questionGrid');
-        examData.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.onclick = () => openAnswer(item.id);
-            card.innerHTML = `
-                <div>
-                    <div class="q-header">${item.header}</div>
-                    <div class="q-body">${item.question}</div>
-                </div>
-                <div class="hint">اضغط لعرض الحل الكامل ➜</div>
-            `;
-            grid.appendChild(card);
-        });
+<script>
+    function easternDigits(str) {
+        const map = {'0':'٠','1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩'};
+        return str.replace(/[0-9]/g, d => map[d]);
+    }
 
-        // Open Answer
-        function openAnswer(id) {
-            const item = examData.find(q => q.id === id);
-            if (item) {
-                const content = document.getElementById('answerContent');
-                content.innerHTML = `
-                    <h2 style="color: #2c3e50; border-bottom: 2px solid #2980b9; padding-bottom: 15px;">${item.header}</h2>
-                    <div style="background: #eef2f3; padding: 20px; border-radius: 8px; margin-bottom: 30px; font-size: 1.2rem; font-weight: bold;">
-                        ${item.question}
-                    </div>
-                    ${item.solution}
-                `;
-                document.getElementById('answerOverlay').classList.add('active');
-                
-                // Trigger MathJax to render new content
-                if (window.MathJax) {
-                    MathJax.typesetPromise();
+    function cvt(str) {
+        return str.split(/(\$\$[\s\S]*?\$\$|\$[^$]*\$)/).map(part =>
+            part.startsWith('$') ? part : easternDigits(part)
+        ).join('');
+    }
+
+    const questions = [
+        // ── س1 أ ──────────────────────────────────────────────────────────────
+        {
+            id: "1A",
+            title: "السؤال الأول / أ",
+            text: "إذا كان $\\dfrac{x-yi}{1+5i}$ و $\\dfrac{3-2i}{i}$ مترافقان، $x,y \\in R$، جد $x, y$.",
+            subs: [
+                {
+                    heading: null,
+                    body: `
+$$\\dfrac{x+yi}{1-5i} = \\dfrac{3-2i}{i}$$
+$$( x+yi )\\cdot i = (3-2i)(1-5i)$$
+$$(x+yi)\\cdot i = 3-15i-2i-10$$
+$$(x+yi)\\cdot i = -7-17i$$
+$$x+yi = \\dfrac{-7-17i}{i}\\cdot\\dfrac{-i}{-i}$$
+$$x+yi = \\dfrac{7i-17}{1} = -17+7i$$
+`,
+                    result: "$\\therefore x=-17 \\quad,\\quad y=7$"
                 }
-            }
+            ]
+        },
+
+        // ── س1 ب ──────────────────────────────────────────────────────────────
+        {
+            id: "1B",
+            title: "السؤال الأول / ب",
+            text: "جد المساحة المحددة بالدالتين: $y = x^2$ و $y = x^4 - 12$.",
+            subs: [
+                {
+                    heading: null,
+                    body: `
+$$f(x)=g(x)$$
+$$x^4-12=x^2$$
+$$x^4-x^2-12=0$$
+$$(x^2-4)(x^2+3)=0$$
+`,
+                    note: "إما $x^2-4=0 \\Rightarrow x^2=4 \\Rightarrow x=\\pm 2$، أو $x^2+3=0$ (تُهمل)"
+                },
+                {
+                    heading: null,
+                    body: `
+$$A = \\left|\\int_{-2}^{2}(x^4-x^2-12)\\,dx\\right|$$
+$$= \\left|\\left[\\dfrac{1}{5}x^5-\\dfrac{1}{3}x^3-12x\\right]_{-2}^{2}\\right|$$
+$$= \\left|\\left(\\dfrac{32}{5}-\\dfrac{8}{3}-24\\right)-\\left(-\\dfrac{32}{5}+\\dfrac{8}{3}+24\\right)\\right|$$
+$$= \\left|\\dfrac{64}{5}-\\dfrac{16}{3}-48\\right|$$
+$$= \\left|\\dfrac{192-80-720}{15}\\right|$$
+$$= \\left|\\dfrac{-608}{15}\\right|$$
+`,
+                    result: "$\\dfrac{608}{15}$ وحدة مساحة"
+                }
+            ]
+        },
+
+        // ── س2 أ ──────────────────────────────────────────────────────────────
+        {
+            id: "2A",
+            title: "السؤال الثاني / أ",
+            text: "متوازي سطوح مستطيلة قاعدته مربعة الشكل يزداد طول ضلع قاعدته بمعدل ($0.5\\ cm/s$) بحيث يبقى الحجم ثابتاً يساوي ($48\\ cm^3$)، وفي اللحظة التي يكون فيها الارتفاع ($3\\ cm$) جد معدل التغير في الارتفاع.",
+            subs: [
+                {
+                    heading: null,
+                    note: "نفرض: $x$ = طول ضلع القاعدة، $y$ = الارتفاع",
+                    diagram: `<svg width="160" height="155" viewBox="0 0 160 155">
+                        <polygon points="30,55 90,35 150,55 90,75" fill="none" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="30" y1="55" x2="30" y2="130" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="150" y1="55" x2="150" y2="130" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="90" y1="75" x2="90" y2="150" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="30" y1="130" x2="90" y2="150" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="150" y1="130" x2="90" y2="150" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="30" y1="130" x2="150" y2="130" stroke="#2c3e50" stroke-width="1" stroke-dasharray="4,3"/>
+                        <text x="52" y="48" font-size="13" font-family="Arial">x</text>
+                        <text x="118" y="48" font-size="13" font-family="Arial">x</text>
+                        <text x="98" y="112" font-size="13" font-family="Arial">y</text>
+                    </svg>`,
+                    body: `
+$$V=x^2 y$$
+$$48=x^2(3)$$
+$$x^2=16 \\Rightarrow x=4$$
+$$V=x^2 y$$
+$$0=x^2\\dfrac{dy}{dt}+y\\cdot 2x\\dfrac{dx}{dt}$$
+$$0=(4)^2\\dfrac{dy}{dt}+3(2)(4)(0.5)$$
+$$0=16\\dfrac{dy}{dt}+12$$
+$$16\\dfrac{dy}{dt}=-12$$
+$$\\dfrac{dy}{dt}=\\dfrac{-12}{16}$$
+`,
+                    result: "$\\dfrac{dy}{dt}=-\\dfrac{3}{4}\\ cm/s$"
+                }
+            ]
+        },
+
+        // ── س2 ب ──────────────────────────────────────────────────────────────
+        {
+            id: "2B",
+            title: "السؤال الثاني / ب",
+            text: "جد تكامل اثنين مما يأتي:",
+            subs: [
+                {
+                    heading: "1) $\\int(\\sqrt{x}+x\\sec^2 x^2)\\,dx$",
+                    body: `
+$$\\int(\\sqrt{x}+x\\sec^2 x^2)\\,dx = \\int\\sqrt{x}\\,dx+\\int x\\sec^2 x^2\\,dx$$
+$$= \\int x^{1/2}dx+\\dfrac{1}{2}\\int(2)x\\sec^2 x^2\\,dx$$
+$$= \\dfrac{2}{3}x^{3/2}+\\dfrac{1}{2}\\tan x^2+c$$
+$$= \\dfrac{2}{3}\\sqrt{x^3}+\\dfrac{1}{2}\\tan x^2+c$$
+`,
+                    result: "$\\dfrac{2}{3}\\sqrt{x^3}+\\dfrac{1}{2}\\tan x^2+c$"
+                },
+                {
+                    heading: "2) $\\int\\sin 6x\\cos^2 3x\\,dx$",
+                    body: `
+$$\\int\\sin 6x\\cos^2 3x\\,dx = \\int 2\\sin 3x\\cos 3x\\cos^2 3x\\,dx$$
+$$= 2\\int\\sin 3x\\cos^3 3x\\,dx$$
+$$= 2\\int\\sin 3x(\\cos 3x)^3\\,dx$$
+$$= 2\\left(\\dfrac{-1}{3}\\right)\\int(-3)\\sin 3x(\\cos 3x)^3\\,dx$$
+$$= \\dfrac{-2}{3}\\times\\dfrac{(\\cos 3x)^4}{4}+c$$
+$$= \\dfrac{-1}{6}\\cos^4 3x+c$$
+`,
+                    result: "$\\dfrac{-1}{6}\\cos^4 3x+c$"
+                },
+                {
+                    heading: "3) $\\int_0^{\\ln 2}e^{-x}\\,dx$",
+                    body: `
+$$\\int_0^{\\ln 2}e^{-x}\\,dx = (-1)\\int_0^{\\ln 2}(-1)e^{-x}\\,dx$$
+$$= \\left[-e^{-x}\\right]_0^{\\ln 2}$$
+$$= \\left(-e^{-\\ln 2}\\right)-\\left(-e^0\\right)$$
+$$= \\left(-e^{\\ln 2^{-1}}\\right)-(-1)$$
+$$= \\left(-e^{\\ln\\frac{1}{2}}\\right)+1$$
+$$= -\\dfrac{1}{2}+1$$
+$$= \\dfrac{1}{2}$$
+`,
+                    result: "$\\dfrac{1}{2}$"
+                }
+            ]
+        },
+
+        // ── س3 أ-1 ────────────────────────────────────────────────────────────
+        {
+            id: "3A1",
+            title: "السؤال الثالث / أ-1",
+            text: "إذا علمت أن $f(x)=ax^2-6x+b$ حيث $a\\in\\{-4,8\\}$، $b\\in R$، جد قيمة $a$ إذا كانت الدالة $f$ محدبة.",
+            subs: [
+                {
+                    heading: null,
+                    body: `
+$$f'(x)=2ax-6$$
+$$f''(x)=2a$$
+$$2a<0 \\Rightarrow a=-4$$
+`,
+                    result: "$a=-4$"
+                }
+            ]
+        },
+
+        // ── س3 أ-2 ────────────────────────────────────────────────────────────
+        {
+            id: "3A2",
+            title: "السؤال الثالث / أ-2",
+            text: "جد $a\\in R$ إذا علمت أن: $\\int_a^4\\dfrac{x}{\\sqrt{x^2+9}}\\,dx=2$.",
+            subs: [
+                {
+                    heading: null,
+                    body: `
+$$\\int_a^4\\dfrac{x}{\\sqrt{x^2+9}}\\,dx=2$$
+$$\\int_a^4 x(x^2+9)^{-1/2}dx=2$$
+$$\\dfrac{1}{2}\\int_a^4(2)x(x^2+9)^{-1/2}dx=2$$
+$$\\left[\\dfrac{\\frac{1}{2}(x^2+9)^{1/2}}{\\frac{1}{2}}\\right]_a^4=2$$
+$$\\left[\\sqrt{x^2+9}\\right]_a^4=2$$
+$$\\sqrt{(4)^2+9}-\\sqrt{a^2+9}=2$$
+$$\\sqrt{16+9}-\\sqrt{a^2+9}=2$$
+$$\\sqrt{25}-\\sqrt{a^2+9}=2$$
+$$5-\\sqrt{a^2+9}=2$$
+$$5-2=\\sqrt{a^2+9}$$
+$$3=\\sqrt{a^2+9}$$
+$$9=a^2+9$$
+$$a^2=0 \\Rightarrow a=0$$
+`,
+                    result: "$a=0$"
+                }
+            ]
+        },
+
+        // ── س3 ب ──────────────────────────────────────────────────────────────
+        {
+            id: "3B",
+            title: "السؤال الثالث / ب",
+            text: "جد الحل العام للمعادلة التفاضلية: $e^{x+2y}+y'=0$.",
+            subs: [
+                {
+                    heading: null,
+                    body: `
+$$e^{x+2y}+y'=0$$
+$$\\dfrac{dy}{dx}=-e^{x+2y}$$
+$$\\dfrac{dy}{dx}=-e^x\\cdot e^{2y}$$
+$$\\dfrac{dy}{e^{2y}}=-e^x\\,dx$$
+$$-\\dfrac{1}{2}\\int e^{-2y}(-2)\\,dy=-\\int e^x\\,dx$$
+$$-\\dfrac{1}{2}e^{-2y}=-e^x+C$$
+`,
+                    note: "بضرب الطرفين في $(-1)$:",
+                    body2: `$$\\dfrac{1}{2}e^{-2y}=e^x-C$$`,
+                    result: "$\\dfrac{1}{2}e^{-2y}=e^x-C$"
+                }
+            ]
+        },
+
+        // ── س4 أ ──────────────────────────────────────────────────────────────
+        {
+            id: "4A",
+            title: "السؤال الرابع / أ",
+            text: "جد معادلة القطع الناقص الذي بؤرتاه تنتميان إلى محور السينات ومركزه نقطة الأصل، طول نصف محوره الصغير يساوي نصف طول محوره الكبير، والذي يقطع القطع المكافئ $y^2+8x=0$ عند النقطة التي إحداثيها الصادي يساوي ($4$).",
+            subs: [
+                {
+                    heading: null,
+                    body: `
+$$(4)^2+8x=0$$
+$$8x=-16$$
+$$x=-2$$
+$$\\therefore P(-2,4)$$
+$$\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}=1$$
+$$\\dfrac{4}{a^2}+\\dfrac{16}{b^2}=1$$
+$$2b=\\dfrac{1}{2}(2a) \\Rightarrow 2b=a \\Rightarrow a^2=4b^2$$
+$$\\dfrac{4}{4b^2}+\\dfrac{16}{b^2}=1$$
+$$\\dfrac{1}{b^2}+\\dfrac{16}{b^2}=1$$
+$$\\dfrac{17}{b^2}=1$$
+$$b^2=17$$
+$$a^2=4(17) \\Rightarrow a^2=68$$
+`,
+                    result: "$\\dfrac{x^2}{68}+\\dfrac{y^2}{17}=1$"
+                }
+            ]
+        },
+
+        // ── س4 ب ──────────────────────────────────────────────────────────────
+        {
+            id: "4B",
+            title: "السؤال الرابع / ب",
+            text: "أثبت أن: $\\left(5-\\dfrac{5}{1+\\omega^2}-\\dfrac{3}{1+\\omega}\\right)^6=64$، حيث $\\omega$ جذر تكعيبي تخيلي للواحد الصحيح.",
+            subs: [
+                {
+                    heading: null,
+                    body: `
+$$L.H.S=\\left(5-\\dfrac{5}{1+\\omega^2}-\\dfrac{3}{1+\\omega}\\right)^6$$
+$$=\\left(5-\\dfrac{5}{-\\omega}-\\dfrac{3}{-\\omega^2}\\right)^6$$
+$$=\\left(5+\\dfrac{5}{\\omega}+\\dfrac{3}{\\omega^2}\\right)^6$$
+$$=\\left(5+\\dfrac{5\\omega^3}{\\omega}+\\dfrac{3\\omega^3}{\\omega^2}\\right)^6$$
+$$=\\left(5+5\\omega^2+3\\omega\\right)^6$$
+$$=\\left[5(1+\\omega^2)+3\\omega\\right]^6$$
+$$=\\left[5(-\\omega)+3\\omega\\right]^6$$
+$$=(-5\\omega+3\\omega)^6$$
+$$=(-2\\omega)^6$$
+$$=(-2)^6\\omega^6$$
+$$=64(\\omega^3)^2$$
+$$=64(1)^2$$
+$$=64=R.H.S$$
+`,
+                    result: "$L.H.S=R.H.S=64$"
+                }
+            ]
+        },
+
+        // ── س4 ج ──────────────────────────────────────────────────────────────
+        {
+            id: "4C",
+            title: "السؤال الرابع / ج",
+            text: "مجموع محيطي دائرة ومربع يساوي ($60\\ cm$)، أثبت أنه عندما يكون مجموع مساحتي الشكلين أصغر ما يمكن فإن قطر الدائرة يساوي طول ضلع المربع.",
+            subs: [
+                {
+                    heading: null,
+                    note: "نفرض: نصف قطر الدائرة $=r$، طول ضلع المربع $=x$",
+                    body: `
+$$[4x+2r\\pi=60]\\div(2)$$
+$$2x+r\\pi=30$$
+$$r=\\dfrac{1}{\\pi}(30-2x)$$
+$$M=x^2+r^2\\pi$$
+$$M=x^2+\\pi\\left[\\dfrac{1}{\\pi}(30-2x)\\right]^2$$
+$$M=x^2+\\dfrac{1}{\\pi}[900-120x+4x^2]$$
+$$M'=2x+\\dfrac{1}{\\pi}[-120+8x]$$
+$$M'=0$$
+$$2x+\\dfrac{1}{\\pi}[-120+8x]=0$$
+$$[2x\\pi-120+8x=0]\\div(2)$$
+$$x\\pi+4x=60$$
+$$x(\\pi+4)=60$$
+$$x=\\dfrac{60}{\\pi+4}\\ cm$$
+$$r=\\dfrac{1}{\\pi}\\left(30-\\dfrac{120}{\\pi+4}\\right)$$
+$$r=\\dfrac{1}{\\pi}\\left(\\dfrac{30\\pi+120-120}{\\pi+4}\\right)$$
+$$r=\\dfrac{1}{\\pi}\\left(\\dfrac{30\\pi}{\\pi+4}\\right)$$
+$$r=\\dfrac{30}{\\pi+4}$$
+$$2r=\\dfrac{60}{\\pi+4}$$
+$$\\therefore 2r=x$$
+`,
+                    result: "قطر الدائرة = ضلع المربع"
+                }
+            ]
+        },
+
+        // ── س5 أ ──────────────────────────────────────────────────────────────
+        {
+            id: "5A",
+            title: "السؤال الخامس / أ",
+            text: "جد باستخدام مبرهنة ديموافر أو التعميم: $(2\\sqrt{3}+\\sqrt{-4})^{-2}$.",
+            subs: [
+                {
+                    heading: null,
+                    body: `
+$$z=2\\sqrt3+\\sqrt{-4}=2\\sqrt3+2i$$
+$$r=\\sqrt{(2\\sqrt3)^2+(2)^2}=\\sqrt{12+4}=\\sqrt{16}$$
+$$r=4$$
+$$\\cos\\theta=\\dfrac{2\\sqrt3}{4}=\\dfrac{\\sqrt3}{2}$$
+$$\\sin\\theta=\\dfrac{2}{4}=\\dfrac{1}{2}$$
+$$arg(z)=\\dfrac{\\pi}{6}$$
+$$z=4\\left(\\cos\\dfrac{\\pi}{6}+i\\sin\\dfrac{\\pi}{6}\\right)$$
+$$z^{-2}=(4)^{-2}\\left(\\cos\\dfrac{\\pi}{6}+i\\sin\\dfrac{\\pi}{6}\\right)^{-2}$$
+$$=\\dfrac{1}{16}\\left(\\cos\\dfrac{\\pi}{6}(-2)+i\\sin\\dfrac{\\pi}{6}(-2)\\right)$$
+$$=\\dfrac{1}{16}\\left(\\cos\\dfrac{\\pi}{3}-i\\sin\\dfrac{\\pi}{3}\\right)$$
+$$=\\dfrac{1}{16}\\left[\\dfrac{1}{2}-i\\left(\\dfrac{\\sqrt3}{2}\\right)\\right]$$
+$$=\\dfrac{1}{32}-\\dfrac{\\sqrt3}{32}i$$
+`,
+                    result: "$\\dfrac{1}{32}-\\dfrac{\\sqrt3}{32}i$"
+                }
+            ]
+        },
+
+        // ── س5 ب ──────────────────────────────────────────────────────────────
+        {
+            id: "5B",
+            title: "السؤال الخامس / ب",
+            text: "أثبت أن $y=x\\ln|x|-x$ أحد حلول المعادلة: $x\\dfrac{dy}{dx}=x+y$، $x>0$.",
+            subs: [
+                {
+                    heading: "الطريقة الأولى",
+                    body: `
+$$y=x\\ln x-x$$
+$$x\\dfrac{dy}{dx}=x\\left[x\\cdot\\dfrac{1}{x}+\\ln x(1)-1\\right]$$
+$$=x(1+\\ln x-1)$$
+$$=x\\ln x$$
+$$x+y=x+x\\ln x-x=x\\ln x$$
+`,
+                    note: "$\\therefore$ الطرف الأيسر = الطرف الأيمن، $y=x\\ln x-x$ هو أحد حلول المعادلة"
+                },
+                {
+                    heading: "طريقة ثانية",
+                    body: `
+$$x\\dfrac{dy}{dx}=x+y \\quad ]\\div x$$
+$$\\dfrac{dy}{dx}=1+\\dfrac{y}{x}$$
+`,
+                    note: "لتكن $v=\\dfrac{y}{x} \\Rightarrow \\dfrac{dy}{dx}=v+x\\dfrac{dv}{dx}$",
+                    body2: `
+$$v+x\\dfrac{dv}{dx}=1+v$$
+$$\\dfrac{dx}{x}=dv$$
+$$\\int\\dfrac{1}{x}dx=\\int dv$$
+$$\\ln x=v+C$$
+$$\\ln x=\\dfrac{y}{x}+C$$
+$$x\\ln x=y+xC$$
+`,
+                    result: "$y=x\\ln x-x$ عند $C=1$"
+                }
+            ]
+        },
+
+        // ── س5 ج ──────────────────────────────────────────────────────────────
+        {
+            id: "5C",
+            title: "السؤال الخامس / ج",
+            text: "لتكن $f(x)=x^2-\\dfrac{a}{x}$، $x\\neq 0$، $a\\in R$، بيّن أن الدالة $f$ لا تمتلك نقطة نهاية عظمى محلية.",
+            subs: [
+                {
+                    heading: null,
+                    body: `
+$$f(x)=x^2-\\dfrac{a}{x}$$
+$$f'(x)=2x+\\dfrac{a}{x^2}$$
+$$f'(x)=0$$
+$$\\left[2x+\\dfrac{a}{x^2}=0\\right]\\cdot x^2$$
+$$2x^3+a=0 \\Rightarrow 2x^3=-a$$
+$$x^3=\\dfrac{-a}{2} \\Rightarrow x=\\sqrt[3]{\\dfrac{-a}{2}}$$
+$$f''(x)=2-\\dfrac{2a}{x^3}$$
+$$f''\\!\\left(\\sqrt[3]{\\dfrac{-a}{2}}\\right)=2-\\dfrac{2a}{\\dfrac{-a}{2}}$$
+$$=2+4=6>0$$
+`,
+                    result: "$\\therefore f$ لا تمتلك نقطة نهاية عظمى محلية"
+                }
+            ]
+        },
+
+        // ── س6 أ ──────────────────────────────────────────────────────────────
+        {
+            id: "6A",
+            title: "السؤال السادس / أ",
+            text: "قطع زائد مركزه نقطة الأصل، والقيمة المطلقة لفرق بعدي أي نقطة عن بؤرتيه تساوي ($6$) وحدات، وإحدى بؤرتيه هي بؤرة القطع المكافئ الذي رأسه نقطة الأصل ويمر بالنقطتين $(1,2\\sqrt5)$، $(-1,-2\\sqrt5)$، جد معادلتي القطع المكافئ والقطع الزائد.",
+            subs: [
+                {
+                    heading: "القطع المكافئ",
+                    body: `
+$$y^2=4px$$
+$$(2\\sqrt5)^2=4p(1)$$
+$$20=4p$$
+$$p=5$$
+$$y^2=20x$$
+`,
+                    result: "معادلة القطع المكافئ: $y^2=20x$"
+                },
+                {
+                    heading: "القطع الزائد",
+                    body: `
+$$F_1(5,0)\\quad F_2(-5,0) \\Rightarrow c=5 \\Rightarrow c^2=25$$
+$$2a=6 \\Rightarrow a=3 \\Rightarrow a^2=9$$
+$$c^2=a^2+b^2$$
+$$25=9+b^2 \\Rightarrow b^2=16$$
+$$\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=1$$
+$$\\dfrac{x^2}{9}-\\dfrac{y^2}{16}=1$$
+`,
+                    result: "معادلة القطع الزائد: $\\dfrac{x^2}{9}-\\dfrac{y^2}{16}=1$"
+                }
+            ]
+        },
+
+        // ── س6 ب ──────────────────────────────────────────────────────────────
+        {
+            id: "6B",
+            title: "السؤال السادس / ب",
+            text: "أثبت فيما إذا كانت $F:[1,3]\\to R$، $F(x)=x^3+2$ هي دالة مقابلة للدالة $f(x)=3x^2$.",
+            subs: [
+                {
+                    heading: null,
+                    note: "$F(x)=x^3+2$ دالة مستمرة وقابلة للاشتقاق على $R$ (لأنها دالة كثيرة الحدود)",
+                    body: `
+$$F'(x)=3x^2=f(x) \\quad \\forall x\\in(1,3)$$
+`,
+                    result: "$\\therefore F$ دالة مقابلة للدالة $f$ على $[1,3]$"
+                }
+            ]
+        },
+
+        // ── س6 ج ──────────────────────────────────────────────────────────────
+        {
+            id: "6C",
+            title: "السؤال السادس / ج",
+            text: "إذا كانت الدالة $f:[0,b]\\to R$ حيث $f(x)=x^3-4x^2$ تحقق مبرهنة القيمة المتوسطة عند $c=\\dfrac{2}{3}$، جد $b$.",
+            subs: [
+                {
+                    heading: null,
+                    body: `
+$$f(a)=f(0)=(0)^3-4(0)^2=0-0=0$$
+$$f(b)=b^3-4b^2$$
+$$f(x)=x^3-4x^2 \\Rightarrow f'(x)=3x^2-8x$$
+$$f'(c)=3c^2-8c \\quad,\\quad c=\\dfrac{2}{3}$$
+$$f'\\!\\left(\\dfrac{2}{3}\\right)=3\\left(\\dfrac{2}{3}\\right)^2-8\\left(\\dfrac{2}{3}\\right)$$
+$$f'(c)=3\\cdot\\dfrac{4}{9}-\\dfrac{16}{3}$$
+$$f'(c)=\\dfrac{4}{3}-\\dfrac{16}{3}$$
+$$f'(c)=\\dfrac{4-16}{3}$$
+$$f'(c)=\\dfrac{-12}{3}$$
+$$f'(c)=-4$$
+`,
+                    note: "ميل المماس = ميل الوتر",
+                    body2: `
+$$f'(c)=\\dfrac{f(b)-f(a)}{b-a}$$
+$$-4=\\dfrac{b^3-4b^2-0}{b-0}$$
+$$-4=\\dfrac{b^3-4b^2}{b}$$
+$$-4=\\dfrac{b(b^2-4b)}{b}$$
+$$-4=b^2-4b$$
+$$b^2-4b+4=0$$
+$$(b-2)(b-2)=0$$
+$$(b-2)^2=0$$
+$$b-2=0 \\Rightarrow b=2$$
+`,
+                    result: "$b=2$"
+                }
+            ]
+        }
+    ];
+
+    // KaTeX options
+    const katexOpts = {
+        delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$",  right: "$",  display: false }
+        ],
+        throwOnError: false
+    };
+
+    // Build a sub-section HTML string — cvt() applied only to text/math strings, never to raw HTML
+    function buildSub(sub) {
+        let html = '';
+        if (sub.heading) {
+            html += `<div class="sub-heading">${sub.heading}</div>`;
+        }
+        if (sub.note) {
+            html += `<div class="note">${cvt(sub.note)}</div>`;
+        }
+        if (sub.diagram) {
+            html += `<div class="diagram">${sub.diagram}</div>`;
+        }
+        if (sub.body) {
+            html += sub.body;
+        }
+        if (sub.body2) {
+            html += sub.body2;
+        }
+        if (sub.result) {
+            html += `<div class="result">${sub.result}</div>`;
+        }
+        return html;
+    }
+
+    // Render question cards
+    const grid = document.getElementById('questionGrid');
+    questions.forEach(q => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.onclick = () => openAnswer(q.id);
+        card.innerHTML = `
+            <div>
+                <div class="q-title">${cvt(q.title)}</div>
+                <div class="q-text">${cvt(q.text)}</div>
+            </div>
+            <div class="click-hint">⟸ اضغط لعرض الحل الكامل</div>
+        `;
+        grid.appendChild(card);
+    });
+    renderMathInElement(grid, katexOpts);
+
+    // Open Answer
+    function openAnswer(id) {
+        const q = questions.find(item => item.id === id);
+        if (!q) return;
+
+        let subsHtml = '';
+        if (q.subs && q.subs.length > 1) {
+            q.subs.forEach((sub, i) => {
+                if (i > 0) subsHtml += '<hr style="border:none;border-top:1px solid #d0dde6;margin:20px 0;">';
+                subsHtml += buildSub(sub);
+            });
+        } else if (q.subs && q.subs.length === 1) {
+            subsHtml = buildSub(q.subs[0]);
         }
 
-        // Close Answer
-        function closeAnswer() {
-            document.getElementById('answerOverlay').classList.remove('active');
-        }
+        const content = document.getElementById('answerContent');
+        content.innerHTML = `
+            <div class="answer-title">${cvt(q.title)}</div>
+            <div class="answer-question">${cvt(q.text)}</div>
+            ${subsHtml}
+        `;
+        renderMathInElement(content, katexOpts);
+        document.getElementById('answerOverlay').classList.add('active');
+        history.pushState({ answerOpen: true }, '');
+    }
 
-        // Escape Key Listener
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape") {
-                closeAnswer();
-            }
-        });
-    </script>
+    // Close Answer
+    function closeAnswer(skipHistory) {
+        document.getElementById('answerOverlay').classList.remove('active');
+        if (!skipHistory && history.state && history.state.answerOpen) {
+            history.back();
+        }
+    }
+
+    window.addEventListener('popstate', () => closeAnswer(true));
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && document.getElementById('answerOverlay').classList.contains('active')) {
+            closeAnswer();
+        }
+    });
+</script>
 </body>
 </html>
