@@ -48,7 +48,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: 1005;
+      width: 100%;
       height: 6px;
     }
 
@@ -165,6 +165,9 @@
       transition: 0.15s;
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .flight-card:hover {
@@ -321,6 +324,7 @@
       padding-top: 6px;
       border-top: 1px solid #edf2f7;
       font-size: 0.75rem;
+      margin-bottom: 12px;
     }
 
     .baggage-total {
@@ -337,6 +341,30 @@
       font-weight: 500;
     }
     .cabin-baggage i { margin-right: 4px; color: #d4af37; }
+
+    /* Calendar Button Styling inside flight card */
+    .calendar-card-btn {
+      width: 100%;
+      background-color: #0a2240;
+      color: #d4af37;
+      border: 1px solid #d4af37;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      margin-top: 4px;
+    }
+
+    .calendar-card-btn:hover {
+      background-color: #d4af37;
+      color: #0a2240;
+    }
 
     .footer-meta {
       display: flex;
@@ -384,155 +412,203 @@
           <div id="countdown-1" class="countdown-timer"><i class="fas fa-clock"></i> Loading...</div>
       </div>
       <div class="ticket-ref">
-        <span><i class="fas fa-ticket-alt"></i> <span class="ref-code">HCCNWF</span>[cite: 2]</span>
-        <span class="ticket-no">ETKT: 512 2116961708</span>[cite: 2]
+        <span><i class="fas fa-ticket-alt"></i> <span class="ref-code">HCCNWF</span></span>
+        <span class="ticket-no">ETKT: 512 2116961708</span>
       </div>
     </div>
 
     <div class="flights-grid">
       <!-- Leg 1 -->
       <div class="flight-card">
-        <div class="flight-header">
-          <span class="flight-number"><i class="fas fa-plane"></i> RJ 404</span>[cite: 2]
-          <span class="flight-status">Confirmed</span>[cite: 2]
-        </div>
-        <div class="flight-route">
-          <div class="airport-pair">
-            <div><div class="airport-code">BEY</div><div class="airport-name">Beirut</div></div>
-            <i class="fas fa-arrow-right arrow-icon"></i>
-            <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
+        <div>
+          <div class="flight-header">
+            <span class="flight-number"><i class="fas fa-plane"></i> RJ 404</span>
+            <span class="flight-status">Confirmed</span>
           </div>
-          <div class="time-info">
-            <span class="time-depart">22:15</span>[cite: 2]
-            <span class="time-arrive">23:25</span>[cite: 2]
+          <div class="flight-route">
+            <div class="airport-pair">
+              <div><div class="airport-code">BEY</div><div class="airport-name">Beirut</div></div>
+              <i class="fas fa-arrow-right arrow-icon"></i>
+              <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
+            </div>
+            <div class="time-info">
+              <span class="time-depart">22:15</span>
+              <span class="time-arrive">23:25</span>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> 10 Sep 2026</span>
+            <span style="font-size:0.65rem; color:#486581;">01h 10m</span>
+          </div>
+          <div class="terminal-info">
+            <span><i class="fas fa-plane-departure"></i> Rafic Hariri Intl</span>
+            <span><i class="fas fa-plane-arrival"></i> Queen Alia</span>
+          </div>
+          <div class="extra-services">
+            <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>
+            <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>
+          </div>
+          <div class="baggage-row">
+            <span class="baggage-total">1PC Baggage</span>
+            <span class="cabin-baggage">Non-Stop</span>
           </div>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
-          <span class="date-badge"><i class="far fa-calendar-alt"></i> 10 Sep 2026</span>[cite: 2]
-          <span style="font-size:0.65rem; color:#486581;">01h 10m</span>[cite: 2]
-        </div>
-        <div class="terminal-info">
-          <span><i class="fas fa-plane-departure"></i> Rafic Hariri Intl</span>[cite: 2]
-          <span><i class="fas fa-plane-arrival"></i> Queen Alia</span>[cite: 2]
-        </div>
-        <div class="extra-services">
-          <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>[cite: 2]
-          <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>[cite: 2]
-        </div>
-        <div class="baggage-row">
-          <span class="baggage-total">1PC Baggage</span>[cite: 2]
-          <span class="cabin-baggage">Non-Stop</span>[cite: 2]
-        </div>
+        <button class="calendar-card-btn" onclick="downloadICS({
+            passengerName: 'AL HUSSEINAWI / AHMED',
+            ticketNumber: '5122116961708',
+            flightNumber: 'RJ 404',
+            origin: 'BEY',
+            destination: 'AMM',
+            originAirport: 'Rafic Hariri Intl Airport',
+            departureTime: '2026-09-10T22:15:00',
+            arrivalTime: '2026-09-10T23:25:00'
+        })"><i class="far fa-calendar-plus"></i> Add to Calendar (Alarms)</button>
       </div>
 
       <!-- Leg 2 -->
       <div class="flight-card">
-        <div class="flight-header">
-          <span class="flight-number"><i class="fas fa-plane"></i> RJ 555</span>[cite: 2]
-          <span class="flight-status">Confirmed</span>[cite: 2]
-        </div>
-        <div class="flight-route">
-          <div class="airport-pair">
-            <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
-            <i class="fas fa-arrow-right arrow-icon"></i>
-            <div><div class="airport-code">CMN</div><div class="airport-name">Casablanca</div></div>
+        <div>
+          <div class="flight-header">
+            <span class="flight-number"><i class="fas fa-plane"></i> RJ 555</span>
+            <span class="flight-status">Confirmed</span>
           </div>
-          <div class="time-info">
-            <span class="time-depart">01:15</span>[cite: 2]
-            <span class="time-arrive">05:20</span>[cite: 2]
+          <div class="flight-route">
+            <div class="airport-pair">
+              <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
+              <i class="fas fa-arrow-right arrow-icon"></i>
+              <div><div class="airport-code">CMN</div><div class="airport-name">Casablanca</div></div>
+            </div>
+            <div class="time-info">
+              <span class="time-depart">01:15</span>
+              <span class="time-arrive">05:20</span>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> 11 Sep 2026</span>
+            <span style="font-size:0.65rem; color:#486581;">06h 05m</span>
+          </div>
+          <div class="terminal-info">
+            <span><i class="fas fa-plane-departure"></i> Queen Alia</span>
+            <span><i class="fas fa-building"></i> Terminal 2</span>
+          </div>
+          <div class="extra-services">
+            <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>
+            <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>
+          </div>
+          <div class="baggage-row">
+            <span class="baggage-total">1PC Baggage</span>
+            <span class="cabin-baggage">Non-Stop</span>
           </div>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
-          <span class="date-badge"><i class="far fa-calendar-alt"></i> 11 Sep 2026</span>[cite: 2]
-          <span style="font-size:0.65rem; color:#486581;">06h 05m</span>[cite: 2]
-        </div>
-        <div class="terminal-info">
-          <span><i class="fas fa-plane-departure"></i> Queen Alia</span>[cite: 2]
-          <span><i class="fas fa-building"></i> Terminal 2</span>[cite: 2]
-        </div>
-        <div class="extra-services">
-          <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>[cite: 2]
-          <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>[cite: 2]
-        </div>
-        <div class="baggage-row">
-          <span class="baggage-total">1PC Baggage</span>[cite: 2]
-          <span class="cabin-baggage">Non-Stop</span>[cite: 2]
-        </div>
+        <button class="calendar-card-btn" onclick="downloadICS({
+            passengerName: 'AL HUSSEINAWI / AHMED',
+            ticketNumber: '5122116961708',
+            flightNumber: 'RJ 555',
+            origin: 'AMM',
+            destination: 'CMN',
+            originAirport: 'Queen Alia International Airport',
+            departureTime: '2026-09-11T01:15:00',
+            arrivalTime: '2026-09-11T05:20:00'
+        })"><i class="far fa-calendar-plus"></i> Add to Calendar (Alarms)</button>
       </div>
 
       <!-- Leg 3 -->
       <div class="flight-card">
-        <div class="flight-header">
-          <span class="flight-number"><i class="fas fa-plane"></i> RJ 556</span>[cite: 2]
-          <span class="flight-status">Confirmed</span>[cite: 2]
-        </div>
-        <div class="flight-route">
-          <div class="airport-pair">
-            <div><div class="airport-code">CMN</div><div class="airport-name">Casablanca</div></div>
-            <i class="fas fa-arrow-right arrow-icon"></i>
-            <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
+        <div>
+          <div class="flight-header">
+            <span class="flight-number"><i class="fas fa-plane"></i> RJ 556</span>
+            <span class="flight-status">Confirmed</span>
           </div>
-          <div class="time-info">
-            <span class="time-depart">06:30</span>[cite: 2]
-            <span class="time-arrive">13:50</span>[cite: 2]
+          <div class="flight-route">
+            <div class="airport-pair">
+              <div><div class="airport-code">CMN</div><div class="airport-name">Casablanca</div></div>
+              <i class="fas fa-arrow-right arrow-icon"></i>
+              <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
+            </div>
+            <div class="time-info">
+              <span class="time-depart">06:30</span>
+              <span class="time-arrive">13:50</span>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> 18 Sep 2026</span>
+            <span style="font-size:0.65rem; color:#486581;">05h 20m</span>
+          </div>
+          <div class="terminal-info">
+            <span><i class="fas fa-building"></i> Terminal 1</span>
+            <span><i class="fas fa-plane-arrival"></i> Queen Alia</span>
+          </div>
+          <div class="extra-services">
+            <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>
+            <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>
+          </div>
+          <div class="baggage-row">
+            <span class="baggage-total">1PC Baggage</span>
+            <span class="cabin-baggage">Non-Stop</span>
           </div>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
-          <span class="date-badge"><i class="far fa-calendar-alt"></i> 18 Sep 2026</span>[cite: 2]
-          <span style="font-size:0.65rem; color:#486581;">05h 20m</span>[cite: 2]
-        </div>
-        <div class="terminal-info">
-          <span><i class="fas fa-building"></i> Terminal 1</span>[cite: 2]
-          <span><i class="fas fa-plane-arrival"></i> Queen Alia</span>[cite: 2]
-        </div>
-        <div class="extra-services">
-          <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>[cite: 2]
-          <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>[cite: 2]
-        </div>
-        <div class="baggage-row">
-          <span class="baggage-total">1PC Baggage</span>[cite: 2]
-          <span class="cabin-baggage">Non-Stop</span>[cite: 2]
-        </div>
+        <button class="calendar-card-btn" onclick="downloadICS({
+            passengerName: 'AL HUSSEINAWI / AHMED',
+            ticketNumber: '5122116961708',
+            flightNumber: 'RJ 556',
+            origin: 'CMN',
+            destination: 'AMM',
+            originAirport: 'Mohammed V International Airport',
+            departureTime: '2026-09-18T06:30:00',
+            arrivalTime: '2026-09-18T13:50:00'
+        })"><i class="far fa-calendar-plus"></i> Add to Calendar (Alarms)</button>
       </div>
 
       <!-- Leg 4 -->
       <div class="flight-card">
-        <div class="flight-header">
-          <span class="flight-number"><i class="fas fa-plane"></i> RJ 403</span>[cite: 2]
-          <span class="flight-status">Confirmed</span>[cite: 2]
-        </div>
-        <div class="flight-route">
-          <div class="airport-pair">
-            <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
-            <i class="fas fa-arrow-right arrow-icon"></i>
-            <div><div class="airport-code">BEY</div><div class="airport-name">Beirut</div></div>
+        <div>
+          <div class="flight-header">
+            <span class="flight-number"><i class="fas fa-plane"></i> RJ 403</span>
+            <span class="flight-status">Confirmed</span>
           </div>
-          <div class="time-info">
-            <span class="time-depart">19:25</span>[cite: 2]
-            <span class="time-arrive">20:40</span>[cite: 2]
+          <div class="flight-route">
+            <div class="airport-pair">
+              <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
+              <i class="fas fa-arrow-right arrow-icon"></i>
+              <div><div class="airport-code">BEY</div><div class="airport-name">Beirut</div></div>
+            </div>
+            <div class="time-info">
+              <span class="time-depart">19:25</span>
+              <span class="time-arrive">20:40</span>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> 18 Sep 2026</span>
+            <span style="font-size:0.65rem; color:#486581;">01h 15m</span>
+          </div>
+          <div class="terminal-info">
+            <span><i class="fas fa-plane-departure"></i> Queen Alia</span>
+            <span><i class="fas fa-plane-arrival"></i> Rafic Hariri Intl</span>
+          </div>
+          <div class="extra-services">
+            <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>
+            <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>
+          </div>
+          <div class="baggage-row">
+            <span class="baggage-total">1PC Baggage</span>
+            <span class="cabin-baggage">Non-Stop</span>
           </div>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
-          <span class="date-badge"><i class="far fa-calendar-alt"></i> 18 Sep 2026</span>[cite: 2]
-          <span style="font-size:0.65rem; color:#486581;">01h 15m</span>[cite: 2]
-        </div>
-        <div class="terminal-info">
-          <span><i class="fas fa-plane-departure"></i> Queen Alia</span>[cite: 2]
-          <span><i class="fas fa-plane-arrival"></i> Rafic Hariri Intl</span>[cite: 2]
-        </div>
-        <div class="extra-services">
-          <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>[cite: 2]
-          <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>[cite: 2]
-        </div>
-        <div class="baggage-row">
-          <span class="baggage-total">1PC Baggage</span>[cite: 2]
-          <span class="cabin-baggage">Non-Stop</span>[cite: 2]
-        </div>
+        <button class="calendar-card-btn" onclick="downloadICS({
+            passengerName: 'AL HUSSEINAWI / AHMED',
+            ticketNumber: '5122116961708',
+            flightNumber: 'RJ 403',
+            origin: 'AMM',
+            destination: 'BEY',
+            originAirport: 'Queen Alia International Airport',
+            departureTime: '2026-09-18T19:25:00',
+            arrivalTime: '2026-09-18T20:40:00'
+        })"><i class="far fa-calendar-plus"></i> Add to Calendar (Alarms)</button>
       </div>
     </div>
 
     <div class="footer-meta">
-      <div class="booking-code"><i class="fas fa-barcode"></i> REF: HCCNWF (Passenger 1)</div>[cite: 2]
+      <div class="booking-code"><i class="fas fa-barcode"></i> REF: HCCNWF (Passenger 1)</div>
       <div class="flex gap-2"><i class="fas fa-print"></i><i class="fas fa-share-alt"></i></div>
     </div>
   </div>
@@ -549,155 +625,203 @@
           <div id="countdown-2" class="countdown-timer"><i class="fas fa-clock"></i> Loading...</div>
       </div>
       <div class="ticket-ref">
-        <span><i class="fas fa-ticket-alt"></i> <span class="ref-code">HCCNWF</span>[cite: 2]</span>
-        <span class="ticket-no" style="background: #d4af37; color: #0a2240;">ETKT: 512 2116961709</span>[cite: 2]
+        <span><i class="fas fa-ticket-alt"></i> <span class="ref-code">HCCNWF</span></span>
+        <span class="ticket-no" style="background: #d4af37; color: #0a2240;">ETKT: 512 2116961709</span>
       </div>
     </div>
 
     <div class="flights-grid">
       <!-- Leg 1 -->
       <div class="flight-card">
-        <div class="flight-header">
-          <span class="flight-number"><i class="fas fa-plane"></i> RJ 404</span>[cite: 2]
-          <span class="flight-status">Confirmed</span>[cite: 2]
-        </div>
-        <div class="flight-route">
-          <div class="airport-pair">
-            <div><div class="airport-code">BEY</div><div class="airport-name">Beirut</div></div>
-            <i class="fas fa-arrow-right arrow-icon"></i>
-            <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
+        <div>
+          <div class="flight-header">
+            <span class="flight-number"><i class="fas fa-plane"></i> RJ 404</span>
+            <span class="flight-status">Confirmed</span>
           </div>
-          <div class="time-info">
-            <span class="time-depart">22:15</span>[cite: 2]
-            <span class="time-arrive">23:25</span>[cite: 2]
+          <div class="flight-route">
+            <div class="airport-pair">
+              <div><div class="airport-code">BEY</div><div class="airport-name">Beirut</div></div>
+              <i class="fas fa-arrow-right arrow-icon"></i>
+              <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
+            </div>
+            <div class="time-info">
+              <span class="time-depart">22:15</span>
+              <span class="time-arrive">23:25</span>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> 10 Sep 2026</span>
+            <span style="font-size:0.65rem; color:#486581;">01h 10m</span>
+          </div>
+          <div class="terminal-info">
+            <span><i class="fas fa-plane-departure"></i> Rafic Hariri Intl</span>
+            <span><i class="fas fa-plane-arrival"></i> Queen Alia</span>
+          </div>
+          <div class="extra-services">
+            <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>
+            <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>
+          </div>
+          <div class="baggage-row">
+            <span class="baggage-total">1PC Baggage</span>
+            <span class="cabin-baggage">Non-Stop</span>
           </div>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
-          <span class="date-badge"><i class="far fa-calendar-alt"></i> 10 Sep 2026</span>[cite: 2]
-          <span style="font-size:0.65rem; color:#486581;">01h 10m</span>[cite: 2]
-        </div>
-        <div class="terminal-info">
-          <span><i class="fas fa-plane-departure"></i> Rafic Hariri Intl</span>[cite: 2]
-          <span><i class="fas fa-plane-arrival"></i> Queen Alia</span>[cite: 2]
-        </div>
-        <div class="extra-services">
-          <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>[cite: 2]
-          <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>[cite: 2]
-        </div>
-        <div class="baggage-row">
-          <span class="baggage-total">1PC Baggage</span>[cite: 2]
-          <span class="cabin-baggage">Non-Stop</span>[cite: 2]
-        </div>
+        <button class="calendar-card-btn" onclick="downloadICS({
+            passengerName: 'HAMMOOD / AHMED',
+            ticketNumber: '5122116961709',
+            flightNumber: 'RJ 404',
+            origin: 'BEY',
+            destination: 'AMM',
+            originAirport: 'Rafic Hariri Intl Airport',
+            departureTime: '2026-09-10T22:15:00',
+            arrivalTime: '2026-09-10T23:25:00'
+        })"><i class="far fa-calendar-plus"></i> Add to Calendar (Alarms)</button>
       </div>
 
       <!-- Leg 2 -->
       <div class="flight-card">
-        <div class="flight-header">
-          <span class="flight-number"><i class="fas fa-plane"></i> RJ 555</span>[cite: 2]
-          <span class="flight-status">Confirmed</span>[cite: 2]
-        </div>
-        <div class="flight-route">
-          <div class="airport-pair">
-            <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
-            <i class="fas fa-arrow-right arrow-icon"></i>
-            <div><div class="airport-code">CMN</div><div class="airport-name">Casablanca</div></div>
+        <div>
+          <div class="flight-header">
+            <span class="flight-number"><i class="fas fa-plane"></i> RJ 555</span>
+            <span class="flight-status">Confirmed</span>
           </div>
-          <div class="time-info">
-            <span class="time-depart">01:15</span>[cite: 2]
-            <span class="time-arrive">05:20</span>[cite: 2]
+          <div class="flight-route">
+            <div class="airport-pair">
+              <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
+              <i class="fas fa-arrow-right arrow-icon"></i>
+              <div><div class="airport-code">CMN</div><div class="airport-name">Casablanca</div></div>
+            </div>
+            <div class="time-info">
+              <span class="time-depart">01:15</span>
+              <span class="time-arrive">05:20</span>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> 11 Sep 2026</span>
+            <span style="font-size:0.65rem; color:#486581;">06h 05m</span>
+          </div>
+          <div class="terminal-info">
+            <span><i class="fas fa-plane-departure"></i> Queen Alia</span>
+            <span><i class="fas fa-building"></i> Terminal 2</span>
+          </div>
+          <div class="extra-services">
+            <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>
+            <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>
+          </div>
+          <div class="baggage-row">
+            <span class="baggage-total">1PC Baggage</span>
+            <span class="cabin-baggage">Non-Stop</span>
           </div>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
-          <span class="date-badge"><i class="far fa-calendar-alt"></i> 11 Sep 2026</span>[cite: 2]
-          <span style="font-size:0.65rem; color:#486581;">06h 05m</span>[cite: 2]
-        </div>
-        <div class="terminal-info">
-          <span><i class="fas fa-plane-departure"></i> Queen Alia</span>[cite: 2]
-          <span><i class="fas fa-building"></i> Terminal 2</span>[cite: 2]
-        </div>
-        <div class="extra-services">
-          <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>[cite: 2]
-          <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>[cite: 2]
-        </div>
-        <div class="baggage-row">
-          <span class="baggage-total">1PC Baggage</span>[cite: 2]
-          <span class="cabin-baggage">Non-Stop</span>[cite: 2]
-        </div>
+        <button class="calendar-card-btn" onclick="downloadICS({
+            passengerName: 'HAMMOOD / AHMED',
+            ticketNumber: '5122116961709',
+            flightNumber: 'RJ 555',
+            origin: 'AMM',
+            destination: 'CMN',
+            originAirport: 'Queen Alia International Airport',
+            departureTime: '2026-09-11T01:15:00',
+            arrivalTime: '2026-09-11T05:20:00'
+        })"><i class="far fa-calendar-plus"></i> Add to Calendar (Alarms)</button>
       </div>
 
       <!-- Leg 3 -->
       <div class="flight-card">
-        <div class="flight-header">
-          <span class="flight-number"><i class="fas fa-plane"></i> RJ 556</span>[cite: 2]
-          <span class="flight-status">Confirmed</span>[cite: 2]
-        </div>
-        <div class="flight-route">
-          <div class="airport-pair">
-            <div><div class="airport-code">CMN</div><div class="airport-name">Casablanca</div></div>
-            <i class="fas fa-arrow-right arrow-icon"></i>
-            <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
+        <div>
+          <div class="flight-header">
+            <span class="flight-number"><i class="fas fa-plane"></i> RJ 556</span>
+            <span class="flight-status">Confirmed</span>
           </div>
-          <div class="time-info">
-            <span class="time-depart">06:30</span>[cite: 2]
-            <span class="time-arrive">13:50</span>[cite: 2]
+          <div class="flight-route">
+            <div class="airport-pair">
+              <div><div class="airport-code">CMN</div><div class="airport-name">Casablanca</div></div>
+              <i class="fas fa-arrow-right arrow-icon"></i>
+              <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
+            </div>
+            <div class="time-info">
+              <span class="time-depart">06:30</span>
+              <span class="time-arrive">13:50</span>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> 18 Sep 2026</span>
+            <span style="font-size:0.65rem; color:#486581;">05h 20m</span>
+          </div>
+          <div class="terminal-info">
+            <span><i class="fas fa-building"></i> Terminal 1</span>
+            <span><i class="fas fa-plane-arrival"></i> Queen Alia</span>
+          </div>
+          <div class="extra-services">
+            <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>
+            <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>
+          </div>
+          <div class="baggage-row">
+            <span class="baggage-total">1PC Baggage</span>
+            <span class="cabin-baggage">Non-Stop</span>
           </div>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
-          <span class="date-badge"><i class="far fa-calendar-alt"></i> 18 Sep 2026</span>[cite: 2]
-          <span style="font-size:0.65rem; color:#486581;">05h 20m</span>[cite: 2]
-        </div>
-        <div class="terminal-info">
-          <span><i class="fas fa-building"></i> Terminal 1</span>[cite: 2]
-          <span><i class="fas fa-plane-arrival"></i> Queen Alia</span>[cite: 2]
-        </div>
-        <div class="extra-services">
-          <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>[cite: 2]
-          <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>[cite: 2]
-        </div>
-        <div class="baggage-row">
-          <span class="baggage-total">1PC Baggage</span>[cite: 2]
-          <span class="cabin-baggage">Non-Stop</span>[cite: 2]
-        </div>
+        <button class="calendar-card-btn" onclick="downloadICS({
+            passengerName: 'HAMMOOD / AHMED',
+            ticketNumber: '5122116961709',
+            flightNumber: 'RJ 556',
+            origin: 'CMN',
+            destination: 'AMM',
+            originAirport: 'Mohammed V International Airport',
+            departureTime: '2026-09-18T06:30:00',
+            arrivalTime: '2026-09-18T13:50:00'
+        })"><i class="far fa-calendar-plus"></i> Add to Calendar (Alarms)</button>
       </div>
 
       <!-- Leg 4 -->
       <div class="flight-card">
-        <div class="flight-header">
-          <span class="flight-number"><i class="fas fa-plane"></i> RJ 403</span>[cite: 2]
-          <span class="flight-status">Confirmed</span>[cite: 2]
-        </div>
-        <div class="flight-route">
-          <div class="airport-pair">
-            <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
-            <i class="fas fa-arrow-right arrow-icon"></i>
-            <div><div class="airport-code">BEY</div><div class="airport-name">Beirut</div></div>
+        <div>
+          <div class="flight-header">
+            <span class="flight-number"><i class="fas fa-plane"></i> RJ 403</span>
+            <span class="flight-status">Confirmed</span>
           </div>
-          <div class="time-info">
-            <span class="time-depart">19:25</span>[cite: 2]
-            <span class="time-arrive">20:40</span>[cite: 2]
+          <div class="flight-route">
+            <div class="airport-pair">
+              <div><div class="airport-code">AMM</div><div class="airport-name">Amman</div></div>
+              <i class="fas fa-arrow-right arrow-icon"></i>
+              <div><div class="airport-code">BEY</div><div class="airport-name">Beirut</div></div>
+            </div>
+            <div class="time-info">
+              <span class="time-depart">19:25</span>
+              <span class="time-arrive">20:40</span>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> 18 Sep 2026</span>
+            <span style="font-size:0.65rem; color:#486581;">01h 15m</span>
+          </div>
+          <div class="terminal-info">
+            <span><i class="fas fa-plane-departure"></i> Queen Alia</span>
+            <span><i class="fas fa-plane-arrival"></i> Rafic Hariri Intl</span>
+          </div>
+          <div class="extra-services">
+            <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>
+            <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>
+          </div>
+          <div class="baggage-row">
+            <span class="baggage-total">1PC Baggage</span>
+            <span class="cabin-baggage">Non-Stop</span>
           </div>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
-          <span class="date-badge"><i class="far fa-calendar-alt"></i> 18 Sep 2026</span>[cite: 2]
-          <span style="font-size:0.65rem; color:#486581;">01h 15m</span>[cite: 2]
-        </div>
-        <div class="terminal-info">
-          <span><i class="fas fa-plane-departure"></i> Queen Alia</span>[cite: 2]
-          <span><i class="fas fa-plane-arrival"></i> Rafic Hariri Intl</span>[cite: 2]
-        </div>
-        <div class="extra-services">
-          <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>[cite: 2]
-          <span class="service-item"><i class="fas fa-utensils"></i> Snack</span>[cite: 2]
-        </div>
-        <div class="baggage-row">
-          <span class="baggage-total">1PC Baggage</span>[cite: 2]
-          <span class="cabin-baggage">Non-Stop</span>[cite: 2]
-        </div>
+        <button class="calendar-card-btn" onclick="downloadICS({
+            passengerName: 'HAMMOOD / AHMED',
+            ticketNumber: '5122116961709',
+            flightNumber: 'RJ 403',
+            origin: 'AMM',
+            destination: 'BEY',
+            originAirport: 'Queen Alia International Airport',
+            departureTime: '2026-09-18T19:25:00',
+            arrivalTime: '2026-09-18T20:40:00'
+        })"><i class="far fa-calendar-plus"></i> Add to Calendar (Alarms)</button>
       </div>
     </div>
 
     <div class="footer-meta">
-      <div class="booking-code"><i class="fas fa-barcode"></i> REF: HCCNWF (Passenger 2)</div>[cite: 2]
+      <div class="booking-code"><i class="fas fa-barcode"></i> REF: HCCNWF (Passenger 2)</div>
       <div class="flex gap-2"><i class="fas fa-print"></i><i class="fas fa-share-alt"></i></div>
     </div>
   </div>
@@ -720,6 +844,54 @@
         document.getElementById("countdown-2").innerHTML = text;
     }
     setInterval(updateCountdowns, 1000); updateCountdowns();
+
+    function downloadICS(flight) {
+        const formatICSDate = (dateStr) => {
+            const d = new Date(dateStr);
+            return d.toISOString().replace(/-|:|\.\d+/g, '');
+        };
+
+        const start = formatICSDate(flight.departureTime);
+        const end = formatICSDate(flight.arrivalTime);
+        const now = formatICSDate(new Date());
+
+        const icsContent = [
+            'BEGIN:VCALENDAR',
+            'VERSION:2.0',
+            'PRODID:-//Royal Jordanian Office//Flight Dashboard//EN',
+            'CALSCALE:GREGORIAN',
+            'METHOD:PUBLISH',
+            'BEGIN:VEVENT',
+            `UID:flight-${flight.ticketNumber}-${flight.flightNumber.replace(/\s+/g, '')}-${Date.now()}@royaljordanian.com`,
+            `DTSTAMP:${now}`,
+            `DTSTART:${start}`,
+            `DTEND:${end}`,
+            `SUMMARY:Flight ${flight.flightNumber}: ${flight.origin} to ${flight.destination}`,
+            `DESCRIPTION:Passenger: ${flight.passengerName}\\nTicket: ${flight.ticketNumber}\\nFlight: ${flight.flightNumber}\\nDeparts: ${flight.origin} at ${flight.departureTime}`,
+            `LOCATION:${flight.originAirport}`,
+            'BEGIN:VALARM',
+            'ACTION:DISPLAY',
+            'DESCRIPTION:Flight Reminder - 24 Hours Before Departure',
+            'TRIGGER:-PT24H',
+            'END:VALARM',
+            'BEGIN:VALARM',
+            'ACTION:DISPLAY',
+            'DESCRIPTION:Flight Reminder - 3 Hours Before Departure',
+            'TRIGGER:-PT3H',
+            'END:VALARM',
+            'END:VEVENT',
+            'END:VCALENDAR'
+        ].join('\r\n');
+
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.setAttribute('download', `Flight_${flight.flightNumber.replace(/\s+/g, '')}_${flight.passengerName.replace(/[\/\s]+/g, '_')}.ics`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+    }
 </script>
 </body>
 </html>
