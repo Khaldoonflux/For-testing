@@ -1,803 +1,610 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حلول امتحان الرياضيات ٢٠٢٦</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Royal Jordanian · Al Husseinawi & Hammood</title>
+  <!-- Font & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+    body {
+      background: #f4f6f9;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+    /* main dashboard – Royal Jordanian style (Crown/Navy & Gold) */
+    .dashboard {
+      max-width: 980px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 32px;
+      box-shadow: 0 24px 56px rgba(10, 34, 64, 0.12);
+      padding: 28px 24px 32px;
+      transition: all 0.2s;
+      border: 1px solid #e1e8f0;
+    }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #ecf0f1;
-            margin: 0;
-            padding: 20px;
-            color: #2c3e50;
-        }
+    /* ----- header: RJ navy + gold accents ----- */
+    .header-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 22px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #d4af37;  /* Royal Gold */
+    }
 
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
-            font-family: Arial, Helvetica, sans-serif;
-        }
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-        /* Grid for Question Cards */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+    .passenger-name {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
 
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border-right: 4px solid #2980b9;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+    .passenger-name h2 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: -0.5px;
+      color: #0a2240;  /* RJ Deep Navy */
+    }
 
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-        }
+    .passenger-name .badge {
+      background: #d4af37;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 40px;
+      letter-spacing: 0.4px;
+    }
 
-        .q-title {
-            font-weight: bold;
-            color: #2980b9;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
+    /* Countdown Styling */
+    .countdown-timer {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0a2240;
+      background: #fdfaf0;
+      padding: 6px 16px;
+      border-radius: 40px;
+      border: 1px solid #d4af37;
+      display: inline-block;
+      margin-top: 5px;
+    }
 
-        .q-text {
-            font-size: 1rem;
-            line-height: 1.6;
-        }
+    .ticket-ref {
+      background: #f4f7fa;
+      padding: 8px 20px;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 2px 6px rgba(10, 34, 64, 0.04);
+    }
 
-        .click-hint {
-            margin-top: 15px;
-            font-size: 0.8rem;
-            color: #7f8c8d;
-            text-align: right;
-        }
+    .ticket-ref span { color: #1e3a5f; }
+    .ref-code {
+      font-weight: 700;
+      color: #0a2240;
+      letter-spacing: 0.8px;
+      font-size: 1rem;
+    }
+    .ticket-no { font-weight: 500; color: #334e68; }
+    .edit-icon { color: #d4af37; margin-left: 2px; }
 
-        /* Full Page Answer Overlay */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            z-index: 1000;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
+    /* ----- grid: 4 columns or 2x2 for flights ----- */
+    .flights-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin: 24px 0 16px;
+    }
 
-        .overlay.active {
-            transform: translateX(0);
-        }
+    @media (min-width: 720px) {
+      .flights-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+    }
 
-        .close-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 1001;
-        }
+    /* ----- flight card – RJ style ----- */
+    .flight-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 18px 16px 16px;
+      border: 1px solid #d8e2ec;
+      box-shadow: 0 6px 18px rgba(10, 34, 64, 0.03);
+      transition: 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .answer-content {
-            padding: 70px 20px 40px 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
-        }
+    /* gold accent line */
+    .flight-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #0a2240, #d4af37);
+      opacity: 0.9;
+    }
 
-        /* Answer page title */
-        .answer-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #2c3e50;
-            border-bottom: 2px solid #2980b9;
-            padding-bottom: 8px;
-            margin-bottom: 16px;
-        }
+    .flight-card:hover {
+      border-color: #d4af37;
+      box-shadow: 0 8px 24px rgba(10, 34, 64, 0.08);
+    }
 
-        /* Question text block at top of answer */
-        .answer-question {
-            background: #eef2f3;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 24px;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
+    .flight-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
 
-        /* Sub-question separator */
-        .sub-heading {
-            font-size: 1rem;
-            font-weight: bold;
-            color: #2980b9;
-            margin: 28px 0 10px 0;
-            padding-bottom: 4px;
-            border-bottom: 1px solid #d0dde6;
-            direction: ltr;
-            text-align: left;
-        }
+    .flight-number {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #0a2240;
+      background: #f0f4f8;
+      padding: 0 14px;
+      border-radius: 40px;
+      line-height: 2;
+      border: 1px solid #cbd5e1;
+      letter-spacing: -0.2px;
+    }
+    .flight-number i { color: #d4af37; margin-right: 6px; }
 
-        /* The first sub-heading needs less top margin */
-        .sub-heading:first-of-type {
-            margin-top: 10px;
-        }
+    .flight-status {
+      background: #e6f4ea;
+      color: #137333;
+      font-weight: 600;
+      font-size: 0.7rem;
+      padding: 4px 12px;
+      border-radius: 40px;
+      border: 1px solid #ceead6;
+    }
 
-        /* Result line */
-        .result {
-            color: #27ae60;
-            font-weight: bold;
-            font-size: 1.05rem;
-            margin: 14px 0 4px 0;
-            direction: ltr;
-            text-align: left;
-        }
+    /* route */
+    .flight-route {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 8px 0 6px;
+      flex-wrap: wrap;
+    }
 
-        /* Override KaTeX injected fonts with Arial/Helvetica */
-        .katex, .katex * {
-            font-family: Arial, Helvetica, sans-serif !important;
-        }
+    .airport-pair {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
 
-        /* Force all KaTeX to render LTR, left-aligned, full width, no scroll */
-        .katex-display {
-            direction: ltr !important;
-            text-align: left !important;
-            margin: 6px 0 !important;
-            overflow: visible !important;
-            white-space: normal !important;
-        }
+    .airport-code {
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: #0a2240;
+      letter-spacing: -0.5px;
+    }
 
-        .katex-display > .katex {
-            white-space: normal !important;
-            text-align: left !important;
-        }
+    .airport-name {
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: #486581;
+    }
 
-        .katex {
-            direction: ltr !important;
-            unicode-bidi: isolate;
-        }
+    .arrow-icon {
+      color: #d4af37;
+      font-size: 1rem;
+      margin: 0 4px;
+    }
 
-        /* Inline step notes (Arabic prose between equations) */
-        .note {
-            margin: 8px 0;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #2c3e50;
-        }
+    .time-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      line-height: 1.3;
+      background: #f8fafc;
+      padding: 4px 12px;
+      border-radius: 30px;
+      border: 1px solid #e2e8f0;
+    }
 
-        /* Diagram */
-        .diagram {
-            margin: 12px 0;
-            direction: ltr;
-        }
+    .time-depart {
+      font-weight: 700;
+      color: #0a2240;
+      font-size: 0.95rem;
+    }
+    .time-arrive {
+      font-weight: 500;
+      color: #334e68;
+      font-size: 0.85rem;
+    }
 
-        .diagram svg {
-            max-width: 100%;
-            height: auto;
-        }
+    /* ----- DATE BADGE ----- */
+    .date-badge {
+      background: #fdfaf0;
+      border-radius: 30px;
+      padding: 4px 14px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #0a2240;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #d4af37;
+      box-shadow: 0 2px 6px rgba(212, 175, 55, 0.15);
+    }
 
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
-            body { font-size: 18px; }
-            .q-text { font-size: 18px; }
-            .note { font-size: 18px; }
-            .answer-question { font-size: 18px; }
-            .result { font-size: 18px; }
-        }
-    </style>
+    .date-badge i { color: #d4af37; font-size: 0.85rem; }
+
+    .terminal-info {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 0.75rem;
+      color: #334e68;
+      background: #f4f7fa;
+      padding: 6px 12px;
+      border-radius: 20px;
+      margin: 10px 0 8px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .terminal-info i { margin-right: 4px; color: #d4af37; width: 14px; }
+
+    /* extra services */
+    .extra-services {
+      background: #fafbfc;
+      border-radius: 16px;
+      padding: 8px 12px;
+      margin: 8px 0 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      border: 1px solid #edf2f7;
+    }
+
+    .service-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: #243b53;
+    }
+
+    .service-item i { color: #d4af37; width: 16px; font-size: 0.85rem; }
+    .service-item strong { color: #0a2240; font-weight: 600; margin-right: 2px; }
+
+    .baggage-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #edf2f7;
+      font-size: 0.8rem;
+    }
+
+    .baggage-total {
+      background: #fdfaf0;
+      padding: 3px 14px;
+      border-radius: 30px;
+      font-weight: 700;
+      color: #0a2240;
+      border: 1px solid #d4af37;
+    }
+
+    .cabin-baggage {
+      color: #334e68;
+      font-weight: 500;
+    }
+    .cabin-baggage i { margin-right: 4px; color: #d4af37; }
+
+    .footer-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+      padding-top: 14px;
+      border-top: 2px solid #d4af37;
+      font-size: 0.75rem;
+      color: #334e68;
+    }
+
+    .booking-code {
+      background: #fdfaf0;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      color: #0a2240;
+      border: 1px solid #d4af37;
+    }
+
+    .passengers-list {
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 12px 16px;
+      margin-top: 20px;
+      border: 1px solid #e2e8f0;
+      font-size: 0.85rem;
+      color: #0a2240;
+    }
+
+    .passengers-list h4 {
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: #0a2240;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .passengers-list h4 i { color: #d4af37; }
+
+    .passenger-row {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 4px 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+    .passenger-row:last-child { border-bottom: none; }
+
+    /* responsive */
+    @media (max-width: 480px) {
+      .dashboard { padding: 16px 12px; }
+      .passenger-name h2 { font-size: 1.4rem; }
+      .ticket-ref { font-size: 0.7rem; padding: 4px 10px; gap: 6px; }
+      .flight-number { font-size: 1rem; }
+      .airport-code { font-size: 1.2rem; }
+      .terminal-info { font-size: 0.7rem; }
+    }
+
+    .flex { display: flex; align-items: center; gap: 6px; }
+    .gap-2 { gap: 8px; }
+  </style>
 </head>
 <body>
+<div class="dashboard">
+  
+  <!-- header: Royal Jordanian style -->
+  <div class="header-row">
+    <div class="header-left">
+        <div class="passenger-name">
+          <h2><i class="fas fa-crown" style="color: #d4af37; margin-right: 4px;"></i> Al Husseinawi & Hammood</h2>
+          <span class="badge"><i class="fas fa-users"></i> 2 Passengers</span>
+        </div>
+        <div id="countdown" class="countdown-timer"><i class="fas fa-clock"></i> Loading...</div>
+    </div>
+    <div class="ticket-ref">
+      <span><i class="fas fa-ticket-alt"></i> <span class="ref-code">HCCNWF</span>[cite: 2]</span>
+      <span class="ticket-no"><i class="far fa-calendar-alt"></i> Issued: 01 Sep 2026</span>[cite: 2]
+    </div>
+  </div>
 
-<h1>أسئلة امتحان الرياضيات - السادس العلمي (٢٠٢٦)</h1>
+  <!-- flights grid (4 legs) -->
+  <div class="flights-grid">
+    
+    <!-- leg 1: EBL -> AMM (RJ 404) -->
+    <div class="flight-card">
+      <div class="flight-header">
+        <span class="flight-number"><i class="fas fa-plane"></i> RJ 404</span>[cite: 2]
+        <span class="flight-status"><i class="fas fa-check-circle"></i> confirmed</span>[cite: 2]
+      </div>
 
-<div class="grid" id="questionGrid"></div>
+      <div class="flight-route">
+        <div class="airport-pair">
+          <div><div class="airport-code">BEY</div><div class="airport-name">Beirut (BEY)</div></div>
+          <i class="fas fa-arrow-right arrow-icon"></i>
+          <div><div class="airport-code">AMM</div><div class="airport-name">Amman (AMM)</div></div>
+        </div>
+        <div class="time-info">
+          <span class="time-depart">22:15</span>[cite: 2]
+          <span class="time-arrive">23:25</span>[cite: 2]
+        </div>
+      </div>
 
-<div id="answerOverlay" class="overlay">
-    <button class="close-btn" onclick="closeAnswer()">إغلاق ✕</button>
-    <div id="answerContent" class="answer-content"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin: 6px 0 8px;">
+        <span class="date-badge"><i class="far fa-calendar-alt"></i> 10 Sep 2026</span>[cite: 2]
+        <span style="font-size:0.7rem; color:#486581; background: #f0f4f8; padding: 2px 10px; border-radius: 20px;">01h 10m</span>[cite: 2]
+      </div>
+
+      <div class="terminal-info">
+        <span><i class="fas fa-plane-departure"></i> Rafic Hariri Intl</span>[cite: 2]
+        <span><i class="fas fa-plane-arrival"></i> Queen Alia</span>[cite: 2]
+      </div>
+
+      <div class="extra-services">
+        <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>[cite: 2]
+        <span class="service-item"><i class="fas fa-utensils"></i> <strong>Meal</strong> Snack</span>[cite: 2]
+        <span class="service-item"><i class="fas fa-plane"></i> <strong>Eqp</strong> Embraer 190 E2</span>[cite: 2]
+      </div>
+
+      <div class="baggage-row">
+        <span class="baggage-total"><i class="fas fa-weight-hanging"></i> 1PC Baggage</span>[cite: 2]
+        <span class="cabin-baggage"><i class="fas fa-shield-alt"></i> Non-Stop</span>[cite: 2]
+      </div>
+    </div>
+
+    <!-- leg 2: AMM -> CMN (RJ 555) -->
+    <div class="flight-card">
+      <div class="flight-header">
+        <span class="flight-number"><i class="fas fa-plane"></i> RJ 555</span>[cite: 2]
+        <span class="flight-status"><i class="fas fa-check-circle"></i> confirmed</span>[cite: 2]
+      </div>
+
+      <div class="flight-route">
+        <div class="airport-pair">
+          <div><div class="airport-code">AMM</div><div class="airport-name">Amman (AMM)</div></div>
+          <i class="fas fa-arrow-right arrow-icon"></i>
+          <div><div class="airport-code">CMN</div><div class="airport-name">Casablanca (CMN)</div></div>
+        </div>
+        <div class="time-info">
+          <span class="time-depart">01:15</span>[cite: 2]
+          <span class="time-arrive">05:20</span>[cite: 2]
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin: 6px 0 8px;">
+        <span class="date-badge"><i class="far fa-calendar-alt"></i> 11 Sep 2026</span>[cite: 2]
+        <span style="font-size:0.7rem; color:#486581; background: #f0f4f8; padding: 2px 10px; border-radius: 20px;">06h 05m</span>[cite: 2]
+      </div>
+
+      <div class="terminal-info">
+        <span><i class="fas fa-plane-departure"></i> Queen Alia</span>[cite: 2]
+        <span><i class="fas fa-building"></i> Terminal 2 (Arr)</span>[cite: 2]
+      </div>
+
+      <div class="extra-services">
+        <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>[cite: 2]
+        <span class="service-item"><i class="fas fa-utensils"></i> <strong>Meal</strong> Snack</span>[cite: 2]
+        <span class="service-item"><i class="fas fa-plane"></i> <strong>Eqp</strong> Airbus A321neo</span>[cite: 2]
+      </div>
+
+      <div class="baggage-row">
+        <span class="baggage-total"><i class="fas fa-weight-hanging"></i> 1PC Baggage</span>[cite: 2]
+        <span class="cabin-baggage"><i class="fas fa-shield-alt"></i> Non-Stop</span>[cite: 2]
+      </div>
+    </div>
+
+    <!-- leg 3: CMN -> AMM (RJ 556) -->
+    <div class="flight-card">
+      <div class="flight-header">
+        <span class="flight-number"><i class="fas fa-plane"></i> RJ 556</span>[cite: 2]
+        <span class="flight-status"><i class="fas fa-check-circle"></i> confirmed</span>[cite: 2]
+      </div>
+
+      <div class="flight-route">
+        <div class="airport-pair">
+          <div><div class="airport-code">CMN</div><div class="airport-name">Casablanca (CMN)</div></div>
+          <i class="fas fa-arrow-right arrow-icon"></i>
+          <div><div class="airport-code">AMM</div><div class="airport-name">Amman (AMM)</div></div>
+        </div>
+        <div class="time-info">
+          <span class="time-depart">06:30</span>[cite: 2]
+          <span class="time-arrive">13:50</span>[cite: 2]
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin: 6px 0 8px;">
+        <span class="date-badge"><i class="far fa-calendar-alt"></i> 18 Sep 2026</span>[cite: 2]
+        <span style="font-size:0.7rem; color:#486581; background: #f0f4f8; padding: 2px 10px; border-radius: 20px;">05h 20m</span>[cite: 2]
+      </div>
+
+      <div class="terminal-info">
+        <span><i class="fas fa-building"></i> Terminal 1 (Dep)</span>[cite: 2]
+        <span><i class="fas fa-plane-arrival"></i> Queen Alia</span>[cite: 2]
+      </div>
+
+      <div class="extra-services">
+        <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>[cite: 2]
+        <span class="service-item"><i class="fas fa-utensils"></i> <strong>Meal</strong> Snack</span>[cite: 2]
+        <span class="service-item"><i class="fas fa-plane"></i> <strong>Eqp</strong> Airbus A321neo</span>[cite: 2]
+      </div>
+
+      <div class="baggage-row">
+        <span class="baggage-total"><i class="fas fa-weight-hanging"></i> 1PC Baggage</span>[cite: 2]
+        <span class="cabin-baggage"><i class="fas fa-shield-alt"></i> Non-Stop</span>[cite: 2]
+      </div>
+    </div>
+
+    <!-- leg 4: AMM -> BEY (RJ 403) -->
+    <div class="flight-card">
+      <div class="flight-header">
+        <span class="flight-number"><i class="fas fa-plane"></i> RJ 403</span>[cite: 2]
+        <span class="flight-status"><i class="fas fa-check-circle"></i> confirmed</span>[cite: 2]
+      </div>
+
+      <div class="flight-route">
+        <div class="airport-pair">
+          <div><div class="airport-code">AMM</div><div class="airport-name">Amman (AMM)</div></div>
+          <i class="fas fa-arrow-right arrow-icon"></i>
+          <div><div class="airport-code">BEY</div><div class="airport-name">Beirut (BEY)</div></div>
+        </div>
+        <div class="time-info">
+          <span class="time-depart">19:25</span>[cite: 2]
+          <span class="time-arrive">20:40</span>[cite: 2]
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin: 6px 0 8px;">
+        <span class="date-badge"><i class="far fa-calendar-alt"></i> 18 Sep 2026</span>[cite: 2]
+        <span style="font-size:0.7rem; color:#486581; background: #f0f4f8; padding: 2px 10px; border-radius: 20px;">01h 15m</span>[cite: 2]
+      </div>
+
+      <div class="terminal-info">
+        <span><i class="fas fa-plane-departure"></i> Queen Alia</span>[cite: 2]
+        <span><i class="fas fa-plane-arrival"></i> Rafic Hariri Intl</span>[cite: 2]
+      </div>
+
+      <div class="extra-services">
+        <span class="service-item"><i class="fas fa-tag"></i> <strong>Class</strong> Economy (Q)</span>[cite: 2]
+        <span class="service-item"><i class="fas fa-utensils"></i> <strong>Meal</strong> Snack</span>[cite: 2]
+        <span class="service-item"><i class="fas fa-plane"></i> <strong>Eqp</strong> Airbus A320neo</span>[cite: 2]
+      </div>
+
+      <div class="baggage-row">
+        <span class="baggage-total"><i class="fas fa-weight-hanging"></i> 1PC Baggage</span>[cite: 2]
+        <span class="cabin-baggage"><i class="fas fa-shield-alt"></i> Non-Stop</span>[cite: 2]
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Passengers Details Section -->
+  <div class="passengers-list">
+    <h4><i class="fas fa-id-card"></i> E-Tickets & Passengers</h4>
+    <div class="passenger-row" style="margin-bottom: 6px;">
+      <span><strong>AL HUSSEINAWI / AHMED</strong></span>
+      <span>ETKT: 512 2116961708</span>[cite: 2]
+    </div>
+    <div class="passenger-row">
+      <span><strong>HAMMOOD / AHMED</strong></span>
+      <span>ETKT: 512 2116961709</span>[cite: 2]
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div class="footer-meta">
+    <div class="booking-code"><i class="fas fa-barcode"></i> REF: HCCNWF</div>[cite: 2]
+    <div class="flex gap-2"><i class="fas fa-print"></i><i class="fas fa-share-alt"></i></div>
+  </div>
 </div>
 
 <script>
-    function easternDigits(str) {
-        const map = {'0':'٠','1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩'};
-        return str.replace(/[0-9]/g, d => map[d]);
+    // Target first flight departure: 10 September 2026 at 22:15
+    const target = new Date("2026-09-10T22:15:00").getTime();
+    function update() {
+        const now = new Date().getTime();
+        const diff = target - now;
+        if (diff <= 0) { document.getElementById("countdown").innerHTML = "DEPARTED"; return; }
+        const d = Math.floor(diff/864e5), h = Math.floor(diff/36e5%24), m = Math.floor(diff/6e4%60), s = Math.floor(diff/1e3%60);
+        document.getElementById("countdown").innerHTML = `<i class="fas fa-clock"></i> ${d}d ${h}h ${m}m ${s}s to First Flight`;
     }
-
-    function cvt(str) {
-        return str.split(/(\$\$[\s\S]*?\$\$|\$[^$]*\$)/).map(part =>
-            part.startsWith('$') ? part : easternDigits(part)
-        ).join('');
-    }
-
-    const questions = [
-        // ── س1 أ ──────────────────────────────────────────────────────────────
-        {
-            id: "1A",
-            title: "السؤال الأول / أ",
-            text: "إذا كان $\\dfrac{x-yi}{1+5i}$ و $\\dfrac{3-2i}{i}$ مترافقان، $x,y \\in R$، جد $x, y$.",
-            subs: [
-                {
-                    heading: null,
-                    body: `
-$$\\dfrac{x+yi}{1-5i} = \\dfrac{3-2i}{i}$$
-$$( x+yi )\\cdot i = (3-2i)(1-5i)$$
-$$(x+yi)\\cdot i = 3-15i-2i-10$$
-$$(x+yi)\\cdot i = -7-17i$$
-$$x+yi = \\dfrac{-7-17i}{i}\\cdot\\dfrac{-i}{-i}$$
-$$x+yi = \\dfrac{7i-17}{1} = -17+7i$$
-`,
-                    result: "$\\therefore x=-17 \\quad,\\quad y=7$"
-                }
-            ]
-        },
-
-        // ── س1 ب ──────────────────────────────────────────────────────────────
-        {
-            id: "1B",
-            title: "السؤال الأول / ب",
-            text: "جد المساحة المحددة بالدالتين: $y = x^2$ و $y = x^4 - 12$.",
-            subs: [
-                {
-                    heading: null,
-                    body: `
-$$f(x)=g(x)$$
-$$x^4-12=x^2$$
-$$x^4-x^2-12=0$$
-$$(x^2-4)(x^2+3)=0$$
-`,
-                    note: "إما $x^2-4=0 \\Rightarrow x^2=4 \\Rightarrow x=\\pm 2$، أو $x^2+3=0$ (تُهمل)"
-                },
-                {
-                    heading: null,
-                    body: `
-$$A = \\left|\\int_{-2}^{2}(x^4-x^2-12)\\,dx\\right|$$
-$$= \\left|\\left[\\dfrac{1}{5}x^5-\\dfrac{1}{3}x^3-12x\\right]_{-2}^{2}\\right|$$
-$$= \\left|\\left(\\dfrac{32}{5}-\\dfrac{8}{3}-24\\right)-\\left(-\\dfrac{32}{5}+\\dfrac{8}{3}+24\\right)\\right|$$
-$$= \\left|\\dfrac{64}{5}-\\dfrac{16}{3}-48\\right|$$
-$$= \\left|\\dfrac{192-80-720}{15}\\right|$$
-$$= \\left|\\dfrac{-608}{15}\\right|$$
-`,
-                    result: "$\\dfrac{608}{15}$ وحدة مساحة"
-                }
-            ]
-        },
-
-        // ── س2 أ ──────────────────────────────────────────────────────────────
-        {
-            id: "2A",
-            title: "السؤال الثاني / أ",
-            text: "متوازي سطوح مستطيلة قاعدته مربعة الشكل يزداد طول ضلع قاعدته بمعدل ($0.5\\ cm/s$) بحيث يبقى الحجم ثابتاً يساوي ($48\\ cm^3$)، وفي اللحظة التي يكون فيها الارتفاع ($3\\ cm$) جد معدل التغير في الارتفاع.",
-            subs: [
-                {
-                    heading: null,
-                    note: "نفرض: $x$ = طول ضلع القاعدة، $y$ = الارتفاع",
-                    diagram: `<svg width="160" height="155" viewBox="0 0 160 155">
-                        <polygon points="30,55 90,35 150,55 90,75" fill="none" stroke="#2c3e50" stroke-width="1.5"/>
-                        <line x1="30" y1="55" x2="30" y2="130" stroke="#2c3e50" stroke-width="1.5"/>
-                        <line x1="150" y1="55" x2="150" y2="130" stroke="#2c3e50" stroke-width="1.5"/>
-                        <line x1="90" y1="75" x2="90" y2="150" stroke="#2c3e50" stroke-width="1.5"/>
-                        <line x1="30" y1="130" x2="90" y2="150" stroke="#2c3e50" stroke-width="1.5"/>
-                        <line x1="150" y1="130" x2="90" y2="150" stroke="#2c3e50" stroke-width="1.5"/>
-                        <line x1="30" y1="130" x2="150" y2="130" stroke="#2c3e50" stroke-width="1" stroke-dasharray="4,3"/>
-                        <text x="52" y="48" font-size="13" font-family="Arial">x</text>
-                        <text x="118" y="48" font-size="13" font-family="Arial">x</text>
-                        <text x="98" y="112" font-size="13" font-family="Arial">y</text>
-                    </svg>`,
-                    body: `
-$$V=x^2 y$$
-$$48=x^2(3)$$
-$$x^2=16 \\Rightarrow x=4$$
-$$V=x^2 y$$
-$$0=x^2\\dfrac{dy}{dt}+y\\cdot 2x\\dfrac{dx}{dt}$$
-$$0=(4)^2\\dfrac{dy}{dt}+3(2)(4)(0.5)$$
-$$0=16\\dfrac{dy}{dt}+12$$
-$$16\\dfrac{dy}{dt}=-12$$
-$$\\dfrac{dy}{dt}=\\dfrac{-12}{16}$$
-`,
-                    result: "$\\dfrac{dy}{dt}=-\\dfrac{3}{4}\\ cm/s$"
-                }
-            ]
-        },
-
-        // ── س2 ب ──────────────────────────────────────────────────────────────
-        {
-            id: "2B",
-            title: "السؤال الثاني / ب",
-            text: "جد تكامل اثنين مما يأتي:",
-            subs: [
-                {
-                    heading: "1) $\\int(\\sqrt{x}+x\\sec^2 x^2)\\,dx$",
-                    body: `
-$$\\int(\\sqrt{x}+x\\sec^2 x^2)\\,dx = \\int\\sqrt{x}\\,dx+\\int x\\sec^2 x^2\\,dx$$
-$$= \\int x^{1/2}dx+\\dfrac{1}{2}\\int(2)x\\sec^2 x^2\\,dx$$
-$$= \\dfrac{2}{3}x^{3/2}+\\dfrac{1}{2}\\tan x^2+c$$
-$$= \\dfrac{2}{3}\\sqrt{x^3}+\\dfrac{1}{2}\\tan x^2+c$$
-`,
-                    result: "$\\dfrac{2}{3}\\sqrt{x^3}+\\dfrac{1}{2}\\tan x^2+c$"
-                },
-                {
-                    heading: "2) $\\int\\sin 6x\\cos^2 3x\\,dx$",
-                    body: `
-$$\\int\\sin 6x\\cos^2 3x\\,dx = \\int 2\\sin 3x\\cos 3x\\cos^2 3x\\,dx$$
-$$= 2\\int\\sin 3x\\cos^3 3x\\,dx$$
-$$= 2\\int\\sin 3x(\\cos 3x)^3\\,dx$$
-$$= 2\\left(\\dfrac{-1}{3}\\right)\\int(-3)\\sin 3x(\\cos 3x)^3\\,dx$$
-$$= \\dfrac{-2}{3}\\times\\dfrac{(\\cos 3x)^4}{4}+c$$
-$$= \\dfrac{-1}{6}\\cos^4 3x+c$$
-`,
-                    result: "$\\dfrac{-1}{6}\\cos^4 3x+c$"
-                },
-                {
-                    heading: "3) $\\int_0^{\\ln 2}e^{-x}\\,dx$",
-                    body: `
-$$\\int_0^{\\ln 2}e^{-x}\\,dx = (-1)\\int_0^{\\ln 2}(-1)e^{-x}\\,dx$$
-$$= \\left[-e^{-x}\\right]_0^{\\ln 2}$$
-$$= \\left(-e^{-\\ln 2}\\right)-\\left(-e^0\\right)$$
-$$= \\left(-e^{\\ln 2^{-1}}\\right)-(-1)$$
-$$= \\left(-e^{\\ln\\frac{1}{2}}\\right)+1$$
-$$= -\\dfrac{1}{2}+1$$
-$$= \\dfrac{1}{2}$$
-`,
-                    result: "$\\dfrac{1}{2}$"
-                }
-            ]
-        },
-
-        // ── س3 أ-1 ────────────────────────────────────────────────────────────
-        {
-            id: "3A1",
-            title: "السؤال الثالث / أ-1",
-            text: "إذا علمت أن $f(x)=ax^2-6x+b$ حيث $a\\in\\{-4,8\\}$، $b\\in R$، جد قيمة $a$ إذا كانت الدالة $f$ محدبة.",
-            subs: [
-                {
-                    heading: null,
-                    body: `
-$$f'(x)=2ax-6$$
-$$f''(x)=2a$$
-$$2a<0 \\Rightarrow a=-4$$
-`,
-                    result: "$a=-4$"
-                }
-            ]
-        },
-
-        // ── س3 أ-2 ────────────────────────────────────────────────────────────
-        {
-            id: "3A2",
-            title: "السؤال الثالث / أ-2",
-            text: "جد $a\\in R$ إذا علمت أن: $\\int_a^4\\dfrac{x}{\\sqrt{x^2+9}}\\,dx=2$.",
-            subs: [
-                {
-                    heading: null,
-                    body: `
-$$\\int_a^4\\dfrac{x}{\\sqrt{x^2+9}}\\,dx=2$$
-$$\\int_a^4 x(x^2+9)^{-1/2}dx=2$$
-$$\\dfrac{1}{2}\\int_a^4(2)x(x^2+9)^{-1/2}dx=2$$
-$$\\left[\\dfrac{\\frac{1}{2}(x^2+9)^{1/2}}{\\frac{1}{2}}\\right]_a^4=2$$
-$$\\left[\\sqrt{x^2+9}\\right]_a^4=2$$
-$$\\sqrt{(4)^2+9}-\\sqrt{a^2+9}=2$$
-$$\\sqrt{16+9}-\\sqrt{a^2+9}=2$$
-$$\\sqrt{25}-\\sqrt{a^2+9}=2$$
-$$5-\\sqrt{a^2+9}=2$$
-$$5-2=\\sqrt{a^2+9}$$
-$$3=\\sqrt{a^2+9}$$
-$$9=a^2+9$$
-$$a^2=0 \\Rightarrow a=0$$
-`,
-                    result: "$a=0$"
-                }
-            ]
-        },
-
-        // ── س3 ب ──────────────────────────────────────────────────────────────
-        {
-            id: "3B",
-            title: "السؤال الثالث / ب",
-            text: "جد الحل العام للمعادلة التفاضلية: $e^{x+2y}+y'=0$.",
-            subs: [
-                {
-                    heading: null,
-                    body: `
-$$e^{x+2y}+y'=0$$
-$$\\dfrac{dy}{dx}=-e^{x+2y}$$
-$$\\dfrac{dy}{dx}=-e^x\\cdot e^{2y}$$
-$$\\dfrac{dy}{e^{2y}}=-e^x\\,dx$$
-$$-\\dfrac{1}{2}\\int e^{-2y}(-2)\\,dy=-\\int e^x\\,dx$$
-$$-\\dfrac{1}{2}e^{-2y}=-e^x+C$$
-`,
-                    note: "بضرب الطرفين في $(-1)$:",
-                    body2: `$$\\dfrac{1}{2}e^{-2y}=e^x-C$$`,
-                    result: "$\\dfrac{1}{2}e^{-2y}=e^x-C$"
-                }
-            ]
-        },
-
-        // ── س4 أ ──────────────────────────────────────────────────────────────
-        {
-            id: "4A",
-            title: "السؤال الرابع / أ",
-            text: "جد معادلة القطع الناقص الذي بؤرتاه تنتميان إلى محور السينات ومركزه نقطة الأصل، طول نصف محوره الصغير يساوي نصف طول محوره الكبير، والذي يقطع القطع المكافئ $y^2+8x=0$ عند النقطة التي إحداثيها الصادي يساوي ($4$).",
-            subs: [
-                {
-                    heading: null,
-                    body: `
-$$(4)^2+8x=0$$
-$$8x=-16$$
-$$x=-2$$
-$$\\therefore P(-2,4)$$
-$$\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}=1$$
-$$\\dfrac{4}{a^2}+\\dfrac{16}{b^2}=1$$
-$$2b=\\dfrac{1}{2}(2a) \\Rightarrow 2b=a \\Rightarrow a^2=4b^2$$
-$$\\dfrac{4}{4b^2}+\\dfrac{16}{b^2}=1$$
-$$\\dfrac{1}{b^2}+\\dfrac{16}{b^2}=1$$
-$$\\dfrac{17}{b^2}=1$$
-$$b^2=17$$
-$$a^2=4(17) \\Rightarrow a^2=68$$
-`,
-                    result: "$\\dfrac{x^2}{68}+\\dfrac{y^2}{17}=1$"
-                }
-            ]
-        },
-
-        // ── س4 ب ──────────────────────────────────────────────────────────────
-        {
-            id: "4B",
-            title: "السؤال الرابع / ب",
-            text: "أثبت أن: $\\left(5-\\dfrac{5}{1+\\omega^2}-\\dfrac{3}{1+\\omega}\\right)^6=64$، حيث $\\omega$ جذر تكعيبي تخيلي للواحد الصحيح.",
-            subs: [
-                {
-                    heading: null,
-                    body: `
-$$L.H.S=\\left(5-\\dfrac{5}{1+\\omega^2}-\\dfrac{3}{1+\\omega}\\right)^6$$
-$$=\\left(5-\\dfrac{5}{-\\omega}-\\dfrac{3}{-\\omega^2}\\right)^6$$
-$$=\\left(5+\\dfrac{5}{\\omega}+\\dfrac{3}{\\omega^2}\\right)^6$$
-$$=\\left(5+\\dfrac{5\\omega^3}{\\omega}+\\dfrac{3\\omega^3}{\\omega^2}\\right)^6$$
-$$=\\left(5+5\\omega^2+3\\omega\\right)^6$$
-$$=\\left[5(1+\\omega^2)+3\\omega\\right]^6$$
-$$=\\left[5(-\\omega)+3\\omega\\right]^6$$
-$$=(-5\\omega+3\\omega)^6$$
-$$=(-2\\omega)^6$$
-$$=(-2)^6\\omega^6$$
-$$=64(\\omega^3)^2$$
-$$=64(1)^2$$
-$$=64=R.H.S$$
-`,
-                    result: "$L.H.S=R.H.S=64$"
-                }
-            ]
-        },
-
-        // ── س4 ج ──────────────────────────────────────────────────────────────
-        {
-            id: "4C",
-            title: "السؤال الرابع / ج",
-            text: "مجموع محيطي دائرة ومربع يساوي ($60\\ cm$)، أثبت أنه عندما يكون مجموع مساحتي الشكلين أصغر ما يمكن فإن قطر الدائرة يساوي طول ضلع المربع.",
-            subs: [
-                {
-                    heading: null,
-                    note: "نفرض: نصف قطر الدائرة $=r$، طول ضلع المربع $=x$",
-                    body: `
-$$[4x+2r\\pi=60]\\div(2)$$
-$$2x+r\\pi=30$$
-$$r=\\dfrac{1}{\\pi}(30-2x)$$
-$$M=x^2+r^2\\pi$$
-$$M=x^2+\\pi\\left[\\dfrac{1}{\\pi}(30-2x)\\right]^2$$
-$$M=x^2+\\dfrac{1}{\\pi}[900-120x+4x^2]$$
-$$M'=2x+\\dfrac{1}{\\pi}[-120+8x]$$
-$$M'=0$$
-$$2x+\\dfrac{1}{\\pi}[-120+8x]=0$$
-$$[2x\\pi-120+8x=0]\\div(2)$$
-$$x\\pi+4x=60$$
-$$x(\\pi+4)=60$$
-$$x=\\dfrac{60}{\\pi+4}\\ cm$$
-$$r=\\dfrac{1}{\\pi}\\left(30-\\dfrac{120}{\\pi+4}\\right)$$
-$$r=\\dfrac{1}{\\pi}\\left(\\dfrac{30\\pi+120-120}{\\pi+4}\\right)$$
-$$r=\\dfrac{1}{\\pi}\\left(\\dfrac{30\\pi}{\\pi+4}\\right)$$
-$$r=\\dfrac{30}{\\pi+4}$$
-$$2r=\\dfrac{60}{\\pi+4}$$
-$$\\therefore 2r=x$$
-`,
-                    result: "قطر الدائرة = ضلع المربع"
-                }
-            ]
-        },
-
-        // ── س5 أ ──────────────────────────────────────────────────────────────
-        {
-            id: "5A",
-            title: "السؤال الخامس / أ",
-            text: "جد باستخدام مبرهنة ديموافر أو التعميم: $(2\\sqrt{3}+\\sqrt{-4})^{-2}$.",
-            subs: [
-                {
-                    heading: null,
-                    body: `
-$$z=2\\sqrt3+\\sqrt{-4}=2\\sqrt3+2i$$
-$$r=\\sqrt{(2\\sqrt3)^2+(2)^2}=\\sqrt{12+4}=\\sqrt{16}$$
-$$r=4$$
-$$\\cos\\theta=\\dfrac{2\\sqrt3}{4}=\\dfrac{\\sqrt3}{2}$$
-$$\\sin\\theta=\\dfrac{2}{4}=\\dfrac{1}{2}$$
-$$arg(z)=\\dfrac{\\pi}{6}$$
-$$z=4\\left(\\cos\\dfrac{\\pi}{6}+i\\sin\\dfrac{\\pi}{6}\\right)$$
-$$z^{-2}=(4)^{-2}\\left(\\cos\\dfrac{\\pi}{6}+i\\sin\\dfrac{\\pi}{6}\\right)^{-2}$$
-$$=\\dfrac{1}{16}\\left(\\cos\\dfrac{\\pi}{6}(-2)+i\\sin\\dfrac{\\pi}{6}(-2)\\right)$$
-$$=\\dfrac{1}{16}\\left(\\cos\\dfrac{\\pi}{3}-i\\sin\\dfrac{\\pi}{3}\\right)$$
-$$=\\dfrac{1}{16}\\left[\\dfrac{1}{2}-i\\left(\\dfrac{\\sqrt3}{2}\\right)\\right]$$
-$$=\\dfrac{1}{32}-\\dfrac{\\sqrt3}{32}i$$
-`,
-                    result: "$\\dfrac{1}{32}-\\dfrac{\\sqrt3}{32}i$"
-                }
-            ]
-        },
-
-        // ── س5 ب ──────────────────────────────────────────────────────────────
-        {
-            id: "5B",
-            title: "السؤال الخامس / ب",
-            text: "أثبت أن $y=x\\ln|x|-x$ أحد حلول المعادلة: $x\\dfrac{dy}{dx}=x+y$، $x>0$.",
-            subs: [
-                {
-                    heading: "الطريقة الأولى",
-                    body: `
-$$y=x\\ln x-x$$
-$$x\\dfrac{dy}{dx}=x\\left[x\\cdot\\dfrac{1}{x}+\\ln x(1)-1\\right]$$
-$$=x(1+\\ln x-1)$$
-$$=x\\ln x$$
-$$x+y=x+x\\ln x-x=x\\ln x$$
-`,
-                    note: "$\\therefore$ الطرف الأيسر = الطرف الأيمن، $y=x\\ln x-x$ هو أحد حلول المعادلة"
-                },
-                {
-                    heading: "طريقة ثانية",
-                    body: `
-$$x\\dfrac{dy}{dx}=x+y \\quad ]\\div x$$
-$$\\dfrac{dy}{dx}=1+\\dfrac{y}{x}$$
-`,
-                    note: "لتكن $v=\\dfrac{y}{x} \\Rightarrow \\dfrac{dy}{dx}=v+x\\dfrac{dv}{dx}$",
-                    body2: `
-$$v+x\\dfrac{dv}{dx}=1+v$$
-$$\\dfrac{dx}{x}=dv$$
-$$\\int\\dfrac{1}{x}dx=\\int dv$$
-$$\\ln x=v+C$$
-$$\\ln x=\\dfrac{y}{x}+C$$
-$$x\\ln x=y+xC$$
-`,
-                    result: "$y=x\\ln x-x$ عند $C=1$"
-                }
-            ]
-        },
-
-        // ── س5 ج ──────────────────────────────────────────────────────────────
-        {
-            id: "5C",
-            title: "السؤال الخامس / ج",
-            text: "لتكن $f(x)=x^2-\\dfrac{a}{x}$، $x\\neq 0$، $a\\in R$، بيّن أن الدالة $f$ لا تمتلك نقطة نهاية عظمى محلية.",
-            subs: [
-                {
-                    heading: null,
-                    body: `
-$$f(x)=x^2-\\dfrac{a}{x}$$
-$$f'(x)=2x+\\dfrac{a}{x^2}$$
-$$f'(x)=0$$
-$$\\left[2x+\\dfrac{a}{x^2}=0\\right]\\cdot x^2$$
-$$2x^3+a=0 \\Rightarrow 2x^3=-a$$
-$$x^3=\\dfrac{-a}{2} \\Rightarrow x=\\sqrt[3]{\\dfrac{-a}{2}}$$
-$$f''(x)=2-\\dfrac{2a}{x^3}$$
-$$f''\\!\\left(\\sqrt[3]{\\dfrac{-a}{2}}\\right)=2-\\dfrac{2a}{\\dfrac{-a}{2}}$$
-$$=2+4=6>0$$
-`,
-                    result: "$\\therefore f$ لا تمتلك نقطة نهاية عظمى محلية"
-                }
-            ]
-        },
-
-        // ── س6 أ ──────────────────────────────────────────────────────────────
-        {
-            id: "6A",
-            title: "السؤال السادس / أ",
-            text: "قطع زائد مركزه نقطة الأصل، والقيمة المطلقة لفرق بعدي أي نقطة عن بؤرتيه تساوي ($6$) وحدات، وإحدى بؤرتيه هي بؤرة القطع المكافئ الذي رأسه نقطة الأصل ويمر بالنقطتين $(1,2\\sqrt5)$، $(-1,-2\\sqrt5)$، جد معادلتي القطع المكافئ والقطع الزائد.",
-            subs: [
-                {
-                    heading: "القطع المكافئ",
-                    body: `
-$$y^2=4px$$
-$$(2\\sqrt5)^2=4p(1)$$
-$$20=4p$$
-$$p=5$$
-$$y^2=20x$$
-`,
-                    result: "معادلة القطع المكافئ: $y^2=20x$"
-                },
-                {
-                    heading: "القطع الزائد",
-                    body: `
-$$F_1(5,0)\\quad F_2(-5,0) \\Rightarrow c=5 \\Rightarrow c^2=25$$
-$$2a=6 \\Rightarrow a=3 \\Rightarrow a^2=9$$
-$$c^2=a^2+b^2$$
-$$25=9+b^2 \\Rightarrow b^2=16$$
-$$\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=1$$
-$$\\dfrac{x^2}{9}-\\dfrac{y^2}{16}=1$$
-`,
-                    result: "معادلة القطع الزائد: $\\dfrac{x^2}{9}-\\dfrac{y^2}{16}=1$"
-                }
-            ]
-        },
-
-        // ── س6 ب ──────────────────────────────────────────────────────────────
-        {
-            id: "6B",
-            title: "السؤال السادس / ب",
-            text: "أثبت فيما إذا كانت $F:[1,3]\\to R$، $F(x)=x^3+2$ هي دالة مقابلة للدالة $f(x)=3x^2$.",
-            subs: [
-                {
-                    heading: null,
-                    note: "$F(x)=x^3+2$ دالة مستمرة وقابلة للاشتقاق على $R$ (لأنها دالة كثيرة الحدود)",
-                    body: `
-$$F'(x)=3x^2=f(x) \\quad \\forall x\\in(1,3)$$
-`,
-                    result: "$\\therefore F$ دالة مقابلة للدالة $f$ على $[1,3]$"
-                }
-            ]
-        },
-
-        // ── س6 ج ──────────────────────────────────────────────────────────────
-        {
-            id: "6C",
-            title: "السؤال السادس / ج",
-            text: "إذا كانت الدالة $f:[0,b]\\to R$ حيث $f(x)=x^3-4x^2$ تحقق مبرهنة القيمة المتوسطة عند $c=\\dfrac{2}{3}$، جد $b$.",
-            subs: [
-                {
-                    heading: null,
-                    body: `
-$$f(a)=f(0)=(0)^3-4(0)^2=0-0=0$$
-$$f(b)=b^3-4b^2$$
-$$f(x)=x^3-4x^2 \\Rightarrow f'(x)=3x^2-8x$$
-$$f'(c)=3c^2-8c \\quad,\\quad c=\\dfrac{2}{3}$$
-$$f'\\!\\left(\\dfrac{2}{3}\\right)=3\\left(\\dfrac{2}{3}\\right)^2-8\\left(\\dfrac{2}{3}\\right)$$
-$$f'(c)=3\\cdot\\dfrac{4}{9}-\\dfrac{16}{3}$$
-$$f'(c)=\\dfrac{4}{3}-\\dfrac{16}{3}$$
-$$f'(c)=\\dfrac{4-16}{3}$$
-$$f'(c)=\\dfrac{-12}{3}$$
-$$f'(c)=-4$$
-`,
-                    note: "ميل المماس = ميل الوتر",
-                    body2: `
-$$f'(c)=\\dfrac{f(b)-f(a)}{b-a}$$
-$$-4=\\dfrac{b^3-4b^2-0}{b-0}$$
-$$-4=\\dfrac{b^3-4b^2}{b}$$
-$$-4=\\dfrac{b(b^2-4b)}{b}$$
-$$-4=b^2-4b$$
-$$b^2-4b+4=0$$
-$$(b-2)(b-2)=0$$
-$$(b-2)^2=0$$
-$$b-2=0 \\Rightarrow b=2$$
-`,
-                    result: "$b=2$"
-                }
-            ]
-        }
-    ];
-
-    // KaTeX options
-    const katexOpts = {
-        delimiters: [
-            { left: "$$", right: "$$", display: true },
-            { left: "$",  right: "$",  display: false }
-        ],
-        throwOnError: false
-    };
-
-    // Build a sub-section HTML string — cvt() applied only to text/math strings, never to raw HTML
-    function buildSub(sub) {
-        let html = '';
-        if (sub.heading) {
-            html += `<div class="sub-heading">${sub.heading}</div>`;
-        }
-        if (sub.note) {
-            html += `<div class="note">${cvt(sub.note)}</div>`;
-        }
-        if (sub.diagram) {
-            html += `<div class="diagram">${sub.diagram}</div>`;
-        }
-        if (sub.body) {
-            html += sub.body;
-        }
-        if (sub.body2) {
-            html += sub.body2;
-        }
-        if (sub.result) {
-            html += `<div class="result">${sub.result}</div>`;
-        }
-        return html;
-    }
-
-    // Render question cards
-    const grid = document.getElementById('questionGrid');
-    questions.forEach(q => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.onclick = () => openAnswer(q.id);
-        card.innerHTML = `
-            <div>
-                <div class="q-title">${cvt(q.title)}</div>
-                <div class="q-text">${cvt(q.text)}</div>
-            </div>
-            <div class="click-hint">⟸ اضغط لعرض الحل الكامل</div>
-        `;
-        grid.appendChild(card);
-    });
-    renderMathInElement(grid, katexOpts);
-
-    // Open Answer
-    function openAnswer(id) {
-        const q = questions.find(item => item.id === id);
-        if (!q) return;
-
-        let subsHtml = '';
-        if (q.subs && q.subs.length > 1) {
-            q.subs.forEach((sub, i) => {
-                if (i > 0) subsHtml += '<hr style="border:none;border-top:1px solid #d0dde6;margin:20px 0;">';
-                subsHtml += buildSub(sub);
-            });
-        } else if (q.subs && q.subs.length === 1) {
-            subsHtml = buildSub(q.subs[0]);
-        }
-
-        const content = document.getElementById('answerContent');
-        content.innerHTML = `
-            <div class="answer-title">${cvt(q.title)}</div>
-            <div class="answer-question">${cvt(q.text)}</div>
-            ${subsHtml}
-        `;
-        renderMathInElement(content, katexOpts);
-        document.getElementById('answerOverlay').classList.add('active');
-        history.pushState({ answerOpen: true }, '');
-    }
-
-    // Close Answer
-    function closeAnswer(skipHistory) {
-        document.getElementById('answerOverlay').classList.remove('active');
-        if (!skipHistory && history.state && history.state.answerOpen) {
-            history.back();
-        }
-    }
-
-    window.addEventListener('popstate', () => closeAnswer(true));
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape' && document.getElementById('answerOverlay').classList.contains('active')) {
-            closeAnswer();
-        }
-    });
+    setInterval(update, 1000); update();
 </script>
 </body>
 </html>
